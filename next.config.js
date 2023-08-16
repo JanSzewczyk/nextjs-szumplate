@@ -4,6 +4,6 @@ const nextConfig = {
     typedRoutes: true,
     serverActions: true
   }
-}
+};
 
-module.exports = nextConfig
+module.exports = nextConfig;

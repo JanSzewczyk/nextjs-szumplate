@@ -1,0 +1,33 @@
+name: Publish 🚀
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+#  publish:
+#    name: Publish 🚀
+#    runs-on: ${{ matrix.os }}
+#    strategy:
+#      matrix:
+#        node-version: [18.x]
+#        os: [ubuntu-latest]
+#
+#    steps:
+#      - name: Checkout code 📚
+#        uses: actions/checkout@v3
+#
+#      - name: Set up Node 🟢
+#        uses: actions/setup-node@v3
+#        with:
+#          node-version: ${{ matrix.node-version }}
+#
+#      - name: Install packages ⚙️
+#        run: yarn install --frozen-lockfile
+#      #        run: npm ci
+#
+#      - name: Publish package 🚀
+#        run: yarn semantic-release
+#        #        run: npx semantic-release
+#        env:
+#          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

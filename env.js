@@ -3,8 +3,12 @@ const { z } = require("zod");
 
 const env = createEnv({
   server: {
-    NODE_ENV: z.enum(["development", "test", "production"]),
+    NODE_ENV: z.enum(["development", "test", "production"]).optional(),
     ANALYZE: z
+      .enum(["true", "false"])
+      .optional()
+      .transform((value) => value === "true"),
+    CI: z
       .enum(["true", "false"])
       .optional()
       .transform((value) => value === "true")
@@ -15,7 +19,8 @@ const env = createEnv({
   },
   runtimeEnv: {
     NODE_ENV: process.env.NODE_ENV,
-    ANALYZE: process.env.ANALYZE
+    ANALYZE: process.env.ANALYZE,
+    CI: process.env.CI
   }
 });
 

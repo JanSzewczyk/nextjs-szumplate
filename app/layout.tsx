@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Next App - Szumplate",
+  title: "Szumplate Next App",
   description: "Template for Next App by Szum-Tech"
 };
 

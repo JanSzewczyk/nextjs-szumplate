@@ -34,5 +34,11 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
-# analyza
+# analyze
 /analyze
+
+# WebStorm
+/.idea
+
+# VS Code
+/.vscode

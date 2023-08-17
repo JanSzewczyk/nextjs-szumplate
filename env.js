@@ -9,9 +9,9 @@ const env = createEnv({
       .optional()
       .transform((value) => value === "true"),
     CI: z
-      .enum(["true", "false", 0, 1])
+      .enum(["true", "false", "0", "1"])
       .optional()
-      .transform((value) => value === "true" || value === 1)
+      .transform((value) => value === "true" || value === "1")
   },
   client: {
     // Client env variables, eg:

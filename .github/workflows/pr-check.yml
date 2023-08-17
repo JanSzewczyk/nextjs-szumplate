@@ -1,0 +1,138 @@
+name: PR Checks ✅
+
+on:
+  pull_request:
+
+jobs:
+  build:
+    name: Build 🏗️
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        node-version: [18.x]
+        os: [ubuntu-latest]
+    steps:
+      - name: Checkout code 📚
+        uses: actions/checkout@v3
+      - name: Set up Node 🟢
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: "npm"
+      - name: Install dependencies ⚙️
+        run: npm ci
+      - name: Build Check 🏗️
+        run: npm run build
+  #        env:
+  #          SOME_SECRET: ${{ secret.SOME_SECRET }}
+
+  prettier:
+    name: Prettier 🧹
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        node-version: [18.x]
+        os: [ubuntu-latest]
+    steps:
+      - name: Checkout code 📚
+        uses: actions/checkout@v3
+      - name: Set up Node 🟢
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: "npm"
+      - name: Install dependencies ⚙️
+        run: npm ci
+      - name: Prettier Check 🧹
+        run: npm run prettier:check
+
+  lint:
+    name: Eslint ⬣
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        node-version: [18.x]
+        os: [ubuntu-latest]
+    steps:
+      - name: Checkout code 📚
+        uses: actions/checkout@v3
+      - name: Set up Node 🟢
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: "npm"
+      - name: Install dependencies ⚙️
+        run: npm ci
+      - name: Eslint Check ⬣
+        run: npm run lint:ci
+
+  type-check:
+    name: TypeScript 🛠️
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        node-version: [18.x]
+        os: [ubuntu-latest]
+    steps:
+      - name: Checkout code 📚
+        uses: actions/checkout@v3
+      - name: Set up Node 🟢
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: "npm"
+      - name: Install dependencies ⚙️
+        run: npm ci
+      - name: TypeScript Check 🛠️
+        run: npm run type-check
+
+  test:
+    name: Test 🧪
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        node-version: [18.x]
+        os: [ubuntu-latest]
+    steps:
+      - name: Checkout code 📚
+        uses: actions/checkout@v3
+      - name: Set up Node 🟢
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: "npm"
+      - name: Install dependencies ⚙️
+        run: npm ci
+      - name: Test Check 🧪
+        run: npm run test
+
+  e2e-test:
+    name: Playwright 🎭
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        node-version: [18.x]
+        os: [ubuntu-latest]
+    timeout-minutes: 60
+    steps:
+      - name: Checkout code 📚
+        uses: actions/checkout@v3
+      - name: Set up Node 🟢
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: "npm"
+      - name: Install dependencies ⚙️
+        run: npm ci
+      - name: Build app 🏗️
+        run: npm run build
+      - name: Install Playwright Browsers ⚙️
+        run: npx playwright install --with-deps
+      - name: Playwright tests check 🎭
+        run: npm run test:e2e
+      - uses: actions/upload-artifact@v3
+        if: always()
+        with:
+          name: playwright-report
+          path: playwright-report/
+          retention-days: 30

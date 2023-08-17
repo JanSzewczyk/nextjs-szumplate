@@ -2,15 +2,9 @@
   "$schema": "https://json.schemastore.org/tsconfig",
   "display": "Next.js",
   "compilerOptions": {
-    "types": [
-      "vitest/globals"
-    ],
+    "types": ["vitest/globals"],
     "target": "ES2019",
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "ES2019"
-    ],
+    "lib": ["dom", "dom.iterable", "ES2019"],
     "allowJs": true,
     "skipLibCheck": true,
     "strict": true,
@@ -29,18 +23,9 @@
       }
     ],
     "paths": {
-      "~/*": [
-        "./*"
-      ]
+      "~/*": ["./*"]
     }
   },
-  "include": [
-    "next-env.d.ts",
-    "**/*.ts",
-    "**/*.tsx",
-    ".next/types/**/*.ts"
-  ],
-  "exclude": [
-    "node_modules"
-  ]
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
+  "exclude": ["node_modules"]
 }

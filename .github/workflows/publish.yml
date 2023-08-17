@@ -1,4 +1,4 @@
-name: Publish 🚀
+name: Publish 📦🚀
 
 on:
   push:
@@ -6,7 +6,7 @@ on:
 
 jobs:
   publish:
-    name: Publish 🚀
+    name: Publish 📦🚀
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
@@ -21,7 +21,7 @@ jobs:
           node-version: ${{ matrix.node-version }}
       - name: Install packages ⚙️
         run: npm ci
-#      - name: Publish package 🚀
+#      - name: Publish package 📦🚀
 #        run: yarn semantic-release
 #        run: npx semantic-release
 #        env:

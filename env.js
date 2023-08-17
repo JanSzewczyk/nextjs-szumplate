@@ -3,7 +3,7 @@ const { z } = require("zod");
 
 const env = createEnv({
   server: {
-    NODE_ENV: z.enum(["development", "test", "production"]).optional(),
+    NODE_ENV: z.enum(["development", "test", "production"]),
     ANALYZE: z
       .enum(["true", "false"])
       .optional()

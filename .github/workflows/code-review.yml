@@ -1,4 +1,4 @@
-name: Code Review
+name: Code Review 🤖
 
 permissions:
   contents: read
@@ -12,7 +12,8 @@ on:
       - synchronize
 
 jobs:
-  test:
+  review-code:
+    name: Code review 🤖
     runs-on: ubuntu-latest
     steps:
       - uses: anc95/ChatGPT-CodeReview@main

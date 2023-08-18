@@ -27,11 +27,12 @@ test("has content", async ({ page }) => {
     "Testing Library",
     "Prettier",
     "ESLint",
-    "Semantic Release"
+    "Semantic Release",
+    "T3 ENV"
   ];
   await expect(page.getByRole("heading", { level: 2, name: /Tech stack/ })).toBeVisible();
   const techs = page.getByRole("listitem");
-  await expect(techs).toHaveCount(9);
+  await expect(techs).toHaveCount(10);
   for (const row of await techs.all()) {
     await expect(row.getByRole("link")).toBeVisible();
     const imgAlt = await row.getByRole("img").getAttribute("alt");

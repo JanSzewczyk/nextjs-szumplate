@@ -3,12 +3,13 @@ const withPlugins = require("next-compose-plugins");
 const { env } = require("./env");
 
 /** @type {import('next').NextConfig} */
-const nextConfig = withPlugins([[withBundleAnalyzer({ enabled: env.ANALYZE })]], {
+const nextConfig = withPlugins([withBundleAnalyzer({ enabled: env.ANALYZE })], {
   reactStrictMode: true,
   experimental: {
     instrumentationHook: true,
     typedRoutes: true,
-    serverActions: true
+    serverActions: true,
+    serverComponentsExternalPackages: ["@szum-tech/design-system"]
   },
   rewrites() {
     return [

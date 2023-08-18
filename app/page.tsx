@@ -1,19 +1,20 @@
 import Image from "next/image";
 
+import { Button } from "@szum-tech/design-system";
 import { IconBrandGithub } from "@szum-tech/design-system/icons";
 
 export default function Home() {
   return (
     <main className="mx-auto container flex min-h-screen flex-col items-center justify-between gap-16 py-10 sm:py-24 px-4 sm:px-12">
       <div className="w-full flex flex-row justify-end">
-        <a
-          href="https://github.com/JanSzewczyk/nextjs-szumplate"
+        <Button
+          as="a"
           target="_blank"
-          className="flex justify-between items-center gap-2 text-gray-300 hover:text-gray-100"
+          href="https://github.com/JanSzewczyk/nextjs-szumplate"
+          endIcon={<IconBrandGithub />}
         >
-          <span>Repo</span>
-          <IconBrandGithub />
-        </a>
+          See Repo
+        </Button>
       </div>
 
       <div className="flex flex-col">

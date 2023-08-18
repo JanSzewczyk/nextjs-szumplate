@@ -11,7 +11,7 @@ test("has content", async ({ page }) => {
   await page.goto("/");
 
   // Link to repo
-  await expect(page.getByRole("link", { name: /Repo/ })).toBeVisible();
+  await expect(page.getByRole("link", { name: /See Repo/ })).toBeVisible();
 
   // Tile
   await expect(page.getByRole("heading", { level: 1, name: /Next App Template/ })).toBeVisible();
@@ -45,7 +45,7 @@ test("open repo in new tab", async ({ page, context }) => {
   await page.goto("/");
 
   // Click repo link
-  await page.getByRole("link", { name: /Repo/ }).click();
+  await page.getByRole("link", { name: /See Repo/ }).click();
   const newPage = await pagePromise;
   await newPage.waitForLoadState();
 

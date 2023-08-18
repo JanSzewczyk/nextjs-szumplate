@@ -7,12 +7,48 @@ test("has title", async ({ page }) => {
   await expect(page).toHaveTitle(/Szumplate Next App/);
 });
 
-// test("get started link", async ({ page }) => {
-//   await page.goto("/");
-//
-//   // Click the get started link.
-//   await page.getByRole("link", { name: "Get started" }).click();
-//
-//   // Expects page to have a heading with the name of Installation.
-//   await expect(page.getByRole("heading", { name: "Installation" })).toBeVisible();
-// });
+test("has content", async ({ page }) => {
+  await page.goto("/");
+
+  // Link to repo
+  await expect(page.getByRole("link", { name: /Repo/ })).toBeVisible();
+
+  // Tile
+  await expect(page.getByRole("heading", { level: 1, name: /Next App Template/ })).toBeVisible();
+  await expect(page.getByText(/by Szum-Tech/)).toBeVisible();
+
+  // Tech stack
+  const technologies = [
+    "Next",
+    "TailwindCSS",
+    "TypeScript",
+    "Playwright",
+    "Vitest",
+    "Testing Library",
+    "Prettier",
+    "ESLint",
+    "Semantic Release"
+  ];
+  await expect(page.getByRole("heading", { level: 2, name: /Tech stack/ })).toBeVisible();
+  const techs = page.getByRole("listitem");
+  await expect(techs).toHaveCount(9);
+  for (const row of await techs.all()) {
+    await expect(row.getByRole("link")).toBeVisible();
+    const imgAlt = await row.getByRole("img").getAttribute("alt");
+    expect(imgAlt && technologies.includes(imgAlt)).toBeTruthy();
+  }
+});
+
+test("open repo in new tab", async ({ page, context }) => {
+  const pagePromise = context.waitForEvent("page");
+
+  await page.goto("/");
+
+  // Click repo link
+  await page.getByRole("link", { name: /Repo/ }).click();
+  const newPage = await pagePromise;
+  await newPage.waitForLoadState();
+
+  await expect(await newPage.title()).toMatch(/GitHub - JanSzewczyk\/nextjs-szumplate/);
+  await expect(newPage.url()).toMatch(/https:\/\/github.com\//);
+});

@@ -1,7 +1,7 @@
 const { createEnv } = require("@t3-oss/env-nextjs");
 const { z } = require("zod");
 
-export const env = createEnv({
+const env = createEnv({
   server: {
     NODE_ENV: z.enum(["development", "test", "production"]),
     ANALYZE: z
@@ -23,3 +23,5 @@ export const env = createEnv({
     CI: process.env.CI
   }
 });
+
+module.exports = { env };

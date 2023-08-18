@@ -45,7 +45,12 @@ export default function Home() {
             {
               alt: "Semantic Release",
               src: "/semantic-release.svg",
-              href: "https://semantic-release.gitbook.io/semantic-release/"
+              href: "https://semantic-release.gitbook.io/semantic-release"
+            },
+            {
+              alt: "T3 ENV",
+              src: "/t3.svg",
+              href: "https://env.t3.gg/"
             }
           ].map((img) => (
             <li key={img.href} className="bg-gray-400 rounded-sm">

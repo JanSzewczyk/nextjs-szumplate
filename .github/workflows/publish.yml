@@ -21,6 +21,8 @@ jobs:
           node-version: ${{ matrix.node-version }}
       - name: Install packages ⚙️
         run: npm ci
+#        HERE 👇👇👇
+#        Expose block of code below
 #      - name: Publish package 📦🚀
 #        run: yarn semantic-release
 #        run: npx semantic-release

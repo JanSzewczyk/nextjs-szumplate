@@ -171,9 +171,26 @@ This action is used only during pull request life, it validates the added code i
 
 **Checks the code for:**
 
--
+- Build 🏗
+- Prettier 🧹
+- Eslint ⬣
+- TypeScript 🛠️
+- Test 🧪
+- Playwright 🎭 (e2e tests)
+
+> Warning! Add screen of action
 
 > Code of this workflow, you can find in [`pr-check.yml`](./.github/workflows/pr-check.yml) file.
+
+### Publish 📦🚀
+
+The action is triggered when a changes are added to the main branch `main`. It uses the [Semantic Release](https://github.com/semantic-release/semantic-release) library. Based on the [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/), it determines the next version of the application, boosts it in the [`package.json`](./package.json) file, adds information to the `CHANGELOG.md` file and creates a new [release on Github](https://docs.github.com/en/repositories/releasing-projects-on-github/managing-releases-in-a-repository).
+
+The configuration used in Szumplate comes from the package [`@szum-tech/semantic-release-preset`](https://www.npmjs.com/package/@szum-tech/semantic-release-preset), which contains the shareable configurations used by the Semantic Release.
+
+[Let's see configuration](https://github.com/JanSzewczyk/semantic-release-preset/blob/main/without-npm.js) used in this Repository.
+
+> Code of this workflow, you can find in [`publish.yml`](./.github/workflows/publish.yml) file.
 
 ## 📜 License
 

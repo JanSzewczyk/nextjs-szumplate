@@ -109,7 +109,8 @@ This szumplate comes with various testing setups to ensure your application's re
 - **End-to-end tests**: Run Playwright tests with `npm run test:e2e`
 - **End-to-end tests (UI mode)**: Run Playwright tests with UI using `npm run test:e2e:ui`
 
-> Warning! Add screen of e2e UI view
+<img width="1665" alt="image" src="https://github.com/JanSzewczyk/nextjs-szumplate/assets/29024606/9c65cdd2-4e04-4687-81d6-8e7a32f12518">
+
 
 ## 🎨 Styling and Design System
 
@@ -178,7 +179,7 @@ This action is used only during pull request life, it validates the added code i
 - Test 🧪
 - Playwright 🎭 (e2e tests)
 
-> Warning! Add screen of action
+<img width="1274" alt="image" src="https://github.com/JanSzewczyk/nextjs-szumplate/assets/29024606/755e0ce7-3a20-4860-b7c6-adbdedc954d4">
 
 > Code of this workflow, you can find in [`pr-check.yml`](./.github/workflows/pr-check.yml) file.
 

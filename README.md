@@ -85,6 +85,9 @@ The following scripts are available in the [`package.json`](./package.json):
 - `analyze`: Analyzes the bundle sizes for Client, Server and Edge environments
 - `build`: Builds the app for production
 - `dev`: Starts the development server
+- `e2e`: Runs end-to-end tests
+- `e2e:ci`: Runs end-to-end tests for CI
+- `e2e:ui`: Runs end-to-end tests with UI
 - `lint`: Lints the code using ESLint
 - `lint:ci`: Lints the code using ESLint for CI - considers warnings as errors
 - `lint:fix`: Automatically fixes linting errors
@@ -93,9 +96,6 @@ The following scripts are available in the [`package.json`](./package.json):
 - `start`: Starts the production server
 - `test`: Runs unit and integration tests
 - `test:coverage`: Runs and returns tests coverage report of unit and integration tests
-- `test:e2e`: Runs end-to-end tests
-- `test:e2e:ci`: Runs end-to-end tests for CI
-- `test:e2e:ui`: Runs end-to-end tests with UI
 - `test:watch`: Runs unit and integration tests in watch mode
 - `type-check`: Runs types check
 
@@ -106,11 +106,10 @@ This szumplate comes with various testing setups to ensure your application's re
 ### Running Tests
 
 - **Unit and integration tests**: Run Vitest tests using `npm run test`
-- **End-to-end tests**: Run Playwright tests with `npm run test:e2e`
-- **End-to-end tests (UI mode)**: Run Playwright tests with UI using `npm run test:e2e:ui`
+- **End-to-end tests**: Run Playwright tests with `npm run e2e`
+- **End-to-end tests (UI mode)**: Run Playwright tests with UI using `npm run e2e:ui`
 
 <img width="1665" alt="image" src="https://github.com/JanSzewczyk/nextjs-szumplate/assets/29024606/9c65cdd2-4e04-4687-81d6-8e7a32f12518">
-
 
 ## 🎨 Styling and Design System
 

@@ -79,7 +79,7 @@ Easily deploy your Next.js app with [Vercel](https://vercel.com/new?utm_medium=d
 [![Vercel](https://vercel.com/button)](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=github&utm_campaign=next-enterprise)
 
 ## 📃 Scripts Overview
-
+test
 The following scripts are available in the [`package.json`](./package.json):
 
 - `analyze`: Analyzes the bundle sizes for Client, Server and Edge environments

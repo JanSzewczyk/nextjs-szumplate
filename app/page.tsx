@@ -1,12 +1,11 @@
-import Image from "next/image";
-
 import { Button } from "@szum-tech/design-system";
 import { IconBrandGithub } from "@szum-tech/design-system/icons";
+import Image from "next/image";
 
 export default function Home() {
   return (
-    <main className="mx-auto container flex min-h-screen flex-col items-center justify-between gap-16 py-10 sm:py-24 px-4 sm:px-12">
-      <div className="w-full flex flex-row justify-end">
+    <main className="container mx-auto flex min-h-screen flex-col items-center justify-between gap-16 px-4 py-10 sm:px-12 sm:py-24">
+      <div className="flex w-full flex-row justify-end">
         <Button
           as="a"
           target="_blank"
@@ -18,14 +17,12 @@ export default function Home() {
       </div>
 
       <div className="flex flex-col">
-        <h1 className="typography-heading-3 lg:typography-heading-2 text-center mb-4">
-          Next App Template
-        </h1>
-        <p className="typography-subtitle-1 text-gray-300 self-end">by Szum-Tech</p>
+        <h1 className="mb-4 text-center typography-heading-3 lg:typography-heading-2">Next App Template</h1>
+        <p className="self-end text-gray-300 typography-subtitle-1">by Szum-Tech</p>
       </div>
 
       <div className="w-full">
-        <h2 className="typography-heading-5 lg:typography-heading-4 text-center text-gray-200 py-4 border-b border-b-gray-400 mb-8">
+        <h2 className="mb-8 border-b border-b-gray-400 py-4 text-center text-gray-200 typography-heading-5 lg:typography-heading-4">
           Tech stack
         </h2>
         <ul className="flex flex-wrap justify-center gap-4">
@@ -53,11 +50,12 @@ export default function Home() {
               href: "https://env.t3.gg/"
             }
           ].map((img) => (
-            <li key={img.href} className="bg-gray-400 rounded-sm">
+            <li key={img.href} className="rounded-sm bg-gray-400">
               <a
                 href={img.href}
                 target="_blank"
-                className="relative flex w-36 h-20 justify-center grayscale transition hover:grayscale-0 focus:grayscale-0"
+                className="relative flex h-20 w-36 justify-center grayscale transition hover:grayscale-0 focus:grayscale-0"
+                rel="noreferrer"
               >
                 <Image className="p-2" fill src={img.src} alt={img.alt} priority />
               </a>

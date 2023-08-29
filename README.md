@@ -28,7 +28,7 @@ This template has all the incredibles you need:
 
 - [Next.js Szumplate](#nextjs-szumplate)
   - [📚 Features](#-features)
-  - [Table of Contents](#table-of-contents)
+  - [📖 Table of Contents](#table-of-contents)
   - [🎯 Getting Started](#-getting-started)
   - [🚀 Deployment](#-deployment)
   - [📃 Scripts Overview](#-scripts-overview)

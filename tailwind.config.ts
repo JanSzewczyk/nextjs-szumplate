@@ -4,7 +4,7 @@ const config: Config = {
   content: [
     "./components/**/*.{js,ts,jsx,tsx,mdx}",
     "./app/**/*.{js,ts,jsx,tsx,mdx}",
-    "./node_modules/@szum-tech/design-system/**/*{mjs,js}"
+    "./node_modules/@szum-tech/design-system/dist/*{mjs,js}"
   ],
   theme: {},
   presets: [require("@szum-tech/design-system/theme/main-preset")]

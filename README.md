@@ -6,7 +6,7 @@ This is Next.js Szumplate, an open source template for enterprise projects! It i
 
 ## 📚 Features
 
-This template has all the incredibles you need:
+This template has all the incredible you need:
 
 - 🏎️ **[Next.js](https://nextjs.org/)** - Fast by default, with config optimized for performance
 - 💅 **[Tailwind CSS](https://tailwindcss.com/)** - A utility-first CSS framework
@@ -38,6 +38,7 @@ This template has all the incredibles you need:
   - [🤖 ChatGPT Code Review](#-chatgpt-code-review)
   - [💻 Environment Variables handling](#-environment-variables-handling)
   - [🚀 Github Actions](#-github-actions)
+  - [🔒 Keeping Server-only Code out of the Client Environment](#-keeping-server-only-code-out-of-the-client-environment)
   - [📜 License](#-license)
 
 ## 🎯 Getting Started
@@ -191,6 +192,21 @@ The configuration used in Szumplate comes from the package [`@szum-tech/semantic
 [Let's see configuration](https://github.com/JanSzewczyk/semantic-release-preset/blob/main/without-npm.js) used in this Repository.
 
 > Code of this workflow, you can find in [`publish.yml`](./.github/workflows/publish.yml) file.
+
+## 🔒 Keeping Server-only Code out of the Client Environment
+
+Since JavaScript modules can be shared between both Server and Client Components modules, it's possible for code that was only ever intended to be run on the server to sneak its way into the client.
+To prevent this sort of unintended client usage of server code, we can use the [`server-only`](https://www.npmjs.com/package/server-only) package to give other developers a build-time error if they ever accidentally import one of these modules into a Client Component.
+
+Then import the package into any module that contains `server-only` code:
+
+```tsx
+import "server-only";
+
+// The rest of server only code
+```
+
+The corresponding package `client-only` can be used to mark modules that contain client-only code – for example, code that accesses the `window` object.
 
 ## 📜 License
 

@@ -13,7 +13,7 @@ jobs:
         os: [ubuntu-latest]
     steps:
       - name: Checkout code 📚
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Set up Node 🟢
         uses: actions/setup-node@v3
         with:
@@ -35,7 +35,7 @@ jobs:
         os: [ubuntu-latest]
     steps:
       - name: Checkout code 📚
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Set up Node 🟢
         uses: actions/setup-node@v3
         with:
@@ -55,7 +55,7 @@ jobs:
         os: [ubuntu-latest]
     steps:
       - name: Checkout code 📚
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Set up Node 🟢
         uses: actions/setup-node@v3
         with:
@@ -75,7 +75,7 @@ jobs:
         os: [ubuntu-latest]
     steps:
       - name: Checkout code 📚
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Set up Node 🟢
         uses: actions/setup-node@v3
         with:
@@ -95,7 +95,7 @@ jobs:
         os: [ubuntu-latest]
     steps:
       - name: Checkout code 📚
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Set up Node 🟢
         uses: actions/setup-node@v3
         with:
@@ -116,7 +116,7 @@ jobs:
     timeout-minutes: 60
     steps:
       - name: Checkout code 📚
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Set up Node 🟢
         uses: actions/setup-node@v3
         with:

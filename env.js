@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
 const { createEnv } = require("@t3-oss/env-nextjs");
 const { z } = require("zod");
 

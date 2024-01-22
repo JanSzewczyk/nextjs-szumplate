@@ -60,7 +60,7 @@
     "eslint-plugin-testing-library": "^6.1.0",
     "eslint-plugin-unused-imports": "^3.0.0",
     "eslint-plugin-vitest": "^0.3.8",
-    "happy-dom": "^12.9.1",
+    "happy-dom": "^13.2.1",
     "postcss": "^8.4.31",
     "prettier": "^3.0.3",
     "semantic-release": "^22.0.5",

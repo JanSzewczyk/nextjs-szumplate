@@ -7,6 +7,10 @@ updates:
     directory: "/"
     schedule:
       interval: "weekly"
+    groups:
+      connect-dependencies:
+        patterns:
+          - "*"
 
   # Maintain dependencies for npm
   - package-ecosystem: "npm"
@@ -14,3 +18,7 @@ updates:
     versioning-strategy: "increase"
     schedule:
       interval: "weekly"
+    groups:
+      connect-dependencies:
+        patterns:
+          - "*"

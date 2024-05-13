@@ -1,6 +1,6 @@
-import type { Config } from "tailwindcss";
+import { type Config } from "tailwindcss";
 
-const config: Config = {
+export default {
   content: [
     "./components/**/*.{js,ts,jsx,tsx,mdx}",
     "./app/**/*.{js,ts,jsx,tsx,mdx}",
@@ -8,5 +8,4 @@ const config: Config = {
   ],
   theme: {},
   presets: [require("@szum-tech/design-system/theme/main-preset")]
-};
-export default config;
+} satisfies Config;

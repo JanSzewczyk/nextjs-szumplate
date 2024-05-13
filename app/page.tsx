@@ -1,18 +1,15 @@
 import { Button } from "@szum-tech/design-system";
-import { IconBrandGithub } from "@szum-tech/design-system/icons";
+import { GitHubLogoIcon } from "@szum-tech/design-system/icons";
 import Image from "next/image";
 
 export default function Home() {
   return (
     <main className="container mx-auto flex min-h-screen flex-col items-center justify-between gap-16 px-4 py-10 sm:px-12 sm:py-24">
       <div className="flex w-full flex-row justify-end">
-        <Button
-          as="a"
-          target="_blank"
-          href="https://github.com/JanSzewczyk/nextjs-szumplate"
-          endIcon={<IconBrandGithub />}
-        >
-          See Repo
+        <Button asChild endIcon={<GitHubLogoIcon />}>
+          <a target="_blank" href="https://github.com/JanSzewczyk/nextjs-szumplate" rel="noreferrer">
+            See Repo
+          </a>
         </Button>
       </div>
 

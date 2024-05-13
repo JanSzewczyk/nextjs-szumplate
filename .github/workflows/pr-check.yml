@@ -3,6 +3,9 @@ name: PR Checks ✅
 on:
   pull_request:
 
+permissions:
+  contents: read
+
 jobs:
   build:
     name: Build 🏗️
@@ -136,3 +139,12 @@ jobs:
           name: playwright-report
           path: playwright-report/
           retention-days: 30
+
+  dependency-review:
+    name: Dependency Review
+    runs-on: ${{ matrix.os }}
+    steps:
+      - name: Checkout code 📚
+        uses: actions/checkout@v4
+      - name: Dependency Review
+        uses: actions/dependency-review-action@v4

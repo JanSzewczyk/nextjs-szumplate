@@ -1,7 +1,8 @@
+/** @type {import("eslint").Linter.Config} */
 module.exports = {
   env: {
     browser: true,
-    es2021: true,
+    es2022: true,
     node: true
   },
   extends: [
@@ -14,7 +15,6 @@ module.exports = {
     "plugin:react/recommended",
     "plugin:tailwindcss/recommended",
     "plugin:playwright/recommended",
-    "plugin:vitest/recommended",
     "plugin:testing-library/react"
   ],
   parser: "@typescript-eslint/parser",
@@ -32,7 +32,7 @@ module.exports = {
       }
     }
   },
-  plugins: ["react", "@typescript-eslint", "vitest", "unused-imports", "testing-library", "import"],
+  plugins: ["react", "@typescript-eslint", "unused-imports", "testing-library", "import"],
   rules: {
     "react/react-in-jsx-scope": "off",
 

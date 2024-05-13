@@ -1,16 +1,14 @@
-/* eslint-disable @typescript-eslint/no-var-requires */
-const withBundleAnalyzer = require("@next/bundle-analyzer");
-const withPlugins = require("next-compose-plugins");
+import withBundleAnalyzer from "@next/bundle-analyzer";
+import withPlugins from "next-compose-plugins";
 
-const { env } = require("./env");
+import { env } from "./env.mjs";
 
 /** @type {import('next').NextConfig} */
-const nextConfig = withPlugins([withBundleAnalyzer({ enabled: env.ANALYZE })], {
+const config = withPlugins([withBundleAnalyzer({ enabled: env.ANALYZE })], {
   reactStrictMode: true,
   experimental: {
     instrumentationHook: true,
     typedRoutes: true,
-    serverActions: true,
     serverComponentsExternalPackages: ["@szum-tech/design-system"]
   },
   rewrites() {
@@ -23,4 +21,4 @@ const nextConfig = withPlugins([withBundleAnalyzer({ enabled: env.ANALYZE })], {
   }
 });
 
-module.exports = nextConfig;
+export default config;

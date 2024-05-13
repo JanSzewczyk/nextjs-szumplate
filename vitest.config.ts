@@ -2,6 +2,8 @@ import react from "@vitejs/plugin-react";
 import tsconfigPaths from "vite-tsconfig-paths";
 import { defineConfig } from "vitest/config";
 
+const reporter = process.env.CI ? ["json", "github-actions"] : ["text", "json", "html"];
+
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react(), tsconfigPaths()],
@@ -11,7 +13,7 @@ export default defineConfig({
     setupFiles: ["./test/setup-test-env.ts"],
     coverage: {
       provider: "v8",
-      reporter: ["text", "json", "html"],
+      reporter,
       all: true
     }
   }

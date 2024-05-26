@@ -69,25 +69,25 @@ jobs:
       - name: Eslint Check ⬣
         run: npm run lint:ci
 
-  #  type-check:
-  #    name: TypeScript 🛠️
-  #    runs-on: ${{ matrix.os }}
-  #    strategy:
-  #      matrix:
-  #        node-version: [20.x]
-  #        os: [ubuntu-latest]
-  #    steps:
-  #      - name: Checkout code 📚
-  #        uses: actions/checkout@v4
-  #      - name: Set up Node 🟢
-  #        uses: actions/setup-node@v4
-  #        with:
-  #          node-version: ${{ matrix.node-version }}
-  #          cache: "npm"
-  #      - name: Install dependencies ⚙️
-  #        run: npm ci
-  #      - name: TypeScript Check 🛠️
-  #        run: npm run type-check
+  type-check:
+    name: TypeScript 🛠️
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        node-version: [20.x]
+        os: [ubuntu-latest]
+    steps:
+      - name: Checkout code 📚
+        uses: actions/checkout@v4
+      - name: Set up Node 🟢
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: "npm"
+      - name: Install dependencies ⚙️
+        run: npm ci
+      - name: TypeScript Check 🛠️
+        run: npm run type-check
 
   test:
     name: Test 🧪

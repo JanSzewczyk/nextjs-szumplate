@@ -1,1 +1,3 @@
-module.exports = require("@szum-tech/prettier-config");
+import config from "@szum-tech/prettier-config";
+
+export default config;

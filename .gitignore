@@ -45,3 +45,5 @@ next-env.d.ts
 
 # VS Code
 /.vscode
+
+*storybook.log

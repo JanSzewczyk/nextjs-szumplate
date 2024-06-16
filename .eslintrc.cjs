@@ -15,7 +15,8 @@ module.exports = {
     "plugin:react/recommended",
     "plugin:tailwindcss/recommended",
     "plugin:playwright/recommended",
-    "plugin:testing-library/react"
+    "plugin:testing-library/react",
+    "plugin:storybook/recommended"
   ],
   parser: "@typescript-eslint/parser",
   parserOptions: {

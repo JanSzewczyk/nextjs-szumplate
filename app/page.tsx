@@ -15,7 +15,7 @@ export default function Home() {
 
       <div className="flex flex-col">
         <h1 className="mb-4 text-center typography-heading-3 lg:typography-heading-2">Next App Template</h1>
-        <p className="self-end text-gray-300 typography-subtitle-1">by Szum-Tech</p>
+        <p className="self-end text-gray-200 typography-subtitle-1">by Szum-Tech</p>
       </div>
 
       <div className="w-full">

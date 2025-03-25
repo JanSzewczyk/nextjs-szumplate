@@ -1,23 +1,39 @@
+import { defineConfig } from "vite";
+import tsConfigPaths from "vite-tsconfig-paths";
+
 import react from "@vitejs/plugin-react";
-import tsconfigPaths from "vite-tsconfig-paths";
-import { defineConfig } from "vitest/config";
 
-import { env } from "./env";
+const reporters = process.env.CI ? ["dot", "github-actions"] : ["default"];
 
-const reporters = env.CI ? ["json", "github-actions"] : ["text", "json", "html"];
-
-// https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [react(), tsconfigPaths()],
+  plugins: [react(), tsConfigPaths()],
   test: {
     globals: true,
-    environment: "happy-dom",
-    setupFiles: ["./test/setup-test-env.ts"],
-    reporters: reporters,
+    reporters,
     coverage: {
-      provider: "v8",
-      reporter: ["text", "json", "html"],
-      all: true
+      include: ["**"],
+      exclude: [
+        "{coverage,storybook-static}/**",
+        "dist/**",
+        "**\/[.]**",
+        "packages/*\/test?(s)/**",
+        "**\/*.d.ts",
+        "**\/virtual:*",
+        "**\/__x00__*",
+        "**\/\x00*",
+        "cypress/**",
+        "**\/test?(s)/**",
+        "test?(-*).?(c|m)[jt]s?(x)",
+        "**\/*{.,-}{test,spec,e2e}?(-d).?(c|m)[jt]s?(x)",
+        "**\/__tests__/**",
+        "**\/{karma,rollup,webpack,vite,jest,ava,babel,nyc,cypress,tsup,build,prettier,release,postcss,eslint,playwright,next}.config.*",
+        "**\/vitest.{workspace,projects,config}.[jt]s?(on)",
+        "**\/.{eslint,mocha,prettier}rc.{?(c|m)js,yml}",
+        "**\/*.{types,styles,stories}.?(c|m)[jt]s?(x)"
+      ],
+      reporter: ["text", "html", "json-summary", "json"],
+      reportOnFailure: true,
+      provider: "v8"
     }
   }
 });

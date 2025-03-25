@@ -1,3 +1,5 @@
+import tsConfigPaths from "vite-tsconfig-paths";
+
 import { type StorybookConfig } from "@storybook/experimental-nextjs-vite";
 
 export default {
@@ -17,5 +19,16 @@ export default {
     reactDocgen: "react-docgen-typescript",
     check: true
   },
-  staticDirs: ["../public"]
+  staticDirs: ["../public"],
+  viteFinal: async (config) => {
+    const { mergeConfig } = await import("vite");
+
+    return mergeConfig(config, {
+      optimizeDeps: {
+        include: ["sb-original/default-loader", "sb-original/image-context"]
+      },
+      plugins: [tsConfigPaths()],
+      assetsInclude: ["**/*.md"]
+    });
+  }
 } satisfies StorybookConfig;

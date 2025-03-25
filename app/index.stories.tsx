@@ -1,5 +1,5 @@
 import { type Meta, type StoryObj } from "@storybook/react";
-import { expect } from "@storybook/test";
+import { expect, within } from "@storybook/test";
 import Page from "~/app/page";
 
 const meta = {
@@ -19,8 +19,9 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
-  name: "Home Page 2 3234234",
-  async play({ canvas }) {
+  name: "Home Page",
+  async play({ canvasElement }) {
+    const canvas = await within(canvasElement);
     await expect(canvas.getByRole("heading", { name: /Next App Template/ })).toBeInTheDocument();
     await expect(canvas.getByText("by Szum-Tech")).toBeInTheDocument();
     await expect(canvas.getByRole("button", { name: /See Repo/ })).toBeInTheDocument();

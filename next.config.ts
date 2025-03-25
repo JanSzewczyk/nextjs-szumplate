@@ -6,8 +6,8 @@ import withBundleAnalyzer from "@next/bundle-analyzer";
 import { env } from "./env";
 
 const config: NextConfig = {
-  output: "standalone",
   reactStrictMode: true,
+  serverExternalPackages: ["@szum-tech/design-system"],
   async rewrites() {
     return [
       { source: "/healthz", destination: "/api/health" },

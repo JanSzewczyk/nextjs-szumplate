@@ -1,5 +1,5 @@
-import { Button } from "@szum-tech/design-system";
-import { GitHubLogoIcon } from "@szum-tech/design-system/icons";
+import { GitHubLogoIcon } from "@radix-ui/react-icons";
+import { Separator, Button } from "@szum-tech/design-system";
 import Image from "next/image";
 
 export default function Home() {
@@ -14,14 +14,13 @@ export default function Home() {
       </div>
 
       <div className="flex flex-col">
-        <h1 className="mb-4 text-center typography-heading-3 lg:typography-heading-2">Next App Template</h1>
-        <p className="self-end text-gray-200 typography-subtitle-1">by Szum-Tech</p>
+        <h1 className="text-heading-3 lg:text-heading-2 mb-4 text-center">Next App Template</h1>
+        <p className="text-subtitle-1 self-end text-gray-200">by Szum-Tech</p>
       </div>
 
-      <div className="w-full">
-        <h2 className="mb-8 border-b border-b-gray-400 py-4 text-center text-gray-200 typography-heading-5 lg:typography-heading-4">
-          Tech stack
-        </h2>
+      <div className="w-full space-y-8">
+        <h2 className="text-heading-5 lg:text-heading-4 text-center text-gray-200">Tech stack</h2>
+        <Separator />
         <ul className="flex flex-wrap justify-center gap-4">
           {[
             { alt: "Next", src: "/next.svg", href: "https://nextjs.org" },
@@ -54,7 +53,7 @@ export default function Home() {
                 className="relative flex h-20 w-36 justify-center grayscale transition hover:grayscale-0 focus:grayscale-0"
                 rel="noreferrer"
               >
-                <Image className="p-2" fill src={img.src} alt={img.alt} priority />
+                <Image className="p-2" width={200} height={200} src={img.src} alt={img.alt} priority />
               </a>
             </li>
           ))}

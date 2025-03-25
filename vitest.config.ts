@@ -3,7 +3,9 @@ import tsConfigPaths from "vite-tsconfig-paths";
 
 import react from "@vitejs/plugin-react";
 
-const reporters = process.env.CI ? ["dot", "github-actions"] : ["default"];
+import { env } from "./env";
+
+const reporters = env.CI ? ["dot", "github-actions"] : ["default"];
 
 export default defineConfig({
   plugins: [react(), tsConfigPaths()],

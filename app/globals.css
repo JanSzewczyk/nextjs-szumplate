@@ -1,5 +1,5 @@
-@import "@szum-tech/design-system/theme/global.css";
+@import "tailwindcss";
 
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "@szum-tech/design-system/tailwind/global.css";
+
+@source "../node_modules/@szum-tech/design-system";

@@ -4,21 +4,21 @@ on:
   push:
     branches: [main]
 
+env:
+  NODE_VERSION: 22.x
+
 jobs:
   publish:
     name: Publish 📦🚀
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        node-version: [18.x]
-        os: [ubuntu-latest]
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout code 📚
         uses: actions/checkout@v4
       - name: Set up Node 🟢
         uses: actions/setup-node@v4
         with:
-          node-version: ${{ matrix.node-version }}
+          node-version: ${{ env.NODE_VERSION }}
+          cache: "npm"
       - name: Install packages ⚙️
         run: npm ci
 #        HERE 👇👇👇

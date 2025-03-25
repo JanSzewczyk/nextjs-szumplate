@@ -51,5 +51,5 @@ test("open repo in new tab", async ({ page, context }) => {
   await newPage.waitForLoadState();
 
   expect(await newPage.title()).toMatch(/GitHub - JanSzewczyk\/nextjs-szumplate/);
-  expect(newPage.url()).toMatch(/https:\/\/github.com/);
+  expect(newPage.url()).toMatch(/^https:\/\/github.com\//);
 });

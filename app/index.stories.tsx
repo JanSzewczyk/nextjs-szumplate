@@ -1,6 +1,7 @@
 import { type Meta, type StoryObj } from "@storybook/react";
 import { expect, within } from "@storybook/test";
 import Page from "~/app/page";
+import RootLayout from "~/app/layout";
 
 const meta = {
   title: "App/Home Page",
@@ -12,7 +13,14 @@ const meta = {
         pathname: "/"
       }
     }
-  }
+  },
+  decorators: [
+    (Story) => (
+      <RootLayout>
+        <Story />
+      </RootLayout>
+    )
+  ]
 } satisfies Meta<typeof Page>;
 export default meta;
 

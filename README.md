@@ -1,6 +1,6 @@
 # Next.js Szumplate
 
-#### Hello there !!!
+Hello there !!!
 
 This is Next.js Szumplate, an open source template for enterprise projects! It is packed with features that will help
 you create an efficient, maintainable and enjoyable application. This template will save you a lot of time, so sit back,
@@ -21,6 +21,8 @@ This template has all the incredible you need:
 - 🧪 **[Vitest](https://vitest.dev/)** and **[React Testing Library](https://testing-library.com/react)** - For
   rock-solid and highly speed unit and integration tests
 - 🎭 **[Playwright](https://playwright.dev/)** - Write end-to-end tests like a pro
+- **[Storybook](https://storybook.js.org/)** - Create, test, and showcase your components
+- **Smoke Testing** and **Acceptance Tests** - For confidence in your deployments
 - 🎯 **[Absolute imports](https://nextjs.org/docs/advanced-features/module-path-aliases)** - No more spaghetti imports
 - ⚕️
   **[Health checks](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/)** -
@@ -34,22 +36,34 @@ This template has all the incredible you need:
   code reviews!**
 - 💯 **Perfect Lighthouse score** - Because performance matters
 
-## Table of Contents
+## 📖 Table of Contents
+
+<!-- TOC -->
 
 - [Next.js Szumplate](#nextjs-szumplate)
   - [📚 Features](#-features)
-  - [📖 Table of Contents](#table-of-contents)
+  - [📖 Table of Contents](#-table-of-contents)
   - [🎯 Getting Started](#-getting-started)
+    - [1. Fork & clone repository:](#1-fork--clone-repository)
+    - [2. Install the dependencies:](#2-install-the-dependencies)
+    - [3. Prepare project:](#3-prepare-project)
+    - [4. Run the development server:](#4-run-the-development-server)
+    - [5. Open http://localhost:3000 with your browser to see the result.](#5-open-httplocalhost3000-with-your-browser-to-see-the-result)
   - [🚀 Deployment](#-deployment)
   - [📃 Scripts Overview](#-scripts-overview)
   - [🧪 Testing](#-testing)
     - [Running Tests](#running-tests)
+    - [AcceptanceTests](#acceptancetests)
   - [🎨 Styling and Design System](#-styling-and-design-system)
   - [🤖 ChatGPT Code Review](#-chatgpt-code-review)
   - [💻 Environment Variables handling](#-environment-variables-handling)
   - [🚀 Github Actions](#-github-actions)
+    - [Code Review 🤖Flow](#code-review-flow)
+    - [PR Checks ✅ Flow](#pr-checks--flow)
+    - [Publish 📦🚀](#publish-)
   - [🔒 Keeping Server-only Code out of the Client Environment](#-keeping-server-only-code-out-of-the-client-environment)
   - [📜 License](#-license)
+  <!-- TOC -->
 
 ## 🎯 Getting Started
 
@@ -111,8 +125,15 @@ The following scripts are available in the [`package.json`](./package.json):
 - `prettier:check`: Checks the code for proper formatting
 - `prettier:fix`: Automatically fixes formatting issues
 - `start`: Starts the production server
+- `storybook:build`: Builds Storybook
+- `storybook:dev`: Starts Storybook in development mode
+- `storybook:serve`: Serves the built Storybook
 - `test`: Runs unit and integration tests
+- `test:ci`: Runs unit and integration tests for CI
 - `test:coverage`: Runs and returns tests coverage report of unit and integration tests
+- `test:storybook`: Runs Storybook tests
+- `test:ui`: Runs unit and integration tests with UI
+- `test:unit`: Runs unit tests
 - `test:watch`: Runs unit and integration tests in watch mode
 - `type-check`: Runs types check
 
@@ -127,6 +148,12 @@ This szumplate comes with various testing setups to ensure your application's re
 - **End-to-end tests (UI mode)**: Run Playwright tests with UI using `npm run e2e:ui`
 
 <img width="1665" alt="image" src="https://github.com/JanSzewczyk/nextjs-szumplate/assets/29024606/9c65cdd2-4e04-4687-81d6-8e7a32f12518">
+
+### AcceptanceTests
+
+To write acceptance tests, we leverage Storybook's
+[play](https://storybook.js.org/docs/writing-stories/play-function#writing-stories-with-the-play-function) function.
+This allows you to interact with your components and test various user flows within Storybook.
 
 ## 🎨 Styling and Design System
 

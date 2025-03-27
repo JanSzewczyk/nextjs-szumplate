@@ -44,6 +44,11 @@ export default function Home() {
               alt: "T3 ENV",
               src: "/t3.svg",
               href: "https://env.t3.gg/"
+            },
+            {
+              alt: "Storybook",
+              src: "/storybook.svg",
+              href: "https://storybook.js.org/"
             }
           ].map((img) => (
             <li key={img.href} className="rounded-sm bg-gray-400">

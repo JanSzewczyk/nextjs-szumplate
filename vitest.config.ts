@@ -31,7 +31,8 @@ export default defineConfig({
         "**\/{karma,rollup,webpack,vite,jest,ava,babel,nyc,cypress,tsup,build,prettier,release,postcss,eslint,playwright,next}.config.*",
         "**\/vitest.{workspace,projects,config}.[jt]s?(on)",
         "**\/.{eslint,mocha,prettier}rc.{?(c|m)js,yml}",
-        "**\/*.{types,styles,stories}.?(c|m)[jt]s?(x)"
+        "**\/*.{types,styles,stories}.?(c|m)[jt]s?(x)",
+        "env.ts"
       ],
       reporter: ["text", "html", "json-summary", "json"],
       reportOnFailure: true,

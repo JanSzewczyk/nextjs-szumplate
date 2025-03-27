@@ -1,7 +1,7 @@
 import { type Meta, type StoryObj } from "@storybook/react";
 import { expect, within } from "@storybook/test";
-import Page from "~/app/page";
 import RootLayout from "~/app/layout";
+import Page from "~/app/page";
 
 const meta = {
   title: "App/Home Page",

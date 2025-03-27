@@ -28,7 +28,8 @@ test("has content", async ({ page }) => {
     "Prettier",
     "ESLint",
     "Semantic Release",
-    "T3 ENV"
+    "T3 ENV",
+    "Storybook"
   ];
   await expect(page.getByRole("heading", { level: 2, name: /Tech stack/ })).toBeVisible();
   const techs = page.getByRole("listitem");

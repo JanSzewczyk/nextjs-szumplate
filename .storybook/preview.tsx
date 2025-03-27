@@ -17,23 +17,19 @@ export default {
       // Override the default light theme
       light: lightTheme
     },
-
     backgrounds: { disable: true },
-
     controls: {
       matchers: {
         color: /(background|color)$/i,
         date: /Date$/
       }
     },
-
     docs: {
       container: DocsContainer,
       controls: {
         sort: "requiredFirst"
       }
     },
-
     a11y: {
       // 'todo' - show a11y violations in the test UI only
       // 'error' - fail CI on a11y violations

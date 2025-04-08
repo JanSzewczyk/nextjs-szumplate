@@ -105,6 +105,8 @@ __tests__/runner/*
 
 # Ignore testing results file
 jest-results.json
+/test-results
+/playwright-report
 
 # Develpment
 .vscode/

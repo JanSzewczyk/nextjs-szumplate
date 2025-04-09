@@ -12,16 +12,18 @@ export const env = createEnv({
     CI: z
       .enum(["true", "false", "0", "1"])
       .optional()
-      .transform((value) => value === "true" || value === "1")
+      .transform((value) => value === "true" || value === "1"),
+    VERCEL_URL: z.string().url().optional()
   },
   client: {
     // Client env variables, eg:
     // NEXT_PUBLIC_CLIENT_VAR: z.string(),
   },
   runtimeEnv: {
-    NODE_ENV: process.env.NODE_ENV,
     ANALYZE: process.env.ANALYZE,
-    CI: process.env.CI
+    CI: process.env.CI,
+    NODE_ENV: process.env.NODE_ENV,
+    VERCEL_URL: process.env.VERCEL_URL
   },
   /**
    * Run `build` or `dev` with `SKIP_ENV_VALIDATION` to skip env validation. This is especially

@@ -13,7 +13,7 @@ export const env = createEnv({
       .enum(["true", "false", "0", "1"])
       .optional()
       .transform((value) => value === "true" || value === "1"),
-    VERCEL_URL: z.string().url().optional()
+    VERCEL_URL: z.string().optional()
   },
   client: {
     // Client env variables, eg:

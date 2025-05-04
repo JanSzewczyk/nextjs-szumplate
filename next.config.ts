@@ -7,7 +7,9 @@ import { env } from "./env";
 
 const config: NextConfig = {
   reactStrictMode: true,
-  serverExternalPackages: ["@szum-tech/design-system"],
+  turbopack: {
+    resolveExtensions: [".mdx", ".tsx", ".ts", ".jsx", ".js", ".mjs", ".json"]
+  },
   async rewrites() {
     return [
       { source: "/healthz", destination: "/api/health" },

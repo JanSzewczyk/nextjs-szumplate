@@ -1,5 +1,7 @@
+"use client";
+
 import { GitHubLogoIcon } from "@radix-ui/react-icons";
-import { Separator, Button } from "@szum-tech/design-system";
+import { Button, Separator } from "@szum-tech/design-system";
 import Image from "next/image";
 
 export default function Home() {

@@ -1,6 +1,7 @@
 import { defineConfig } from "vite";
 import tsConfigPaths from "vite-tsconfig-paths";
 
+import { storybookTest } from "@storybook/addon-vitest/vitest-plugin";
 import react from "@vitejs/plugin-react";
 
 import { env } from "./env";
@@ -15,7 +16,7 @@ export default defineConfig({
     coverage: {
       include: ["**"],
       exclude: [
-        "{coverage,storybook-static}/**",
+        "{node_modules,coverage,storybook-static}/**",
         "dist/**",
         "**\/[.]**",
         "packages/*\/test?(s)/**",
@@ -32,11 +33,34 @@ export default defineConfig({
         "**\/vitest.{workspace,projects,config}.[jt]s?(on)",
         "**\/.{eslint,mocha,prettier}rc.{?(c|m)js,yml}",
         "**\/*.{types,styles,stories}.?(c|m)[jt]s?(x)",
-        "env.ts"
+        "env.ts",
+        "**\/{sitemap,robots,icon,manifest}.ts?(x)"
       ],
       reporter: ["text", "html", "json-summary", "json"],
       reportOnFailure: true,
       provider: "v8"
-    }
+    },
+    projects: [
+      {
+        test: {
+          include: ["**\/*.{test,spec}.ts"],
+          name: "unit",
+          environment: "node",
+          setupFiles: ["tests/unit/setup.ts"]
+        }
+      },
+      {
+        plugins: [storybookTest()],
+        test: {
+          name: "storybook",
+          browser: {
+            enabled: true,
+            provider: "playwright",
+            instances: [{ browser: "chromium", headless: true }]
+          },
+          setupFiles: ["tests/integration/setup.ts"]
+        }
+      }
+    ]
   }
 });

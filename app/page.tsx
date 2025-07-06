@@ -1,5 +1,3 @@
-"use client";
-
 import { GitHubLogoIcon } from "@radix-ui/react-icons";
 import { Button, Separator } from "@szum-tech/design-system";
 import Image from "next/image";
@@ -53,7 +51,7 @@ export default function Home() {
               href: "https://storybook.js.org/"
             }
           ].map((img) => (
-            <li key={img.href} className="rounded-sm bg-gray-400">
+            <li key={img.href} className="rounded-sm bg-gray-800">
               <a
                 href={img.href}
                 target="_blank"

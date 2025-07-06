@@ -1,23 +1,11 @@
 import { type Preview } from "@storybook/react";
 
-import { DocsContainer } from "./components/docs-container";
 import darkTheme from "./theme/dark";
-import lightTheme from "./theme/light";
 
 import "~/app/globals.css";
 
 export default {
   parameters: {
-    darkMode: {
-      current: "light",
-      classTarget: "html",
-      stylePreview: true,
-      // Override the default dark theme
-      dark: darkTheme,
-      // Override the default light theme
-      light: lightTheme
-    },
-    backgrounds: { disable: true },
     controls: {
       matchers: {
         color: /(background|color)$/i,
@@ -25,7 +13,7 @@ export default {
       }
     },
     docs: {
-      container: DocsContainer,
+      theme: darkTheme,
       controls: {
         sort: "requiredFirst"
       }
@@ -37,5 +25,33 @@ export default {
       test: "todo"
     }
   },
-  decorators: []
+  globalTypes: {
+    theme: {
+      name: "Theme",
+      description: "Global theme for components",
+      defaultValue: "dark",
+      toolbar: {
+        icon: "circlehollow",
+        items: [
+          { value: "light", icon: "circlehollow", title: "Light" },
+          { value: "dark", icon: "circle", title: "Dark" }
+        ],
+        showName: true,
+        dynamicTitle: true
+      }
+    }
+  },
+  decorators: [
+    (Story, context) => {
+      const theme = context.globals.theme;
+      // Apply theme class to html
+      document.documentElement.setAttribute("class", theme);
+      // Also wrap the story with theme context if needed
+      return (
+        <div className={theme}>
+          <Story />
+        </div>
+      );
+    }
+  ],
 } satisfies Preview;

@@ -15,11 +15,11 @@ const tags: PresetValue<TagsOptions | undefined> = {
 export default {
   stories: ["../**/*.mdx", "../**/*.stories.@(js|jsx|ts|tsx)"],
   addons: [
-    "@storybook/addon-links",
     "@storybook/addon-a11y",
     "@chromatic-com/storybook",
     "@storybook/addon-vitest",
-    "@storybook/addon-docs"
+    "@storybook/addon-docs",
+    "storybook-addon-tag-badges"
   ],
   framework: "@storybook/nextjs-vite",
   typescript: {
@@ -32,8 +32,7 @@ export default {
     const { mergeConfig } = await import("vite");
 
     return mergeConfig(config, {
-      plugins: [tsConfigPaths()],
-      assetsInclude: ["**/*.md"]
+      plugins: [tsConfigPaths()]
     });
   }
 } satisfies StorybookConfig;

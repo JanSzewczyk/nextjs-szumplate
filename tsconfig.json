@@ -24,7 +24,7 @@
     "jsx": "preserve",
     "plugins": [{ "name": "next" }],
     "incremental": true,
-    "types": ["vitest/globals", "@vitest/browser/matchers"],
+    "types": ["vitest/globals", "@vitest/browser/providers/playwright"],
 
     /* Path Aliases */
     "baseUrl": ".",

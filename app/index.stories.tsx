@@ -9,7 +9,6 @@ const meta = {
   parameters: {
     nextjs: {
       router: {
-        appDirectory: true,
         pathname: "/"
       }
     }
@@ -28,6 +27,7 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
   name: "Home Page",
+  tags: ["test-only"],
   async play({ canvasElement }) {
     const canvas = await within(canvasElement);
     await expect(canvas.getByRole("heading", { name: /Next App Template/ })).toBeInTheDocument();

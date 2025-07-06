@@ -1,21 +1,17 @@
 import tsConfigPaths from "vite-tsconfig-paths";
 
-import { type StorybookConfig } from "@storybook/experimental-nextjs-vite";
+import { type StorybookConfig } from "@storybook/nextjs-vite";
 
 export default {
   stories: ["../**/*.mdx", "../**/*.stories.@(js|jsx|ts|tsx)"],
   addons: [
     "@storybook/addon-links",
-    "@storybook/addon-essentials",
     "@storybook/addon-a11y",
-    "storybook-dark-mode",
     "@chromatic-com/storybook",
-    "@storybook/experimental-addon-test"
+    "@storybook/addon-vitest",
+    "@storybook/addon-docs"
   ],
-  framework: {
-    name: "@storybook/experimental-nextjs-vite",
-    options: {}
-  },
+  framework:  "@storybook/nextjs-vite",
   typescript: {
     reactDocgen: "react-docgen-typescript",
     check: true

@@ -53,5 +53,5 @@ export default {
         </div>
       );
     }
-  ],
+  ]
 } satisfies Preview;

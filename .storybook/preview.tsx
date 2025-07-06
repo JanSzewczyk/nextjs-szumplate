@@ -2,10 +2,13 @@ import { type Preview } from "@storybook/react";
 
 import darkTheme from "./theme/dark";
 
-import "~/app/globals.css";
+import "../app/globals.css";
 
 export default {
   parameters: {
+    nextjs: {
+      appDirectory: true
+    },
     controls: {
       matchers: {
         color: /(background|color)$/i,
@@ -47,11 +50,7 @@ export default {
       // Apply theme class to html
       document.documentElement.setAttribute("class", theme);
       // Also wrap the story with theme context if needed
-      return (
-        <div className={theme}>
-          <Story />
-        </div>
-      );
+      return <Story />;
     }
   ]
 } satisfies Preview;

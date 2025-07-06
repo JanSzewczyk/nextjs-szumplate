@@ -13,11 +13,18 @@ export default defineConfig({
   test: {
     globals: true,
     reporters,
+    exclude: [
+      "**\/node_modules/**",
+      "**\/dist/**",
+      "**\/cypress/**",
+      "**\/.{idea,git,cache,output,temp}/**",
+      "**\/{karma,rollup,webpack,vite,vitest,jest,ava,babel,nyc,cypress,tsup,build,eslint,prettier}.config.*"
+    ],
     coverage: {
       include: ["**"],
       exclude: [
-        "{node_modules,coverage,storybook-static}/**",
-        "dist/**",
+        "**\/{node_modules,coverage,storybook-static}/**",
+        "**\/dist/**",
         "**\/[.]**",
         "packages/*\/test?(s)/**",
         "**\/*.d.ts",
@@ -34,7 +41,7 @@ export default defineConfig({
         "**\/.{eslint,mocha,prettier}rc.{?(c|m)js,yml}",
         "**\/*.{types,styles,stories}.?(c|m)[jt]s?(x)",
         "env.ts",
-        "**\/{sitemap,robots,icon,manifest}.ts?(x)"
+        "**\/app\/{sitemap,robots,icon,manifest}.ts?(x)"
       ],
       reporter: ["text", "html", "json-summary", "json"],
       reportOnFailure: true,
@@ -42,14 +49,16 @@ export default defineConfig({
     },
     projects: [
       {
+        extends: "vitest.config.ts",
         test: {
           include: ["**\/*.{test,spec}.ts"],
           name: "unit",
           environment: "node",
-          setupFiles: ["tests/unit/setup.ts"]
+          setupFiles: ["tests/unit/vitest.setup.ts"]
         }
       },
       {
+        extends: "vitest.config.ts",
         plugins: [storybookTest()],
         test: {
           name: "storybook",
@@ -58,7 +67,7 @@ export default defineConfig({
             provider: "playwright",
             instances: [{ browser: "chromium", headless: true }]
           },
-          setupFiles: ["tests/integration/setup.ts"]
+          setupFiles: ["tests/integration/vitest.setup.ts"]
         }
       }
     ]

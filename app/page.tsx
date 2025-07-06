@@ -15,11 +15,11 @@ export default function Home() {
 
       <div className="flex flex-col">
         <h1 className="text-heading-3 lg:text-heading-2 mb-4 text-center">Next App Template</h1>
-        <p className="text-subtitle-1 self-end text-gray-200">by Szum-Tech</p>
+        <p className="text-subtitle-1 self-end text-gray-600 underline">by Szum-Tech</p>
       </div>
 
       <div className="w-full space-y-8">
-        <h2 className="text-heading-5 lg:text-heading-4 text-center text-gray-200">Tech stack</h2>
+        <h2 className="text-heading-5 lg:text-heading-4 text-center text-gray-400">Tech stack</h2>
         <Separator />
         <ul className="flex flex-wrap justify-center gap-4">
           {[

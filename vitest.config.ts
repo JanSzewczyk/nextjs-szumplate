@@ -4,7 +4,7 @@ import tsConfigPaths from "vite-tsconfig-paths";
 import { storybookTest } from "@storybook/addon-vitest/vitest-plugin";
 import react from "@vitejs/plugin-react";
 
-import { env } from "./env";
+import { env } from "./data/env/server";
 
 const reporters = env.CI ? ["dot", "github-actions"] : ["default"];
 

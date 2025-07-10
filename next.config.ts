@@ -3,7 +3,7 @@ import withPlugins from "next-compose-plugins";
 
 import withBundleAnalyzer from "@next/bundle-analyzer";
 
-import { env } from "./env";
+import { env } from "./data/env/server";
 
 const config: NextConfig = {
   reactStrictMode: true,

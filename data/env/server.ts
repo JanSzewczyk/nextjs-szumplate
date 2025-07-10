@@ -1,6 +1,6 @@
-import { z } from "zod";
+import { z } from "zod"
 
-import { createEnv } from "@t3-oss/env-nextjs";
+import { createEnv } from "@t3-oss/env-nextjs"
 
 export const env = createEnv({
   server: {
@@ -15,16 +15,7 @@ export const env = createEnv({
       .transform((value) => value === "true" || value === "1"),
     VERCEL_URL: z.string().optional()
   },
-  client: {
-    // Client env variables, eg:
-    // NEXT_PUBLIC_CLIENT_VAR: z.string(),
-  },
-  runtimeEnv: {
-    ANALYZE: process.env.ANALYZE,
-    CI: process.env.CI,
-    NODE_ENV: process.env.NODE_ENV,
-    VERCEL_URL: process.env.VERCEL_URL
-  },
+  experimental__runtimeEnv: process.env,
   /**
    * Run `build` or `dev` with `SKIP_ENV_VALIDATION` to skip env validation. This is especially
    * useful for Docker builds.
@@ -35,4 +26,4 @@ export const env = createEnv({
    * `SOME_VAR=''` will throw an error.
    */
   emptyStringAsUndefined: true
-});
+})

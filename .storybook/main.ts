@@ -19,6 +19,7 @@ export default {
     "@chromatic-com/storybook",
     "@storybook/addon-vitest",
     "@storybook/addon-docs",
+    "@storybook-community/storybook-dark-mode",
     "storybook-addon-tag-badges"
   ],
   framework: "@storybook/nextjs-vite",

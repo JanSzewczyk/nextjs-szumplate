@@ -1,11 +1,20 @@
 import { type Preview } from "@storybook/react";
+import { DarkModeDocsContainer } from "@storybook-community/storybook-dark-mode";
 
-import darkTheme from "./theme/dark";
+import dark from "./theme/dark";
+import light from "./theme/light";
 
 import "../app/globals.css";
 
 export default {
   parameters: {
+    darkMode: {
+      dark,
+      light,
+      current: "dark",
+      classTarget: "html",
+      stylePreview: true
+    },
     nextjs: {
       appDirectory: true
     },
@@ -16,10 +25,10 @@ export default {
       }
     },
     docs: {
-      theme: darkTheme,
       controls: {
         sort: "requiredFirst"
-      }
+      },
+      container: DarkModeDocsContainer
     },
     a11y: {
       // 'todo' - show a11y violations in the test UI only
@@ -28,29 +37,5 @@ export default {
       test: "todo"
     }
   },
-  globalTypes: {
-    theme: {
-      name: "Theme",
-      description: "Global theme for components",
-      defaultValue: "dark",
-      toolbar: {
-        icon: "circlehollow",
-        items: [
-          { value: "light", icon: "circlehollow", title: "Light" },
-          { value: "dark", icon: "circle", title: "Dark" }
-        ],
-        showName: true,
-        dynamicTitle: true
-      }
-    }
-  },
-  decorators: [
-    (Story, context) => {
-      const theme = context.globals.theme;
-      // Apply theme class to html
-      document.documentElement.setAttribute("class", theme);
-      // Also wrap the story with theme context if needed
-      return <Story />;
-    }
-  ]
+  decorators: []
 } satisfies Preview;

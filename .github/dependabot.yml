@@ -22,6 +22,6 @@ updates:
       time: "21:37"
       timezone: "Europe/Warsaw"
     groups:
-      nextjs-szumplate-dependencies:
+      project-dependencies:
         patterns:
           - "*"

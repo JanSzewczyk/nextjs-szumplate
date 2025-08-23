@@ -1,10 +1,26 @@
+import * as React from "react";
+
+import { DocsContainer, type DocsContainerProps } from "@storybook/addon-docs/blocks";
 import { type Preview } from "@storybook/react";
-import { DarkModeDocsContainer } from "@storybook-community/storybook-dark-mode";
+import { DARK_MODE_EVENT_NAME } from "@storybook-community/storybook-dark-mode";
 
 import dark from "./theme/dark";
 import light from "./theme/light";
 
 import "../app/globals.css";
+
+export function DarkModeDocsContainer(
+  props: DocsContainerProps
+) {
+  const [isDark, setDark] = React.useState(true)
+
+  React.useEffect(() => {
+    props.context.channel.on(DARK_MODE_EVENT_NAME, setDark)
+
+    return () => props.context.channel.removeListener(DARK_MODE_EVENT_NAME, setDark)
+  }, [props.context.channel])
+  return <DocsContainer {...props} theme={isDark ? dark : light} />
+}
 
 export default {
   parameters: {

@@ -9,17 +9,15 @@ import light from "./theme/light";
 
 import "../app/globals.css";
 
-export function DarkModeDocsContainer(
-  props: DocsContainerProps
-) {
-  const [isDark, setDark] = React.useState(true)
+export function DarkModeDocsContainer(props: DocsContainerProps) {
+  const [isDark, setDark] = React.useState(true);
 
   React.useEffect(() => {
-    props.context.channel.on(DARK_MODE_EVENT_NAME, setDark)
+    props.context.channel.on(DARK_MODE_EVENT_NAME, setDark);
 
-    return () => props.context.channel.removeListener(DARK_MODE_EVENT_NAME, setDark)
-  }, [props.context.channel])
-  return <DocsContainer {...props} theme={isDark ? dark : light} />
+    return () => props.context.channel.removeListener(DARK_MODE_EVENT_NAME, setDark);
+  }, [props.context.channel]);
+  return <DocsContainer {...props} theme={isDark ? dark : light} />;
 }
 
 export default {

@@ -14,7 +14,7 @@ jobs:
       - name: Checkout code 📚
         uses: actions/checkout@v5
       - name: Set up Node 🟢
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v5
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: "npm"
@@ -32,7 +32,7 @@ jobs:
       - name: Checkout code 📚
         uses: actions/checkout@v5
       - name: Set up Node 🟢
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v5
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: "npm"
@@ -48,7 +48,7 @@ jobs:
       - name: Checkout code 📚
         uses: actions/checkout@v5
       - name: Set up Node 🟢
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v5
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: "npm"
@@ -64,7 +64,7 @@ jobs:
       - name: Checkout code 📚
         uses: actions/checkout@v5
       - name: Set up Node 🟢
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v5
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: "npm"
@@ -88,7 +88,7 @@ jobs:
       - name: Checkout code 📚
         uses: actions/checkout@v5
       - name: Set up Node 🟢
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v5
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: "npm"
@@ -104,7 +104,7 @@ jobs:
       - name: Checkout code 📚
         uses: actions/checkout@v5
       - name: Set up Node 🟢
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v5
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: "npm"
@@ -123,7 +123,7 @@ jobs:
       - name: Checkout code 📚
         uses: actions/checkout@v5
       - name: Set up Node 🟢
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v5
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: "npm"

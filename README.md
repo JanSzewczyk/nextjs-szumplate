@@ -1,6 +1,6 @@
-# Next.js Szumplate 🚀
-
 <div align="center">
+
+# 🚀 Next.js Szumplate
 
 [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=github&utm_campaign=next-enterprise)
 [![GitHub stars](https://img.shields.io/github/stars/JanSzewczyk/nextjs-szumplate?style=social)](https://github.com/JanSzewczyk/nextjs-szumplate/stargazers)
@@ -65,16 +65,22 @@ back, relax, and get ready to conquer the whole world with your new awesome app!
 
 ## 📖 Table of Contents
 
-- [Getting Started](#-getting-started)
-- [Deployment](#-deployment)
-- [Scripts Overview](#-scripts-overview)
-- [Testing](#-testing)
-- [Styling and Design System](#-styling-and-design-system)
-- [ChatGPT Code Review](#-chatgpt-code-review)
-- [Environment Variables](#-environment-variables-handling)
-- [GitHub Actions](#-github-actions)
-- [Server-only Code](#-keeping-server-only-code-out-of-the-client-environment)
-- [License](#-license)
+- [✨ Features](#-features)
+- [📖 Table of Contents](#-table-of-contents)
+- [🎯 Getting Started](#-getting-started)
+- [🚀 Deployment](#-deployment)
+- [📃 Scripts Overview](#-scripts-overview)
+- [🧪 Testing](#-testing)
+- [🎨 Styling and Design System](#-styling-and-design-system)
+- [🤖 ChatGPT Code Review](#-chatgpt-code-review)
+- [💻 Environment Variables Handling](#-environment-variables-handling)
+- [🚀 GitHub Actions](#-github-actions)
+- [🔒 Keeping Server-only Code out of the Client Environment](#-keeping-server-only-code-out-of-the-client-environment)
+- [📁 Project Structure](#-project-structure)
+- [🤝 Contributing](#-contributing)
+- [📜 License](#-license)
+- [🙏 Acknowledgments](#-acknowledgments)
+- [📧 Contact & Support](#-contact--support)
 
 ---
 
@@ -526,8 +532,10 @@ If you have any questions, suggestions, or issues:
 
 <div align="center">
 
-**Made with ❤️ by [Jan Szewczyk](https://github.com/JanSzewczyk)**
+**Made with ❤️ by [Szum-Tech](https://github.com/szum-tech)**
 
-⭐ If you find this template helpful, please consider giving it a star!
+If this template helped you, please consider giving it a ⭐ on GitHub!
+
+[⬆ Back to Top](#-nextjs-szumplate)
 
 </div>

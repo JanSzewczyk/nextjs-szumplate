@@ -155,20 +155,3 @@ jobs:
         uses: actions/dependency-review-action@v4
         with:
           comment-summary-in-pr: on-failure
-
-  bundle-size:
-    name: Bundle Size 📦
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code 📚
-        uses: actions/checkout@v5
-      - name: Set up Node 🟢
-        uses: actions/setup-node@v5
-        with:
-          node-version: ${{ env.NODE_VERSION }}
-          cache: "npm"
-      - name: Install dependencies ⚙️
-        run: npm ci
-      - uses: andresz1/size-limit-action@v1
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}

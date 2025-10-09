@@ -155,3 +155,21 @@ jobs:
         uses: actions/dependency-review-action@v4
         with:
           comment-summary-in-pr: on-failure
+
+  dead-code:
+    name: Dead Code Check 💀
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code 📚
+        uses: actions/checkout@v5
+      - name: Set up Node 🟢
+        uses: actions/setup-node@v5
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: "npm"
+      - name: Install dependencies ⚙️
+        run: npm ci
+      - name: Check for dead code
+        run: npx unimported
+      - name: Check for unused exports
+        run: npx ts-prune

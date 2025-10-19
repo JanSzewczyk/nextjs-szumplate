@@ -6,7 +6,7 @@
   "scripts": {
     "analyze": "ANALYZE=true npm run build",
     "build": "next build --turbopack",
-    "dev": "next dev ",
+    "dev": "next dev --turbopack",
     "lint": "next lint",
     "lint:ci": "next lint . -o eslint-results.sarif -f @microsoft/eslint-formatter-sarif",
     "lint:fix": "next lint --fix",

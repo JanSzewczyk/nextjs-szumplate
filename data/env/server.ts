@@ -13,7 +13,8 @@ export const env = createEnv({
       .enum(["true", "false", "0", "1"])
       .optional()
       .transform((value) => value === "true" || value === "1"),
-    VERCEL_URL: z.string().optional()
+    VERCEL_URL: z.string().optional(),
+    LOG_LEVEL: z.enum(["fatal", "error", "warn", "info", "debug", "trace"]).optional().default("info")
   },
   experimental__runtimeEnv: process.env,
   /**

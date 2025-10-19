@@ -56,6 +56,7 @@ back, relax, and get ready to conquer the whole world with your new awesome app!
   Kubernetes-compatible for robust deployments
 - **🎨 [Szum-Tech Design System](https://www.npmjs.com/package/@szum-tech/design-system)** - Pre-built components and
   design tokens
+- **📝 [Pino](https://getpino.io/)** - High-performance structured logging with development and production modes
 
 ### 🏆 Performance
 
@@ -74,6 +75,7 @@ back, relax, and get ready to conquer the whole world with your new awesome app!
 - [🎨 Styling and Design System](#-styling-and-design-system)
 - [🤖 ChatGPT Code Review](#-chatgpt-code-review)
 - [💻 Environment Variables Handling](#-environment-variables-handling)
+- [📝 Logging](#-logging)
 - [🚀 GitHub Actions](#-github-actions)
 - [🔒 Keeping Server-only Code out of the Client Environment](#-keeping-server-only-code-out-of-the-client-environment)
 - [📁 Project Structure](#-project-structure)
@@ -359,6 +361,316 @@ If required environment variables are not set, you'll get a clear error message:
 
 ```
 ❌ Invalid environment variables: { SECRET_KEY: [ 'Required' ] }
+```
+
+---
+
+## 📝 Logging
+
+This template uses **[Pino](https://getpino.io/)**, one of the fastest and most popular logging libraries for Node.js,
+to provide structured logging throughout the application.
+
+### Features
+
+- ✅ **High Performance** - Minimal overhead with extremely fast JSON logging
+- ✅ **Structured Logging** - JSON-formatted logs for easy parsing and analysis
+- ✅ **Next.js Compatible** - Optimized to work with Next.js App Router and Turbopack
+- ✅ **Universal Support** - Works on both server-side and client-side (browser)
+- ✅ **Production Ready** - JSON logs optimized for log aggregation tools (Datadog, ELK, CloudWatch)
+- ✅ **Request Tracking** - Automatic request ID generation and logging via middleware
+- ✅ **Error Handling** - Integrated with global error boundaries for comprehensive error logging
+- ✅ **Type-safe Configuration** - LOG_LEVEL environment variable with TypeScript validation
+
+### Configuration
+
+The logger is configured in `lib/logger.ts` and automatically adapts based on the environment:
+
+**Server-side (Node.js):**
+
+- Structured JSON output for both development and production
+- ISO timestamps for consistency
+- Includes PID and hostname in development mode
+- Direct stdout logging for optimal performance
+
+**Client-side (Browser):**
+
+- Fallback to browser console with appropriate log levels
+- Fatal/Error → `console.error()`
+- Warn → `console.warn()`
+- Info → `console.info()`
+- Debug/Trace → `console.debug()`
+
+**Technical Note:** This implementation doesn't use `pino-pretty` transport to avoid worker thread issues with
+Next.js/Turbopack. The logs remain fully structured and parseable as JSON, making them ideal for production environments
+and log aggregation services.
+
+### Log Levels
+
+Set the `LOG_LEVEL` environment variable to control verbosity:
+
+```bash
+# Available levels (from highest to lowest priority)
+LOG_LEVEL=fatal  # Only fatal errors
+LOG_LEVEL=error  # Errors and above
+LOG_LEVEL=warn   # Warnings and above
+LOG_LEVEL=info   # Info and above (default)
+LOG_LEVEL=debug  # Debug messages and above
+LOG_LEVEL=trace  # Everything including trace
+```
+
+Add to your `.env.local`:
+
+```env
+LOG_LEVEL=debug
+```
+
+### Usage Examples
+
+#### Basic Logging
+
+```typescript
+import logger from "@/lib/logger";
+
+// Info level
+logger.info("User logged in successfully");
+
+// Warning
+logger.warn("API rate limit approaching");
+
+// Error with context
+logger.error({ userId: "123", error: err }, "Failed to fetch user data");
+
+// Debug information
+logger.debug({ query: params }, "Database query executed");
+```
+
+#### Creating Context Loggers
+
+Create child loggers with persistent context:
+
+```typescript
+import { createLogger } from "@/lib/logger";
+
+// Create a logger with specific context
+const apiLogger = createLogger({
+  module: "api",
+  service: "user-service"
+});
+
+apiLogger.info("Processing request"); // Will include module and service in every log
+```
+
+#### API Route Logging
+
+```typescript
+import { NextResponse } from "next/server";
+import logger from "@/lib/logger";
+
+export async function GET(request: Request) {
+  logger.info("Fetching users list");
+
+  try {
+    const users = await fetchUsers();
+    logger.debug({ count: users.length }, "Users fetched successfully");
+    return NextResponse.json(users);
+  } catch (error) {
+    logger.error({ error }, "Failed to fetch users");
+    return NextResponse.json({ error: "Internal server error" }, { status: 500 });
+  }
+}
+```
+
+#### Server Actions Logging
+
+```typescript
+"use server";
+
+import { createLogger } from "@/lib/logger";
+
+const actionLogger = createLogger({ context: "server-action" });
+
+export async function createUser(formData: FormData) {
+  actionLogger.info({ action: "createUser" }, "Creating new user");
+
+  try {
+    // Your logic here
+    actionLogger.info({ userId: newUser.id }, "User created successfully");
+    return { success: true };
+  } catch (error) {
+    actionLogger.error({ error }, "Failed to create user");
+    return { success: false, error: "Failed to create user" };
+  }
+}
+```
+
+### Built-in Logging
+
+The template includes automatic logging in several key areas:
+
+#### 1. Request Logging (`middleware.ts`)
+
+Every HTTP request is automatically logged with:
+
+- **Request ID**: Unique UUID for request tracing
+- **HTTP Method**: GET, POST, PUT, DELETE, etc.
+- **URL**: Full request URL
+- **User Agent**: Client information
+- **Response Status**: HTTP status code
+- **Duration**: Request processing time in milliseconds
+
+The `X-Request-ID` header is added to all responses for distributed tracing.
+
+**Example log output:**
+
+```json
+{
+  "level": 30,
+  "time": "2025-01-19T10:30:45.123Z",
+  "requestId": "550e8400-e29b-41d4-a716-446655440000",
+  "method": "GET",
+  "url": "http://localhost:3000/api/users",
+  "userAgent": "Mozilla/5.0...",
+  "msg": "Incoming request"
+}
+```
+
+#### 2. Health Check API (`app/api/health/route.ts`)
+
+The health check endpoint includes:
+
+- Info-level logging when endpoint is called
+- Debug-level logging with response details
+- Error logging if health check fails
+- Timestamp in response for monitoring
+
+#### 3. Global Error Handling
+
+**Page-level errors** (`app/error.tsx`):
+
+- Catches errors in specific pages/routes
+- Logs error details including message, stack trace, and digest
+- Provides user-friendly error UI with retry option
+
+**Application-level errors** (`app/global-error.tsx`):
+
+- Catches critical errors across the entire application
+- Logs fatal errors with full context
+- Last-resort error boundary for unhandled exceptions
+
+### Production Best Practices
+
+1. **Use Structured Logging**: Always include context objects for better searchability
+
+```typescript
+// Good
+logger.error({ userId, orderId, error }, "Order processing failed");
+
+// Avoid
+logger.error(`Order ${orderId} failed for user ${userId}`);
+```
+
+2. **Don't Log Sensitive Data**: Never log passwords, tokens, or PII
+
+```typescript
+// Bad
+logger.info({ password: user.password }, "User login");
+
+// Good
+logger.info({ userId: user.id }, "User login");
+```
+
+3. **Use Appropriate Log Levels**:
+   - `error` - Failures that need attention
+   - `warn` - Issues that don't stop execution
+   - `info` - Important business events
+   - `debug` - Detailed diagnostic information
+
+4. **Include Error Objects**: Always pass error objects for full stack traces
+
+```typescript
+try {
+  // code
+} catch (error) {
+  logger.error({ error }, "Operation failed"); // Captures full stack
+}
+```
+
+### Log Output Format
+
+Logs are output in structured JSON format, making them easy to parse and search:
+
+```json
+{
+  "level": 30,
+  "time": "2025-01-19T10:30:45.123Z",
+  "pid": 12345,
+  "hostname": "my-server",
+  "msg": "User login successful",
+  "userId": "user-123",
+  "action": "login"
+}
+```
+
+**Log Levels (Pino standard):**
+
+- `10` - trace
+- `20` - debug
+- `30` - info
+- `40` - warn
+- `50` - error
+- `60` - fatal
+
+### Integration with Log Aggregation Services
+
+The structured JSON output is compatible with all major log aggregation and monitoring services:
+
+**Cloud Platforms:**
+
+- **Vercel**: Built-in log streaming and filtering
+- **AWS CloudWatch**: Works with Lambda, ECS, and EC2
+- **Google Cloud Logging**: Compatible with Cloud Run, GKE, and App Engine
+- **Azure Monitor**: Supports structured JSON logs
+
+**Log Management Services:**
+
+- **Datadog**: Direct Node.js integration available
+- **New Relic**: Standard JSON log format supported
+- **Splunk**: Can ingest and parse Pino JSON logs
+- **Sumo Logic**: JSON log parsing built-in
+
+**Open Source:**
+
+- **ELK Stack** (Elasticsearch, Logstash, Kibana): Logstash can parse Pino format
+- **Grafana Loki**: Supports JSON log ingestion
+- **Graylog**: JSON input supported
+
+### Viewing Logs
+
+**Development:**
+
+```bash
+npm run dev
+# Logs appear in terminal as structured JSON
+```
+
+**Production (Vercel):**
+
+```bash
+vercel logs [deployment-url]
+# Or view in Vercel Dashboard → Logs
+```
+
+**Docker/Self-hosted:**
+
+```bash
+# View container logs
+docker logs [container-id]
+
+# Stream logs in real-time
+docker logs -f [container-id]
+
+# Filter by log level (using jq)
+docker logs [container-id] | jq 'select(.level >= 40)'
 ```
 
 ---

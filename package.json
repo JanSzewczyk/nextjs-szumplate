@@ -6,7 +6,7 @@
   "scripts": {
     "analyze": "ANALYZE=true npm run build",
     "build": "next build --turbopack",
-    "dev": "next dev --turbopack",
+    "dev": "next dev ",
     "lint": "next lint",
     "lint:ci": "next lint . -o eslint-results.sarif -f @microsoft/eslint-formatter-sarif",
     "lint:fix": "next lint --fix",
@@ -35,6 +35,8 @@
     "@tailwindcss/postcss": "^4.1.14",
     "next": "^15.5.4",
     "next-compose-plugins": "^2.2.1",
+    "pino": "^10.1.0",
+    "pino-pretty": "^13.1.2",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
     "react-hook-form": "^7.64.0",

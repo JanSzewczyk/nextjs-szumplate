@@ -7,6 +7,7 @@ import { env } from "./data/env/server";
 
 const config: NextConfig = {
   reactStrictMode: true,
+  serverExternalPackages: ["pino", "pino-pretty"],
   turbopack: {
     resolveExtensions: [".mdx", ".tsx", ".ts", ".jsx", ".js", ".mjs", ".json"]
   },

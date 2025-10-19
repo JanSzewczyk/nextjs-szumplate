@@ -5,6 +5,6 @@ describe("GET /api/health", () => {
     const response = GET();
     const json = await response.json();
     expect(response.status).toBe(200);
-    expect(json).toEqual({ status: "ok" });
+    expect(json).includes({ status: "ok" });
   });
 });

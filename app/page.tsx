@@ -1,12 +1,16 @@
-import { GitHubLogoIcon } from "@radix-ui/react-icons";
+import { GithubIcon } from "lucide-react";
+
 import { Button, Separator } from "@szum-tech/design-system";
 import Image from "next/image";
+import logger from "~/lib/logger";
 
 export default function Home() {
+  logger.info("Home page loaded");
+
   return (
     <main className="container mx-auto flex min-h-screen flex-col items-center justify-between gap-16 px-4 py-10 sm:px-12 sm:py-24">
       <div className="flex w-full flex-row justify-end">
-        <Button asChild endIcon={<GitHubLogoIcon />}>
+        <Button asChild endIcon={<GithubIcon />}>
           <a target="_blank" href="https://github.com/JanSzewczyk/nextjs-szumplate" rel="noreferrer">
             See Repo
           </a>

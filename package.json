@@ -5,8 +5,8 @@
   "type": "module",
   "scripts": {
     "analyze": "ANALYZE=true npm run build",
-    "build": "next build --turbopack",
-    "dev": "next dev --turbopack",
+    "build": "next build",
+    "dev": "next dev",
     "lint": "next lint",
     "lint:ci": "next lint . -o eslint-results.sarif -f @microsoft/eslint-formatter-sarif",
     "lint:fix": "next lint --fix",
@@ -67,6 +67,7 @@
     "@vitest/browser": "^4.0.3",
     "@vitest/coverage-v8": "^4.0.3",
     "@vitest/ui": "^4.0.3",
+    "babel-plugin-react-compiler": "^1.0.0",
     "eslint": "^9.37.0",
     "playwright": "^1.56.0",
     "prettier": "^3.6.2",

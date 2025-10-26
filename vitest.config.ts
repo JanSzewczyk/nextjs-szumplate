@@ -3,6 +3,7 @@ import tsConfigPaths from "vite-tsconfig-paths";
 
 import { storybookTest } from "@storybook/addon-vitest/vitest-plugin";
 import react from "@vitejs/plugin-react";
+import { playwright } from "@vitest/browser-playwright";
 
 import { env } from "./data/env/server";
 
@@ -64,8 +65,10 @@ export default defineConfig({
           name: "storybook",
           browser: {
             enabled: true,
-            provider: "playwright",
-            instances: [{ browser: "chromium", headless: true }]
+            // Make sure to install Playwright
+            provider: playwright(),
+            headless: true,
+            instances: [{ browser: "chromium" }]
           },
           setupFiles: ["tests/integration/vitest.setup.ts"]
         }

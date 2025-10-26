@@ -65,6 +65,7 @@
     "@types/react-dom": "^19.2.1",
     "@vitejs/plugin-react": "^5.1.0",
     "@vitest/browser": "^4.0.3",
+    "@vitest/browser-playwright": "^4.0.3",
     "@vitest/coverage-v8": "^4.0.3",
     "@vitest/ui": "^4.0.3",
     "babel-plugin-react-compiler": "^1.0.0",

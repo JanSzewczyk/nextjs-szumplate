@@ -33,7 +33,7 @@
     "@szum-tech/design-system": "^2.7.0",
     "@t3-oss/env-nextjs": "^0.13.8",
     "@tailwindcss/postcss": "^4.1.14",
-    "next": "^15.5.4",
+    "next": "^15.5.7",
     "next-compose-plugins": "^2.2.1",
     "pino": "^10.1.0",
     "pino-pretty": "^13.1.2",

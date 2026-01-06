@@ -5,8 +5,8 @@
   "type": "module",
   "scripts": {
     "analyze": "ANALYZE=true npm run build",
-    "build": "next build --turbopack",
-    "dev": "next dev --turbopack",
+    "build": "next build",
+    "dev": "next dev",
     "lint": "eslint .",
     "lint:ci": "eslint . -o eslint-results.sarif -f @microsoft/eslint-formatter-sarif",
     "lint:fix": "eslint --fix .",
@@ -33,6 +33,7 @@
     "@szum-tech/design-system": "^3.8.1",
     "@t3-oss/env-nextjs": "^0.13.8",
     "@tailwindcss/postcss": "^4.1.14",
+    "babel-plugin-react-compiler": "^1.0.0",
     "next": "^16.1.1",
     "next-compose-plugins": "^2.2.1",
     "pino": "^10.1.0",

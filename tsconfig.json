@@ -15,11 +15,7 @@
     "noUncheckedIndexedAccess": true,
     "checkJs": true,
     /* Bundled projects */
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "esnext"
-    ],
+    "lib": ["dom", "dom.iterable", "esnext"],
     "noEmit": true,
     "module": "ESNext",
     "moduleResolution": "Bundler",
@@ -30,16 +26,11 @@
       }
     ],
     "incremental": true,
-    "types": [
-      "vitest/globals",
-      "@vitest/browser-playwright"
-    ],
+    "types": ["vitest/globals", "@vitest/browser-playwright"],
     /* Path Aliases */
     "baseUrl": ".",
     "paths": {
-      "~/*": [
-        "./*"
-      ]
+      "~/*": ["./*"]
     }
   },
   "include": [
@@ -50,7 +41,5 @@
     ".storybook/**/*",
     ".next/dev/types/**/*.ts"
   ],
-  "exclude": [
-    "node_modules"
-  ]
+  "exclude": ["node_modules"]
 }

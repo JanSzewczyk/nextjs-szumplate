@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-Next.js Szumplate is an enterprise-ready Next.js 15 template with TypeScript, Tailwind CSS, and comprehensive testing
+Next.js Szumplate is an enterprise-ready Next.js 16 template with TypeScript, Tailwind CSS, and comprehensive testing
 infrastructure.
 
 ## Commands

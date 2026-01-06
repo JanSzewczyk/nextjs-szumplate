@@ -1,8 +1,8 @@
 ---
 name: storybook-testing
-version: 1.0.0
+version: 1.1.0
 description: Create comprehensive Storybook stories with interactive tests for React components using play functions
-tags: [testing, storybook, react, component-testing, integration-testing, play-function]
+tags: [testing, storybook, react, component-testing, integration-testing, play-function, userEvent]
 author: Szum Tech Team
 examples:
   - Write Storybook tests for UserProfileCard component
@@ -26,6 +26,19 @@ This skill helps you write Storybook stories that include interactive tests. Sto
 - **Integration testing** - Test component flows and state changes
 - **Visual testing** - Document different component states
 - **Accessibility testing** - Verify component accessibility with a11y addon
+
+**Storybook 9+ userEvent Changes:**
+
+In Storybook 9 and later, `userEvent` is provided directly via the play function parameter. This is the recommended approach:
+
+```typescript
+play: async ({ canvas, userEvent }) => {
+  await userEvent.type(canvas.getByLabelText(/email/i), "test@example.com");
+  await userEvent.click(canvas.getByRole("button"));
+}
+```
+
+You no longer need to call `userEvent.setup()` for most cases - Storybook handles the setup automatically.
 
 ## Key Concepts
 
@@ -114,8 +127,8 @@ export const StoryName: Story = {
   args: {
     // Story-specific args that override meta.args
   },
-  play: async ({ canvas, args, step, canvasElement }) => {
-    // Test code here
+  play: async ({ canvas, args, step, canvasElement, userEvent }) => {
+    // Test code here - userEvent is provided by Storybook!
   }
 };
 ```
@@ -126,6 +139,7 @@ export const StoryName: Story = {
 - `args` - Story args (props passed to component)
 - `step` - Group assertions into named steps (optional but recommended)
 - `canvasElement` - Raw DOM element (use for portals)
+- `userEvent` - **Storybook's built-in userEvent instance** (recommended for most interactions)
 
 **Query Methods (canvas/within):**
 
@@ -184,8 +198,13 @@ await expect(args.onSubmit).not.toHaveBeenCalled();
 await userEvent.click(button);
 await userEvent.dblClick(element);
 
-// Typing
+// Typing (basic)
 await userEvent.type(input, "text to type");
+
+// Typing with delay (recommended for realistic interactions)
+await userEvent.type(input, "text to type", { delay: 100 });
+
+// Clear and type
 await userEvent.clear(input);
 await userEvent.type(input, "new text");
 
@@ -202,17 +221,19 @@ await userEvent.unhover(element);
 await userEvent.selectOptions(select, "optionValue");
 ```
 
-**IMPORTANT: Direct userEvent vs userEvent.setup()**
+**IMPORTANT: userEvent from Play Function Parameter vs userEvent.setup()**
 
-**Prefer direct `userEvent` calls** for most interactions:
+**In Storybook 9+, userEvent is provided directly via the play function parameter.**
+This is the **recommended approach** as it's pre-configured by Storybook:
 
 ```typescript
-// ✅ PREFERRED - Direct userEvent usage (simpler, cleaner)
+// ✅ RECOMMENDED - Use userEvent from play function parameter
 export const DirectInteraction: Story = {
-  play: async ({ canvas, step }) => {
+  play: async ({ canvas, userEvent, step }) => {
+    // userEvent is already set up by Storybook - just use it!
     await step("Fill form", async () => {
       const input = canvas.getByLabelText(/name/i);
-      await userEvent.type(input, "John");
+      await userEvent.type(input, "John", { delay: 100 });
       await userEvent.tab();
 
       const button = canvas.getByRole("button", { name: /submit/i });
@@ -222,14 +243,31 @@ export const DirectInteraction: Story = {
 };
 ```
 
-Only use `userEvent.setup()` when you need **advanced configuration** or **multiple complex interactions**:
+**Alternative: Import from `storybook/test`** when you need userEvent outside play function:
 
 ```typescript
-// ⚠️ Use setup() ONLY when needed for complex scenarios
+import { userEvent } from "storybook/test";
+
+// ✅ Also valid - imported userEvent for use anywhere
+export const ImportedUserEvent: Story = {
+  play: async ({ canvas }) => {
+    await userEvent.type(canvas.getByLabelText(/email/i), "test@example.com");
+    await userEvent.click(canvas.getByRole("button"));
+  }
+};
+```
+
+**Use `userEvent.setup()` only for advanced configuration:**
+
+```typescript
+// ⚠️ Use setup() ONLY when you need custom configuration
 export const ComplexInteraction: Story = {
   play: async ({ canvas, step }) => {
-    // Use setup() when you need multiple related interactions in sequence
-    const user = userEvent.setup();
+    // setup() when you need custom options like skipHover, delay, etc.
+    const user = userEvent.setup({
+      delay: 50,           // Custom delay between events
+      skipHover: true,     // Skip hover in click()
+    });
 
     await step("Complex multi-step interaction", async () => {
       const input = canvas.getByLabelText(/name/i);
@@ -246,16 +284,19 @@ export const ComplexInteraction: Story = {
 
 **When to use which approach:**
 
-- **Direct `userEvent`** (recommended):
-  - Simple, isolated interactions
-  - Single-step actions (click, type, tab)
-  - Most common use cases
+- **`userEvent` from play parameter** (recommended):
+  - Default choice for all Storybook tests
+  - Pre-configured by Storybook
   - Cleaner, more readable code
+  - Works for most use cases
+
+- **Imported `userEvent` from `storybook/test`**:
+  - When you need userEvent outside play function context
+  - For helper functions or utilities
 
 - **`userEvent.setup()`** (use sparingly):
-  - Complex multi-step interactions
-  - When you need advanced configuration options
-  - Sequential interactions that build on each other
+  - When you need custom configuration (delay, skipHover, etc.)
+  - Advanced scenarios requiring shared keyboard/pointer state
   - Performance-critical scenarios with many interactions
 
 **Waiting for Changes:**
@@ -288,7 +329,7 @@ Test the component's default state:
 
 ```typescript
 export const InitialForm: Story = {
-  play: async ({ canvas, step }) => {
+  play: async ({ canvas, step, userEvent }) => {
     await step("Verify initial field visibility", async () => {
       const input = canvas.getByLabelText(/email/i);
       await expect(input).toBeVisible();
@@ -335,7 +376,7 @@ export const ValidationEmptyForm: Story = {
   args: {
     onSubmit: fn()
   },
-  play: async ({ canvas, args }) => {
+  play: async ({ canvas, args, userEvent }) => {
     // Submit without filling fields
     const submitButton = canvas.getByRole("button", { name: /submit/i });
     await userEvent.click(submitButton);
@@ -361,19 +402,17 @@ export const Interaction: Story = {
   args: {
     onSubmit: fn()
   },
-  play: async ({ canvas, args }) => {
-    const user = userEvent.setup();
-
-    // Step 1: Fill in form
+  play: async ({ canvas, args, userEvent }) => {
+    // Step 1: Fill in form (using delay for realistic typing)
     const emailInput = canvas.getByLabelText(/email/i);
-    await user.type(emailInput, "user@example.com");
+    await userEvent.type(emailInput, "user@example.com", { delay: 100 });
 
     const passwordInput = canvas.getByLabelText(/password/i);
-    await user.type(passwordInput, "password123");
+    await userEvent.type(passwordInput, "password123", { delay: 100 });
 
     // Step 2: Submit form
     const submitButton = canvas.getByRole("button", { name: /submit/i });
-    await user.click(submitButton);
+    await userEvent.click(submitButton);
 
     // Step 3: Verify submission
     await waitFor(async () => {
@@ -398,7 +437,7 @@ export const LoadingState: Story = {
         setTimeout(() => resolve(null as never), 2000);
       })
   },
-  play: async ({ canvas }) => {
+  play: async ({ canvas, userEvent }) => {
     const submitButton = canvas.getByRole("button", { name: /submit/i });
     await userEvent.click(submitButton);
 
@@ -415,7 +454,7 @@ Test elements rendered in portals (modals, dropdowns):
 
 ```typescript
 export const DropdownInteraction: Story = {
-  play: async ({ canvas, canvasElement }) => {
+  play: async ({ canvas, canvasElement, userEvent }) => {
     // Click trigger to open dropdown
     const trigger = canvas.getByLabelText("Select option");
     await userEvent.click(trigger);
@@ -446,7 +485,7 @@ export const BackNavigation: Story = {
   args: {
     onBack: fn()
   },
-  play: async ({ canvas, args }) => {
+  play: async ({ canvas, args, userEvent }) => {
     const backButton = canvas.getByRole("button", { name: /back/i });
     await userEvent.click(backButton);
 
@@ -467,7 +506,7 @@ export const ServerErrorHandling: Story = {
       error: "Failed to save. Please try again."
     }))
   },
-  play: async ({ canvas, args }) => {
+  play: async ({ canvas, args, userEvent }) => {
     const submitButton = canvas.getByRole("button", { name: /submit/i });
     await userEvent.click(submitButton);
 
@@ -491,28 +530,31 @@ export const CompleteUserFlow: Story = {
   args: {
     onSubmit: fn()
   },
-  play: async ({ canvas, args }) => {
-    const user = userEvent.setup();
+  play: async ({ canvas, args, userEvent, step }) => {
+    await step("Verify initial state", async () => {
+      await expect(canvas.getByText("Welcome")).toBeInTheDocument();
+    });
 
-    // Step 1: Verify initial state
-    await expect(canvas.getByText("Welcome")).toBeInTheDocument();
+    await step("Fill form fields", async () => {
+      await userEvent.type(canvas.getByLabelText(/email/i), "user@example.com", { delay: 100 });
+      await userEvent.type(canvas.getByLabelText(/password/i), "securePass123", { delay: 100 });
+    });
 
-    // Step 2: Fill form fields
-    await user.type(canvas.getByLabelText(/email/i), "user@example.com");
-    await user.type(canvas.getByLabelText(/password/i), "securePass123");
+    await step("Accept terms", async () => {
+      await userEvent.click(canvas.getByRole("checkbox", { name: /accept terms/i }));
+    });
 
-    // Step 3: Accept terms
-    await user.click(canvas.getByRole("checkbox", { name: /accept terms/i }));
+    await step("Submit", async () => {
+      await userEvent.click(canvas.getByRole("button", { name: /sign up/i }));
+    });
 
-    // Step 4: Submit
-    await user.click(canvas.getByRole("button", { name: /sign up/i }));
-
-    // Step 5: Verify success
-    await waitFor(async () => {
-      await expect(args.onSubmit).toHaveBeenCalledWith({
-        email: "user@example.com",
-        password: "securePass123",
-        acceptedTerms: true
+    await step("Verify success", async () => {
+      await waitFor(async () => {
+        await expect(args.onSubmit).toHaveBeenCalledWith({
+          email: "user@example.com",
+          password: "securePass123",
+          acceptedTerms: true
+        });
       });
     });
   }
@@ -525,10 +567,10 @@ Group related assertions into named steps for better test reporting:
 
 ```typescript
 export const Interaction: Story = {
-  play: async ({ canvas, step }) => {
+  play: async ({ canvas, step, userEvent }) => {
     await step("Fill in user information", async () => {
       const nameInput = canvas.getByLabelText(/name/i);
-      await userEvent.type(nameInput, "John Doe");
+      await userEvent.type(nameInput, "John Doe", { delay: 100 });
       await expect(nameInput).toHaveValue("John Doe");
     });
 
@@ -785,7 +827,7 @@ npm run storybook:dev   # View stories in Storybook UI
 
 ```typescript
 import { type Meta, type StoryObj } from "@storybook/nextjs-vite";
-import { expect, fn, userEvent, waitFor, within } from "storybook/test";
+import { expect, fn, waitFor, within } from "storybook/test";
 
 import { MyComponent } from "./my-component";
 
@@ -805,7 +847,7 @@ type Story = StoryObj<typeof meta>;
  * Initial state of the component.
  */
 export const InitialState: Story = {
-  play: async ({ canvas, step }) => {
+  play: async ({ canvas, step, userEvent }) => {
     await step("Verify initial render", async () => {
       const element = canvas.getByRole("button", { name: /click me/i });
       await expect(element).toBeVisible();
@@ -815,16 +857,15 @@ export const InitialState: Story = {
 
 /**
  * User interaction flow.
+ * Uses userEvent from play function parameter (recommended approach in Storybook 9+).
  */
 export const Interaction: Story = {
   args: {
     onAction: fn()
   },
-  play: async ({ canvas, args }) => {
-    const user = userEvent.setup();
-
+  play: async ({ canvas, args, userEvent }) => {
     const button = canvas.getByRole("button", { name: /click me/i });
-    await user.click(button);
+    await userEvent.click(button);
 
     await expect(args.onAction).toHaveBeenCalledOnce();
   }

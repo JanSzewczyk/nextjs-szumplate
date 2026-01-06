@@ -1,21 +1,6 @@
 import { type NextRequest, NextResponse } from "next/server";
 import logger from "~/lib/logger";
 
-/**
- * Next.js 16 Proxy Function
- *
- * SECURITY WARNING: Do NOT implement authentication logic in this file.
- * As of Next.js 16 (CVE-2025-29927), authentication in proxy/middleware
- * can be bypassed under high load due to Edge Runtime limitations.
- *
- * For authentication, use:
- * - Server Components with session validation
- * - Route Handlers with proper auth checks
- * - Layouts with authentication guards
- *
- * @see https://nextjs.org/docs/app/guides/upgrading/version-16
- * @see https://nextjs.org/docs/messages/middleware-to-proxy
- */
 export function proxy(request: NextRequest) {
   const startTime = Date.now();
   const requestId = crypto.randomUUID();

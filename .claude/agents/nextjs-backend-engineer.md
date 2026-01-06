@@ -438,7 +438,7 @@ logger.error(
 ### 6. Authentication Integration
 
 - Use `auth()` from `@clerk/nextjs/server` in server components and route handlers
-- Check `userId` for authentication status (proxy.ts handles enforcement)
+- Check `userId` for authentication status
 - Access `sessionClaims.metadata` for custom claims (e.g., `onboardingComplete`)
 - Don't use non-existent functions like `unauthorized()` - use `redirect("/sign-in")` instead
 

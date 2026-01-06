@@ -1,7 +1,7 @@
 import { type NextRequest, NextResponse } from "next/server";
 import logger from "~/lib/logger";
 
-export function middleware(request: NextRequest) {
+export function proxy(request: NextRequest) {
   const startTime = Date.now();
   const requestId = crypto.randomUUID();
 
@@ -34,7 +34,7 @@ export function middleware(request: NextRequest) {
   return response;
 }
 
-// Configure which routes to run middleware on
+// Configure which routes to run proxy on
 export const config = {
   matcher: [
     // Skip Next.js internals and all static files, unless found in search params

@@ -755,7 +755,7 @@ For each component, consider creating stories for:
 
 **File Structure:**
 
-```
+```text
 features/
   feature-name/
     components/

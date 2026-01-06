@@ -296,9 +296,10 @@ const logger = createLogger({ module: "feature-page" });
 async function loadData() {
   const { userId } = await auth();
 
-  // Proxy.ts enforces authentication, but defensive check for type safety
+  // Authentication must be checked in Server Components/Route Handlers
+  // Note: proxy.ts only handles request logging and ID headers, not auth enforcement
   if (!userId) {
-    logger.error("No userId despite proxy authentication");
+    logger.error("No authenticated user");
     redirect("/sign-in");
   }
 

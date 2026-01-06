@@ -191,7 +191,7 @@ await expect(args.onSubmit).toHaveBeenCalledWith({ data: "value" });
 await expect(args.onSubmit).not.toHaveBeenCalled();
 ```
 
-**User Interactions:**
+### User Interactions
 
 ```typescript
 // Click
@@ -221,7 +221,7 @@ await userEvent.unhover(element);
 await userEvent.selectOptions(select, "optionValue");
 ```
 
-**IMPORTANT: userEvent from Play Function Parameter vs userEvent.setup()**
+### IMPORTANT: userEvent from Play Function Parameter vs userEvent.setup()
 
 **In Storybook 9+, userEvent is provided directly via the play function parameter.**
 This is the **recommended approach** as it's pre-configured by Storybook:
@@ -797,7 +797,7 @@ For each component, consider creating stories for:
 
 **File Structure:**
 
-```text
+```bash
 features/
   feature-name/
     components/

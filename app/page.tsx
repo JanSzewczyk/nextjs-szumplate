@@ -29,8 +29,7 @@ import {
   TooltipTrigger
 } from "@szum-tech/design-system";
 import Image from "next/image";
-import { GitHubIcon } from "~/components/ui/icons/git-hub";
-import logger from "~/lib/logger";
+import { GithubIcon } from "~/components/ui/icons/github";
 
 const TECH_STACK = {
   core: {
@@ -273,8 +272,6 @@ const SCRIPTS = [
 ];
 
 export default function Home() {
-  logger.info("Home page loaded");
-
   return (
     <div className="flex min-h-screen flex-col">
       {/* Header */}
@@ -295,7 +292,7 @@ export default function Home() {
                 Docs
               </a>
             </Button>
-            <Button asChild variant="outline" size="sm" endIcon={<GitHubIcon />}>
+            <Button asChild variant="outline" size="sm" endIcon={<GithubIcon />}>
               <a
                 target="_blank"
                 href="https://github.com/JanSzewczyk/nextjs-szumplate"
@@ -329,7 +326,7 @@ export default function Home() {
                   Use This Template
                 </a>
               </Button>
-              <Button asChild variant="outline" size="lg" endIcon={<GitHubIcon />}>
+              <Button asChild variant="outline" size="lg" endIcon={<GithubIcon />}>
                 <a href="https://github.com/JanSzewczyk/nextjs-szumplate" target="_blank" rel="noreferrer">
                   View on GitHub
                 </a>
@@ -476,7 +473,7 @@ export default function Home() {
                       <TerminalIcon className="text-primary size-4" />
                       <code className="text-code">{script.command}</code>
                     </div>
-                    <p className="text-mute text-body-sm">{script.description}</p>
+                    <p className="text-mute">{script.description}</p>
                   </CardContent>
                 </Card>
               ))}
@@ -544,7 +541,7 @@ export default function Home() {
               rel="noreferrer"
               className="text-muted-foreground hover:text-primary flex items-center gap-1 transition-colors"
             >
-              <GitHubIcon className="size-3.5" />
+              <GithubIcon className="size-3.5" />
               <span>Source</span>
             </a>
           </div>

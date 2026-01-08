@@ -1,4 +1,5 @@
 import {
+  type LucideIcon,
   ActivityIcon,
   BookOpenIcon,
   CodeIcon,
@@ -30,246 +31,19 @@ import {
 } from "@szum-tech/design-system";
 import Image from "next/image";
 import { GithubIcon } from "~/components/ui/icons/github";
+import { type FeatureIconName, FEATURES, QUICK_START_STEPS, SCRIPTS, TECH_STACK } from "~/constants";
 
-const TECH_STACK = {
-  core: {
-    label: "Core Technologies",
-    variant: "primary" as const,
-    items: [
-      {
-        name: "Next.js 16",
-        description: "The React Framework for Production",
-        src: "/next.svg",
-        href: "https://nextjs.org"
-      },
-      {
-        name: "TypeScript",
-        description: "JavaScript with syntax for types",
-        src: "/typescript.svg",
-        href: "https://typescriptlang.org"
-      },
-      {
-        name: "Tailwind CSS",
-        description: "A utility-first CSS framework",
-        src: "/tailwindcss.svg",
-        href: "https://tailwindcss.com"
-      }
-    ]
-  },
-  testing: {
-    label: "Testing Suite",
-    variant: "success" as const,
-    items: [
-      {
-        name: "Vitest",
-        description: "Blazing fast unit test framework",
-        src: "/vitest.svg",
-        href: "https://vitest.dev"
-      },
-      {
-        name: "Playwright",
-        description: "Reliable end-to-end testing",
-        src: "/playwright.svg",
-        href: "https://playwright.dev"
-      },
-      {
-        name: "Testing Library",
-        description: "Simple and complete testing utilities",
-        src: "/testing-library.svg",
-        href: "https://testing-library.com"
-      },
-      {
-        name: "Storybook",
-        description: "UI component explorer for frontend devs",
-        src: "/storybook.svg",
-        href: "https://storybook.js.org/"
-      }
-    ]
-  },
-  quality: {
-    label: "Code Quality",
-    variant: "warning" as const,
-    items: [
-      {
-        name: "ESLint",
-        description: "Find and fix problems in your code",
-        src: "/eslint.svg",
-        href: "https://eslint.org"
-      },
-      {
-        name: "Prettier",
-        description: "Opinionated code formatter",
-        src: "/prettier.svg",
-        href: "https://prettier.io"
-      },
-      {
-        name: "Semantic Release",
-        description: "Fully automated version management",
-        src: "/semantic-release.svg",
-        href: "https://semantic-release.gitbook.io/semantic-release"
-      }
-    ]
-  },
-  infrastructure: {
-    label: "Infrastructure",
-    variant: "error" as const,
-    items: [
-      {
-        name: "Pino",
-        description: "Fast JSON logger for Node.js",
-        src: "/pino.svg",
-        href: "https://getpino.io"
-      },
-      {
-        name: "Zod",
-        description: "TypeScript-first schema validation",
-        src: "/zod.svg",
-        href: "https://zod.dev"
-      }
-    ]
-  },
-  forms: {
-    label: "Forms",
-    variant: "outline" as const,
-    items: [
-      {
-        name: "React Hook Form",
-        description: "Performant form management",
-        src: "/react-hook-form.svg",
-        href: "https://react-hook-form.com"
-      }
-    ]
-  },
-  cicd: {
-    label: "CI/CD",
-    variant: "secondary" as const,
-    items: [
-      {
-        name: "GitHub Actions",
-        description: "Automated workflows",
-        src: "/github-actions.svg",
-        href: "https://github.com/features/actions"
-      }
-    ]
-  },
-  config: {
-    label: "Configuration",
-    variant: "secondary" as const,
-    items: [
-      {
-        name: "T3 Env",
-        description: "Type-safe environment variables",
-        src: "/t3.svg",
-        href: "https://env.t3.gg/"
-      }
-    ]
-  }
+const FEATURE_ICONS: Record<FeatureIconName, LucideIcon> = {
+  RocketIcon,
+  ServerIcon,
+  TestTube2Icon,
+  ShieldCheckIcon,
+  FileTextIcon,
+  ActivityIcon,
+  SearchIcon,
+  GitBranchIcon,
+  LayersIcon
 };
-
-const FEATURES = [
-  {
-    icon: RocketIcon,
-    title: "Next.js 16 Ready",
-    description:
-      "Built on the latest Next.js with App Router, Server Components, and all modern React 19 features out of the box."
-  },
-  {
-    icon: ServerIcon,
-    title: "React Server Components",
-    description:
-      "Full RSC support with App Router architecture. Optimize performance with server-side rendering and streaming."
-  },
-  {
-    icon: TestTube2Icon,
-    title: "Comprehensive Testing",
-    description:
-      "Pre-configured with Vitest, Playwright, Testing Library, and Storybook for unit, integration, and E2E testing."
-  },
-  {
-    icon: ShieldCheckIcon,
-    title: "Enterprise Quality",
-    description:
-      "ESLint, Prettier, TypeScript strict mode, and Semantic Release ensure code quality and automated versioning."
-  },
-  {
-    icon: FileTextIcon,
-    title: "Structured Logging",
-    description:
-      "Pino logger with pretty-print dev mode and production JSON output. Create child loggers with contextual metadata."
-  },
-  {
-    icon: ActivityIcon,
-    title: "Health Checks",
-    description:
-      "Kubernetes-ready /api/health endpoint with multiple aliases (/healthz, /ping). Perfect for container orchestration."
-  },
-  {
-    icon: SearchIcon,
-    title: "SEO Optimized",
-    description:
-      "Dynamic metadata API, automatic sitemap generation, robots.txt, and web manifest for maximum discoverability."
-  },
-  {
-    icon: GitBranchIcon,
-    title: "CI/CD Ready",
-    description:
-      "GitHub Actions workflows for testing, building, and deployment. CodeQL security scanning included out of the box."
-  },
-  {
-    icon: LayersIcon,
-    title: "Type Safety",
-    description:
-      "TypeScript strict mode with ts-reset and noUncheckedIndexedAccess. Catch errors at compile time, not runtime."
-  }
-];
-
-const QUICK_START_STEPS = [
-  {
-    step: 1,
-    title: "Use Template",
-    description: "Create a new repository from this template",
-    command: "gh repo create my-app --template JanSzewczyk/nextjs-szumplate"
-  },
-  {
-    step: 2,
-    title: "Install Dependencies",
-    description: "Install all required packages",
-    command: "npm install"
-  },
-  {
-    step: 3,
-    title: "Start Development",
-    description: "Launch the development server",
-    command: "npm run dev"
-  }
-];
-
-const SCRIPTS = [
-  {
-    command: "npm run dev",
-    description: "Start development server with Turbopack"
-  },
-  {
-    command: "npm run build",
-    description: "Create production build"
-  },
-  {
-    command: "npm run test",
-    description: "Run all Vitest tests"
-  },
-  {
-    command: "npm run test:e2e",
-    description: "Run Playwright E2E tests"
-  },
-  {
-    command: "npm run lint",
-    description: "ESLint code check"
-  },
-  {
-    command: "npm run storybook:dev",
-    description: "Component development environment"
-  }
-];
 
 export default function Home() {
   return (
@@ -347,19 +121,22 @@ export default function Home() {
               </p>
             </div>
             <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-              {FEATURES.map((feature) => (
-                <Card key={feature.title} className="bg-card transition-shadow hover:shadow-lg">
-                  <CardHeader>
-                    <div className="bg-primary/10 mb-4 flex size-12 items-center justify-center rounded-lg">
-                      <feature.icon className="text-primary size-6" />
-                    </div>
-                    <CardTitle className="text-heading-h3">{feature.title}</CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <CardDescription className="text-body-default">{feature.description}</CardDescription>
-                  </CardContent>
-                </Card>
-              ))}
+              {FEATURES.map((feature) => {
+                const Icon = FEATURE_ICONS[feature.iconName];
+                return (
+                  <Card key={feature.title} className="bg-card transition-shadow hover:shadow-lg">
+                    <CardHeader>
+                      <div className="bg-primary/10 mb-4 flex size-12 items-center justify-center rounded-lg">
+                        <Icon className="text-primary size-6" />
+                      </div>
+                      <CardTitle className="text-heading-h3">{feature.title}</CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      <CardDescription className="text-body-default">{feature.description}</CardDescription>
+                    </CardContent>
+                  </Card>
+                );
+              })}
             </div>
           </div>
         </section>

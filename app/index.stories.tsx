@@ -2,6 +2,7 @@ import { type Meta, type StoryObj } from "@storybook/react";
 import { expect, within } from "storybook/test";
 import RootLayout from "~/app/layout";
 import Page from "~/app/page";
+import { FEATURE_TITLES, QUICK_START_STEPS, SCRIPTS, TECH_STACK_CATEGORIES, TECH_STACK_ITEMS } from "~/constants";
 
 const meta = {
   title: "App/Home Page",
@@ -123,21 +124,9 @@ export const FeaturesSection: Story = {
       await expect(description).toBeVisible();
     });
 
-    await step("Verify all 9 feature cards are present", async () => {
+    await step(`Verify all ${FEATURE_TITLES.length} feature cards are present`, async () => {
       // CardTitle from design system renders as div, not h3
-      const featureTitles = [
-        "Next.js 16 Ready",
-        "React Server Components",
-        "Comprehensive Testing",
-        "Enterprise Quality",
-        "Structured Logging",
-        "Health Checks",
-        "SEO Optimized",
-        "CI/CD Ready",
-        "Type Safety"
-      ];
-
-      for (const title of featureTitles) {
+      for (const title of FEATURE_TITLES) {
         const featureTitle = canvas.getByText(title);
         await expect(featureTitle).toBeVisible();
       }
@@ -164,43 +153,18 @@ export const TechStackSection: Story = {
       await expect(description).toBeVisible();
     });
 
-    await step("Verify all category badges are present", async () => {
-      const categoryLabels = [
-        "Core Technologies",
-        "Testing Suite",
-        "Code Quality",
-        "Infrastructure",
-        "Forms",
-        "CI/CD",
-        "Configuration"
-      ];
-
-      for (const label of categoryLabels) {
+    await step(`Verify all ${TECH_STACK_CATEGORIES.length} category badges are present`, async () => {
+      for (const label of TECH_STACK_CATEGORIES) {
         const badge = canvas.getByText(label);
         await expect(badge).toBeVisible();
       }
     });
 
-    await step("Verify technology links are present", async () => {
-      const techLinks = [
-        { name: "Next.js 16", href: "https://nextjs.org" },
-        { name: "TypeScript", href: "https://typescriptlang.org" },
-        { name: "Tailwind CSS", href: "https://tailwindcss.com" },
-        { name: "Vitest", href: "https://vitest.dev" },
-        { name: "Playwright", href: "https://playwright.dev" },
-        { name: "Testing Library", href: "https://testing-library.com" },
-        { name: "Storybook", href: "https://storybook.js.org/" },
-        { name: "ESLint", href: "https://eslint.org" },
-        { name: "Prettier", href: "https://prettier.io" },
-        { name: "Pino", href: "https://getpino.io" },
-        { name: "Zod", href: "https://zod.dev" },
-        { name: "React Hook Form", href: "https://react-hook-form.com" },
-        { name: "GitHub Actions", href: "https://github.com/features/actions" },
-        { name: "T3 Env", href: "https://env.t3.gg/" }
-      ];
-
-      for (const tech of techLinks) {
-        const link = canvas.getByRole("link", { name: new RegExp(`learn more about ${tech.name}`, "i") });
+    await step(`Verify all ${TECH_STACK_ITEMS.length} technology links are present`, async () => {
+      for (const tech of TECH_STACK_ITEMS) {
+        // Escape special regex characters in tech name
+        const escapedName = tech.name.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+        const link = canvas.getByRole("link", { name: new RegExp(`learn more about ${escapedName}`, "i") });
         await expect(link).toBeVisible();
         await expect(link).toHaveAttribute("href", tech.href);
       }
@@ -227,29 +191,16 @@ export const QuickStartSection: Story = {
       await expect(description).toBeVisible();
     });
 
-    await step("Verify step 1 - Use Template", async () => {
-      const stepTitle = canvas.getByText("Use Template");
-      await expect(stepTitle).toBeVisible();
+    await step(`Verify all ${QUICK_START_STEPS.length} quick start steps`, async () => {
+      for (const quickStartStep of QUICK_START_STEPS) {
+        const stepTitle = canvas.getByText(quickStartStep.title);
+        await expect(stepTitle).toBeVisible();
 
-      const command = canvas.getByText(/gh repo create my-app --template JanSzewczyk\/nextjs-szumplate/i);
-      await expect(command).toBeVisible();
-    });
-
-    await step("Verify step 2 - Install Dependencies", async () => {
-      const stepTitle = canvas.getByText("Install Dependencies");
-      await expect(stepTitle).toBeVisible();
-
-      const command = canvas.getByText(/^npm install$/);
-      await expect(command).toBeVisible();
-    });
-
-    await step("Verify step 3 - Start Development", async () => {
-      const stepTitle = canvas.getByText("Start Development");
-      await expect(stepTitle).toBeVisible();
-
-      const commands = canvas.getAllByText(/npm run dev/);
-      // There are multiple "npm run dev" texts on the page (in scripts section too)
-      await expect(commands.length).toBeGreaterThanOrEqual(1);
+        // Escape special regex characters in command
+        const escapedCommand = quickStartStep.command.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+        const commands = canvas.getAllByText(new RegExp(escapedCommand));
+        await expect(commands.length).toBeGreaterThanOrEqual(1);
+      }
     });
   }
 };
@@ -273,17 +224,8 @@ export const ScriptsSection: Story = {
       await expect(description).toBeVisible();
     });
 
-    await step("Verify all 6 scripts are present with descriptions", async () => {
-      const scripts = [
-        { command: "npm run dev", description: "Start development server with Turbopack" },
-        { command: "npm run build", description: "Create production build" },
-        { command: "npm run test", description: "Run all Vitest tests" },
-        { command: "npm run test:e2e", description: "Run Playwright E2E tests" },
-        { command: "npm run lint", description: "ESLint code check" },
-        { command: "npm run storybook:dev", description: "Component development environment" }
-      ];
-
-      for (const script of scripts) {
+    await step(`Verify all ${SCRIPTS.length} scripts are present with descriptions`, async () => {
+      for (const script of SCRIPTS) {
         const commandElements = canvas.getAllByText(script.command);
         await expect(commandElements.length).toBeGreaterThanOrEqual(1);
 

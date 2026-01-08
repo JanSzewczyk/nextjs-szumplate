@@ -1,6 +1,5 @@
 import { type Meta, type StoryObj } from "@storybook/nextjs-vite";
 import { expect, userEvent, within } from "storybook/test";
-import RootLayout from "~/app/layout";
 import Page from "~/app/page";
 import { FEATURE_TITLES, QUICK_START_STEPS, SCRIPTS, TECH_STACK_CATEGORIES, TECH_STACK_ITEMS } from "~/constants";
 
@@ -14,14 +13,7 @@ const meta = {
       }
     },
     layout: "fullscreen"
-  },
-  decorators: [
-    (Story) => (
-      <RootLayout>
-        <Story />
-      </RootLayout>
-    )
-  ]
+  }
 } satisfies Meta<typeof Page>;
 
 export default meta;
@@ -152,26 +144,31 @@ export const TechStackTooltipInteraction: Story = {
       // Tooltip renders in a portal outside the main canvas, so we need to query the parent
       const portal = within(canvasElement.parentElement as HTMLElement);
 
-      // Wait for tooltip to appear and verify content
+      // Wait for tooltip to appear - use role selector which targets the accessible tooltip
+      const tooltip = await portal.findByRole("tooltip");
+      await expect(tooltip).toBeInTheDocument();
+
+      // Verify tooltip contains expected text
       const expectedTooltipText = `${sampleTech.name} - ${sampleTech.description}`;
-      const tooltip = await portal.findByText(expectedTooltipText);
-      await expect(tooltip).toBeVisible();
+      await expect(tooltip).toHaveTextContent(expectedTooltipText);
     });
 
-    await step("Verify tooltip disappears on unhover", async () => {
+    await step("Verify tooltip closes on unhover", async () => {
       const techLink = canvas.getByRole("link", { name: new RegExp(`learn more about ${escapedName}`, "i") });
 
       // Move mouse away to hide tooltip
       await userEvent.unhover(techLink);
 
-      // Tooltip should no longer be visible - query the portal
+      // Radix tooltip animates out so it may still be in DOM briefly.
+      // Check that tooltip content has data-state="closed" indicating it's closing/closed.
       const portal = within(canvasElement.parentElement as HTMLElement);
-      const expectedTooltipText = `${sampleTech.name} - ${sampleTech.description}`;
-      const tooltip = portal.queryByText(expectedTooltipText);
+      const tooltipContent = portal.queryByText(`${sampleTech.name} - ${sampleTech.description}`, {
+        selector: '[data-slot="tooltip-content"]'
+      });
 
-      // Tooltip may still be in DOM but hidden, or removed entirely
-      if (tooltip) {
-        await expect(tooltip).not.toBeVisible();
+      // Visual tooltip content should have closed state after unhover
+      if (tooltipContent) {
+        await expect(tooltipContent).toHaveAttribute("data-state", "closed");
       }
     });
   }

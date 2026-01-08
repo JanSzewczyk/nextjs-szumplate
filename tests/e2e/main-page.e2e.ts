@@ -17,86 +17,102 @@ test("has title", async ({ page }) => {
 test("has hero section content", async ({ page }) => {
   await page.goto("/");
 
-  // Main heading
-  await expect(page.getByRole("heading", { level: 1, name: /Szum-Tech.*Next\.js Template/i })).toBeVisible();
+  // Main heading - h1 contains span with "Szum-Tech" and text "Next.js Template"
+  const h1 = page.getByRole("heading", { level: 1 });
+  await expect(h1).toBeVisible();
+  await expect(h1).toContainText("Szum-Tech");
+  await expect(h1).toContainText("Next.js Template");
 
   // Hero description
   await expect(page.getByText(/Enterprise-ready Next\.js starter template/i)).toBeVisible();
 
-  // CTA buttons
-  await expect(page.getByRole("link", { name: /Use This Template/i }).first()).toBeVisible();
-  await expect(page.getByRole("link", { name: /View on GitHub/i }).first()).toBeVisible();
+  // CTA buttons - Button asChild renders as role="button" with href
+  await expect(page.getByRole("button", { name: /Use This Template/i }).first()).toBeVisible();
+  await expect(page.getByRole("button", { name: /View on GitHub/i }).first()).toBeVisible();
 });
 
 test("has features section", async ({ page }) => {
   await page.goto("/");
 
-  await expect(page.getByRole("heading", { level: 2, name: /Why Choose This Template/i })).toBeVisible();
+  const featuresSection = page.locator("#features");
+
+  await expect(featuresSection.getByRole("heading", { level: 2, name: /Why Choose This Template/i })).toBeVisible();
 
   // Check all feature cards using constants
+  // CardTitle renders as div, not h3, so we search by text within section
   for (const title of FEATURE_TITLES) {
-    await expect(page.getByRole("heading", { level: 3, name: title })).toBeVisible();
+    await expect(featuresSection.getByText(title, { exact: true })).toBeVisible();
   }
 });
 
 test("has tech stack section", async ({ page }) => {
   await page.goto("/");
 
-  await expect(page.getByRole("heading", { level: 2, name: /Tech Stack/i })).toBeVisible();
+  const techStackSection = page.locator("#tech-stack");
 
-  // Tech stack categories from constants
+  await expect(techStackSection.getByRole("heading", { level: 2, name: /Tech Stack/i })).toBeVisible();
+
+  // Tech stack categories from constants - use Badge elements
   for (const category of TECH_STACK_CATEGORIES) {
-    await expect(page.getByText(category)).toBeVisible();
+    await expect(techStackSection.getByText(category, { exact: true })).toBeVisible();
   }
 
   // Tech stack items count from constants
-  const techItems = page.locator("#tech-stack").getByRole("listitem");
+  const techItems = techStackSection.getByRole("listitem");
   await expect(techItems).toHaveCount(TECH_STACK_COUNT);
 
   // Verify all technology images from constants
   for (const tech of TECH_STACK_ITEMS) {
-    await expect(page.getByRole("img", { name: tech.name })).toBeVisible();
+    await expect(techStackSection.getByRole("img", { name: tech.name })).toBeVisible();
   }
 });
 
 test("has quick start section", async ({ page }) => {
   await page.goto("/");
 
-  await expect(page.getByRole("heading", { level: 2, name: /Quick Start/i })).toBeVisible();
+  const quickStartSection = page.locator("#quick-start");
+
+  await expect(quickStartSection.getByRole("heading", { level: 2, name: /Quick Start/i })).toBeVisible();
 
   // Quick start steps from constants
+  // CardTitle contains step number + title, so don't use exact match for title
   for (const step of QUICK_START_STEPS) {
-    await expect(page.getByText(step.title)).toBeVisible();
-    await expect(page.getByText(step.command)).toBeVisible();
+    // Check that step title exists within the section (title is part of larger text with step number)
+    await expect(quickStartSection.getByText(step.title)).toBeVisible();
+    // Check that command exists within the section
+    await expect(quickStartSection.getByText(step.command)).toBeVisible();
   }
 });
 
 test("has scripts section", async ({ page }) => {
   await page.goto("/");
 
-  await expect(page.getByRole("heading", { level: 2, name: /Built-in Scripts/i })).toBeVisible();
+  const scriptsSection = page.locator("#scripts");
 
-  // Check all script commands from constants
+  await expect(scriptsSection.getByRole("heading", { level: 2, name: /Built-in Scripts/i })).toBeVisible();
+
+  // Check all script commands from constants within the scripts section
   for (const script of SCRIPTS) {
-    await expect(page.getByText(script.command, { exact: true })).toBeVisible();
+    await expect(scriptsSection.getByText(script.command, { exact: true })).toBeVisible();
   }
 });
 
 test("has footer", async ({ page }) => {
   await page.goto("/");
 
-  await expect(page.getByText("Szum-Tech Next.js Template")).toBeVisible();
-  await expect(page.getByRole("link", { name: "Jan Szewczyk" })).toBeVisible();
-  await expect(page.getByRole("link", { name: /Source/i })).toBeVisible();
+  const footer = page.getByRole("contentinfo");
+
+  await expect(footer.getByText("Szum-Tech Next.js Template")).toBeVisible();
+  await expect(footer.getByRole("link", { name: "Jan Szewczyk" })).toBeVisible();
+  await expect(footer.getByRole("link", { name: /Source/i })).toBeVisible();
 });
 
 test("open GitHub repo in new tab", async ({ page, context }) => {
-  const pagePromise = context.waitForEvent("page");
-
   await page.goto("/");
 
-  // Click GitHub link in header
-  await page.getByRole("link", { name: /View GitHub repository/i }).click();
+  // Click GitHub link in header - find by aria-label
+  const pagePromise = context.waitForEvent("page");
+  await page.getByLabel(/View GitHub repository/i).click();
   const newPage = await pagePromise;
   await newPage.waitForLoadState();
 
@@ -105,14 +121,16 @@ test("open GitHub repo in new tab", async ({ page, context }) => {
 });
 
 test("tech stack links open in new tab", async ({ page, context }) => {
-  const pagePromise = context.waitForEvent("page");
-
   await page.goto("/");
+
+  const techStackSection = page.locator("#tech-stack");
 
   // Click on first tech link (from constants)
   const firstTech = TECH_STACK_ITEMS[0];
   const escapedName = firstTech?.name.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-  await page.getByRole("link", { name: new RegExp(`Learn more about ${escapedName}`, "i") }).click();
+
+  const pagePromise = context.waitForEvent("page");
+  await techStackSection.getByRole("link", { name: new RegExp(`Learn more about ${escapedName}`, "i") }).click();
   const newPage = await pagePromise;
   await newPage.waitForLoadState();
 

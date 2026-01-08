@@ -15,5 +15,11 @@
         ]
       }
     ]
-  }
+  },
+  "enableAllProjectMcpServers": true,
+  "enabledMcpjsonServers": [
+    "next-devtools",
+    "playwright",
+    "context7"
+  ]
 }

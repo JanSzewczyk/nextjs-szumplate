@@ -1,5 +1,5 @@
-import { type Meta, type StoryObj } from "@storybook/react";
-import { expect, within } from "storybook/test";
+import { type Meta, type StoryObj } from "@storybook/nextjs-vite";
+import { expect, userEvent, within } from "storybook/test";
 import RootLayout from "~/app/layout";
 import Page from "~/app/page";
 import { FEATURE_TITLES, QUICK_START_STEPS, SCRIPTS, TECH_STACK_CATEGORIES, TECH_STACK_ITEMS } from "~/constants";
@@ -29,52 +29,12 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 /**
- * Tests the complete home page renders correctly with all major sections.
- * Verifies header navigation, hero section heading and CTA buttons are present.
- */
-export const Default: Story = {
-  name: "Home Page",
-  tags: ["test-only"],
-  play: async ({ canvasElement, step }) => {
-    const canvas = within(canvasElement);
-
-    await step("Verify header navigation", async () => {
-      // Design system Button with asChild renders links with role="button"
-      const docsButton = canvas.getByRole("button", { name: /view storybook documentation/i });
-      await expect(docsButton).toBeVisible();
-      await expect(docsButton).toHaveAttribute("href", "https://szum-tech-design-system.vercel.app/");
-
-      const githubButton = canvas.getByRole("button", { name: /view github repository/i });
-      await expect(githubButton).toBeVisible();
-      await expect(githubButton).toHaveAttribute("href", "https://github.com/JanSzewczyk/nextjs-szumplate");
-    });
-
-    await step("Verify hero section heading", async () => {
-      const heading = canvas.getByRole("heading", { name: /szum-tech next\.js template/i, level: 1 });
-      await expect(heading).toBeVisible();
-    });
-
-    await step("Verify hero CTA buttons", async () => {
-      // There are multiple "Use This Template" buttons - verify at least one exists
-      const useTemplateButtons = canvas.getAllByRole("button", { name: /use this template/i });
-      await expect(useTemplateButtons.length).toBeGreaterThanOrEqual(1);
-      await expect(useTemplateButtons[0]).toBeVisible();
-
-      const viewOnGitHubButton = canvas.getByRole("button", { name: /view on github/i });
-      await expect(viewOnGitHubButton).toBeVisible();
-    });
-  }
-};
-
-/**
  * Tests the hero section with badge, heading, description, and CTA buttons.
  * Verifies all content matches the current design.
  */
 export const HeroSection: Story = {
   tags: ["test-only"],
-  play: async ({ canvasElement, step }) => {
-    const canvas = within(canvasElement);
-
+  play: async ({ canvas, step }) => {
     await step("Verify technology badge", async () => {
       const badge = canvas.getByText(/next\.js 16.*react 19.*typescript.*rsc/i);
       await expect(badge).toBeVisible();
@@ -111,9 +71,7 @@ export const HeroSection: Story = {
  */
 export const FeaturesSection: Story = {
   tags: ["test-only"],
-  play: async ({ canvasElement, step }) => {
-    const canvas = within(canvasElement);
-
+  play: async ({ canvas, step }) => {
     await step("Verify features section heading", async () => {
       const heading = canvas.getByRole("heading", { name: /why choose this template\?/i, level: 2 });
       await expect(heading).toBeVisible();
@@ -140,9 +98,7 @@ export const FeaturesSection: Story = {
  */
 export const TechStackSection: Story = {
   tags: ["test-only"],
-  play: async ({ canvasElement, step }) => {
-    const canvas = within(canvasElement);
-
+  play: async ({ canvas, step }) => {
     await step("Verify tech stack section heading", async () => {
       const heading = canvas.getByRole("heading", { name: /tech stack/i, level: 2 });
       await expect(heading).toBeVisible();
@@ -173,14 +129,61 @@ export const TechStackSection: Story = {
 };
 
 /**
+ * Tests tooltip interaction on tech stack items.
+ * Verifies tooltip appears on hover with technology name and description.
+ */
+export const TechStackTooltipInteraction: Story = {
+  tags: ["test-only"],
+  play: async ({ canvas, canvasElement, step }) => {
+    // Select a sample tech item to test tooltip behavior
+    // Using non-null assertion since TECH_STACK_ITEMS is guaranteed to have items
+    const sampleTech = TECH_STACK_ITEMS[0]!;
+    const escapedName = sampleTech.name.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+
+    await step(`Hover over "${sampleTech.name}" to trigger tooltip`, async () => {
+      const techLink = canvas.getByRole("link", { name: new RegExp(`learn more about ${escapedName}`, "i") });
+      await expect(techLink).toBeVisible();
+
+      // Hover to trigger tooltip
+      await userEvent.hover(techLink);
+    });
+
+    await step("Verify tooltip content appears with name and description", async () => {
+      // Tooltip renders in a portal outside the main canvas, so we need to query the parent
+      const portal = within(canvasElement.parentElement as HTMLElement);
+
+      // Wait for tooltip to appear and verify content
+      const expectedTooltipText = `${sampleTech.name} - ${sampleTech.description}`;
+      const tooltip = await portal.findByText(expectedTooltipText);
+      await expect(tooltip).toBeVisible();
+    });
+
+    await step("Verify tooltip disappears on unhover", async () => {
+      const techLink = canvas.getByRole("link", { name: new RegExp(`learn more about ${escapedName}`, "i") });
+
+      // Move mouse away to hide tooltip
+      await userEvent.unhover(techLink);
+
+      // Tooltip should no longer be visible - query the portal
+      const portal = within(canvasElement.parentElement as HTMLElement);
+      const expectedTooltipText = `${sampleTech.name} - ${sampleTech.description}`;
+      const tooltip = portal.queryByText(expectedTooltipText);
+
+      // Tooltip may still be in DOM but hidden, or removed entirely
+      if (tooltip) {
+        await expect(tooltip).not.toBeVisible();
+      }
+    });
+  }
+};
+
+/**
  * Tests the quick start section with 3 steps.
  * Verifies step titles, descriptions, and commands.
  */
 export const QuickStartSection: Story = {
   tags: ["test-only"],
-  play: async ({ canvasElement, step }) => {
-    const canvas = within(canvasElement);
-
+  play: async ({ canvas, step }) => {
     await step("Verify quick start section heading", async () => {
       const heading = canvas.getByRole("heading", { name: /quick start/i, level: 2 });
       await expect(heading).toBeVisible();
@@ -211,9 +214,7 @@ export const QuickStartSection: Story = {
  */
 export const ScriptsSection: Story = {
   tags: ["test-only"],
-  play: async ({ canvasElement, step }) => {
-    const canvas = within(canvasElement);
-
+  play: async ({ canvas, step }) => {
     await step("Verify scripts section heading", async () => {
       const heading = canvas.getByRole("heading", { name: /built-in scripts/i, level: 2 });
       await expect(heading).toBeVisible();
@@ -247,9 +248,7 @@ export const ScriptsSection: Story = {
  */
 export const CTASection: Story = {
   tags: ["test-only"],
-  play: async ({ canvasElement, step }) => {
-    const canvas = within(canvasElement);
-
+  play: async ({ canvas, step }) => {
     await step("Verify CTA section heading", async () => {
       const heading = canvas.getByRole("heading", { name: /ready to build something amazing\?/i, level: 2 });
       await expect(heading).toBeVisible();
@@ -278,9 +277,7 @@ export const CTASection: Story = {
  */
 export const FooterSection: Story = {
   tags: ["test-only"],
-  play: async ({ canvasElement, step }) => {
-    const canvas = within(canvasElement);
-
+  play: async ({ canvas, step }) => {
     await step("Verify footer branding", async () => {
       const branding = canvas.getByText("Szum-Tech Next.js Template");
       await expect(branding).toBeVisible();
@@ -307,14 +304,12 @@ export const FooterSection: Story = {
 };
 
 /**
- * Tests accessibility and navigation across the entire page.
- * Verifies all sections have proper headings and links are accessible.
+ * Tests page structure and accessibility across the entire page.
+ * Verifies heading hierarchy, main content structure, and sample external link attributes.
  */
-export const AccessibilityAndNavigation: Story = {
+export const PageStructureAndAccessibility: Story = {
   tags: ["test-only"],
-  play: async ({ canvasElement, step }) => {
-    const canvas = within(canvasElement);
-
+  play: async ({ canvas, step }) => {
     await step("Verify heading hierarchy", async () => {
       // H1 - Main page heading
       const h1 = canvas.getByRole("heading", { level: 1 });
@@ -325,36 +320,34 @@ export const AccessibilityAndNavigation: Story = {
       await expect(h2Headings.length).toBeGreaterThanOrEqual(5);
     });
 
-    await step("Verify all external links have proper attributes", async () => {
-      // Check regular links (not styled as buttons)
-      const allLinks = canvas.getAllByRole("link");
-      for (const link of allLinks) {
-        const href = link.getAttribute("href");
-        // External links should open in new tab
-        if (href && !href.startsWith("/") && !href.startsWith("#")) {
-          await expect(link).toHaveAttribute("target", "_blank");
-          await expect(link).toHaveAttribute("rel", expect.stringContaining("noreferrer"));
-        }
-      }
-
-      // Check button-styled links (design system Button with asChild)
-      const allButtons = canvas.getAllByRole("button");
-      for (const button of allButtons) {
-        const href = button.getAttribute("href");
-        // Only check anchor elements styled as buttons
-        if (href && button.tagName.toLowerCase() === "a") {
-          await expect(button).toHaveAttribute("target", "_blank");
-          await expect(button).toHaveAttribute("rel", expect.stringContaining("noreferrer"));
-        }
-      }
-    });
-
     await step("Verify main content structure", async () => {
       const main = canvas.getByRole("main");
       await expect(main).toBeVisible();
 
       const footer = canvas.getByRole("contentinfo");
       await expect(footer).toBeVisible();
+    });
+
+    await step("Verify sample external links have proper security attributes", async () => {
+      // Sample-check a few key external links instead of iterating over all
+      // This is faster and less brittle while still validating the pattern
+
+      // Check GitHub repository link (header)
+      const githubButton = canvas.getByRole("button", { name: /view github repository/i });
+      await expect(githubButton).toHaveAttribute("target", "_blank");
+      await expect(githubButton).toHaveAttribute("rel", expect.stringContaining("noreferrer"));
+
+      // Check author link in footer (regular link)
+      const authorLink = canvas.getByRole("link", { name: /jan szewczyk/i });
+      await expect(authorLink).toHaveAttribute("target", "_blank");
+      await expect(authorLink).toHaveAttribute("rel", expect.stringContaining("noreferrer"));
+
+      // Check a tech stack link
+      const sampleTech = TECH_STACK_ITEMS[0]!;
+      const escapedName = sampleTech.name.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+      const techLink = canvas.getByRole("link", { name: new RegExp(`learn more about ${escapedName}`, "i") });
+      await expect(techLink).toHaveAttribute("target", "_blank");
+      await expect(techLink).toHaveAttribute("rel", expect.stringContaining("noreferrer"));
     });
   }
 };

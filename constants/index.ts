@@ -9,3 +9,6 @@ export type { Script } from "./scripts";
 
 export { TECH_STACK, TECH_STACK_CATEGORIES, TECH_STACK_COUNT, TECH_STACK_ITEMS } from "./tech-stack";
 export type { TechCategory, TechItem } from "./tech-stack";
+
+export { SZUM_TECH_PACKAGES, SZUM_TECH_PACKAGE_NAMES, SZUM_TECH_PACKAGE_COUNT } from "./szum-tech-ecosystem";
+export type { SzumTechPackage, SzumTechIconName } from "./szum-tech-ecosystem";

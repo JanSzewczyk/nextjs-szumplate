@@ -106,6 +106,7 @@ __tests__/runner/*
 jest-results.json
 /test-results
 /playwright-report
+/.playwright-mcp
 
 # Develpment
 .vscode/

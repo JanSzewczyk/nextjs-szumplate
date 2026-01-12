@@ -1,16 +1,18 @@
 import {
   type LucideIcon,
   ActivityIcon,
-  BookOpenIcon,
   CodeIcon,
+  ExternalLinkIcon,
   FileTextIcon,
   GitBranchIcon,
   LayersIcon,
+  PaletteIcon,
   RocketIcon,
   SearchIcon,
   ServerIcon,
   ShieldCheckIcon,
   SparklesIcon,
+  TagIcon,
   TerminalIcon,
   TestTube2Icon
 } from "lucide-react";
@@ -31,7 +33,16 @@ import {
 } from "@szum-tech/design-system";
 import Image from "next/image";
 import { GithubIcon } from "~/components/ui/icons/github";
-import { type FeatureIconName, FEATURES, QUICK_START_STEPS, SCRIPTS, TECH_STACK } from "~/constants";
+import { ThemeToggle } from "~/components/ui/theme-toggle";
+import {
+  type FeatureIconName,
+  type SzumTechIconName,
+  FEATURES,
+  QUICK_START_STEPS,
+  SCRIPTS,
+  SZUM_TECH_PACKAGES,
+  TECH_STACK
+} from "~/constants";
 
 const FEATURE_ICONS: Record<FeatureIconName, LucideIcon> = {
   RocketIcon,
@@ -45,6 +56,13 @@ const FEATURE_ICONS: Record<FeatureIconName, LucideIcon> = {
   LayersIcon
 };
 
+const SZUM_TECH_ICONS: Record<SzumTechIconName, LucideIcon> = {
+  PaletteIcon,
+  ShieldCheckIcon,
+  SparklesIcon,
+  TagIcon
+};
+
 export default function Home() {
   return (
     <div className="flex min-h-screen flex-col">
@@ -56,16 +74,7 @@ export default function Home() {
             <span className="text-body-sm font-semibold">Szum-Tech</span>
           </div>
           <div className="flex items-center gap-2">
-            <Button asChild variant="ghost" size="sm" startIcon={<BookOpenIcon />}>
-              <a
-                target="_blank"
-                href="https://szum-tech-design-system.vercel.app/"
-                rel="noreferrer"
-                aria-label="View Storybook documentation"
-              >
-                Docs
-              </a>
-            </Button>
+            <ThemeToggle />
             <Button asChild variant="outline" size="sm" endIcon={<GithubIcon />}>
               <a
                 target="_blank"
@@ -143,8 +152,101 @@ export default function Home() {
 
         <Separator />
 
+        {/* Szum-Tech Ecosystem Section */}
+        <section id="ecosystem" className="py-16 md:py-24">
+          <div className="container">
+            <div className="mb-12 text-center">
+              <Badge variant="primary" className="mb-4">
+                Open Source
+              </Badge>
+              <h2 className="text-heading-h2 mb-4">Szum-Tech Ecosystem</h2>
+              <p className="text-muted-foreground mx-auto max-w-2xl">
+                This template is powered by a suite of open-source packages designed to accelerate development and
+                maintain consistency across projects.
+              </p>
+            </div>
+
+            <div className="grid gap-6 md:grid-cols-2">
+              {SZUM_TECH_PACKAGES.map((pkg) => {
+                const Icon = SZUM_TECH_ICONS[pkg.iconName];
+                return (
+                  <Card key={pkg.packageName} className="group relative overflow-hidden transition-all hover:shadow">
+                    <div className="from-primary/5 via-primary/2 absolute inset-0 bg-gradient-to-br to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
+                    <CardHeader className="relative">
+                      <div className="mb-4 flex items-start justify-between">
+                        <div className="bg-primary/10 flex size-12 items-center justify-center rounded-xl">
+                          <Icon className="text-primary size-6" />
+                        </div>
+                        <div className="flex gap-2">
+                          {pkg.docsUrl && (
+                            <Tooltip>
+                              <TooltipTrigger asChild>
+                                <Button asChild variant="ghost" size="sm">
+                                  <a
+                                    href={pkg.docsUrl}
+                                    target="_blank"
+                                    rel="noreferrer"
+                                    aria-label={`View documentation for ${pkg.name}`}
+                                  >
+                                    <ExternalLinkIcon className="size-4" />
+                                  </a>
+                                </Button>
+                              </TooltipTrigger>
+                              <TooltipContent>Documentation</TooltipContent>
+                            </Tooltip>
+                          )}
+                          <Tooltip>
+                            <TooltipTrigger asChild>
+                              <Button asChild variant="ghost" size="sm">
+                                <a
+                                  href={pkg.githubUrl}
+                                  target="_blank"
+                                  rel="noreferrer"
+                                  aria-label={`View ${pkg.name} on GitHub`}
+                                >
+                                  <GithubIcon className="size-4" />
+                                </a>
+                              </Button>
+                            </TooltipTrigger>
+                            <TooltipContent>GitHub Repository</TooltipContent>
+                          </Tooltip>
+                        </div>
+                      </div>
+                      <CardTitle className="text-heading-h3">{pkg.name}</CardTitle>
+                      <code className="text-code text-primary/80 text-sm">{pkg.packageName}</code>
+                    </CardHeader>
+                    <CardContent className="relative">
+                      <CardDescription className="text-body-default mb-4">{pkg.description}</CardDescription>
+                      <div className="flex flex-wrap gap-2">
+                        {pkg.features.map((feature) => (
+                          <Badge key={feature} variant="secondary" className="text-xs">
+                            {feature}
+                          </Badge>
+                        ))}
+                      </div>
+                    </CardContent>
+                  </Card>
+                );
+              })}
+            </div>
+
+            <div className="mt-10 text-center">
+              <p className="text-muted-foreground text-body-sm mb-4">
+                All packages are maintained by Szum-Tech and follow semantic versioning.
+              </p>
+              <Button asChild variant="outline" size="sm" endIcon={<GithubIcon className="size-4" />}>
+                <a href="https://github.com/JanSzewczyk" target="_blank" rel="noreferrer">
+                  Explore All Packages
+                </a>
+              </Button>
+            </div>
+          </div>
+        </section>
+
+        <Separator />
+
         {/* Tech Stack Section */}
-        <section id="tech-stack" className="py-16 md:py-24">
+        <section id="tech-stack" className="bg-muted/50 py-16 md:py-24">
           <div className="container">
             <div className="mb-12 text-center">
               <h2 className="text-heading-h2 mb-4">Tech Stack</h2>
@@ -197,7 +299,7 @@ export default function Home() {
         <Separator />
 
         {/* Quick Start Section */}
-        <section id="quick-start" className="bg-muted/50 py-16 md:py-24">
+        <section id="quick-start" className="py-16 md:py-24">
           <div className="container">
             <div className="mb-12 text-center">
               <h2 className="text-heading-h2 mb-4">Quick Start</h2>
@@ -233,7 +335,7 @@ export default function Home() {
         <Separator />
 
         {/* Built-in Scripts Section */}
-        <section id="scripts" className="py-16 md:py-24">
+        <section id="scripts" className="bg-muted/50 py-16 md:py-24">
           <div className="container">
             <div className="mb-12 text-center">
               <h2 className="text-heading-h2 mb-4">Built-in Scripts</h2>

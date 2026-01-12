@@ -3,6 +3,8 @@ import {
   FEATURE_TITLES,
   QUICK_START_STEPS,
   SCRIPTS,
+  SZUM_TECH_PACKAGE_COUNT,
+  SZUM_TECH_PACKAGES,
   TECH_STACK_CATEGORIES,
   TECH_STACK_COUNT,
   TECH_STACK_ITEMS
@@ -43,6 +45,37 @@ test("has features section", async ({ page }) => {
   for (const title of FEATURE_TITLES) {
     await expect(featuresSection.getByText(title, { exact: true })).toBeVisible();
   }
+});
+
+test("has szum-tech ecosystem section", async ({ page }) => {
+  await page.goto("/");
+
+  const ecosystemSection = page.locator("#ecosystem");
+
+  // Verify section heading
+  await expect(ecosystemSection.getByRole("heading", { level: 2, name: /Szum-Tech Ecosystem/i })).toBeVisible();
+
+  // Verify Open Source badge
+  await expect(ecosystemSection.getByText("Open Source")).toBeVisible();
+
+  // Verify section description
+  await expect(ecosystemSection.getByText(/powered by a suite of open-source packages/i)).toBeVisible();
+
+  // Verify all package cards are present (4 packages)
+  for (const pkg of SZUM_TECH_PACKAGES) {
+    // Verify package name
+    await expect(ecosystemSection.getByText(pkg.name, { exact: true })).toBeVisible();
+
+    // Verify npm package name
+    await expect(ecosystemSection.getByText(pkg.packageName)).toBeVisible();
+  }
+
+  // Verify the correct number of GitHub buttons (one per package)
+  const githubButtons = ecosystemSection.getByRole("button", { name: /view .* on github/i });
+  await expect(githubButtons).toHaveCount(SZUM_TECH_PACKAGE_COUNT);
+
+  // Verify Explore All Packages button
+  await expect(ecosystemSection.getByRole("button", { name: /Explore All Packages/i })).toBeVisible();
 });
 
 test("has tech stack section", async ({ page }) => {

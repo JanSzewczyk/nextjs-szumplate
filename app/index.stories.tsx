@@ -1,7 +1,15 @@
 import { type Meta, type StoryObj } from "@storybook/nextjs-vite";
 import { expect, userEvent, within } from "storybook/test";
 import Page from "~/app/page";
-import { FEATURE_TITLES, QUICK_START_STEPS, SCRIPTS, TECH_STACK_CATEGORIES, TECH_STACK_ITEMS } from "~/constants";
+import {
+  FEATURE_TITLES,
+  QUICK_START_STEPS,
+  SCRIPTS,
+  SZUM_TECH_PACKAGE_COUNT,
+  SZUM_TECH_PACKAGES,
+  TECH_STACK_CATEGORIES,
+  TECH_STACK_ITEMS
+} from "~/constants";
 
 const meta = {
   title: "App/Home Page",
@@ -80,6 +88,72 @@ export const FeaturesSection: Story = {
         const featureTitle = canvas.getByText(title);
         await expect(featureTitle).toBeVisible();
       }
+    });
+  }
+};
+
+/**
+ * Tests the Szum-Tech Ecosystem section with all 4 package cards.
+ * Verifies section heading, description, and all package information.
+ */
+export const SzumTechEcosystemSection: Story = {
+  tags: ["test-only"],
+  play: async ({ canvas, step }) => {
+    await step("Verify ecosystem section heading", async () => {
+      const heading = canvas.getByRole("heading", { name: /szum-tech ecosystem/i, level: 2 });
+      await expect(heading).toBeVisible();
+    });
+
+    await step("Verify Open Source badge", async () => {
+      const badge = canvas.getByText("Open Source");
+      await expect(badge).toBeVisible();
+    });
+
+    await step("Verify ecosystem section description", async () => {
+      const description = canvas.getByText(/powered by a suite of open-source packages/i);
+      await expect(description).toBeVisible();
+    });
+
+    await step(`Verify all ${SZUM_TECH_PACKAGE_COUNT} package cards are present`, async () => {
+      for (const pkg of SZUM_TECH_PACKAGES) {
+        // Verify package name
+        const packageName = canvas.getByText(pkg.name);
+        await expect(packageName).toBeVisible();
+
+        // Verify package npm name
+        const npmName = canvas.getByText(pkg.packageName);
+        await expect(npmName).toBeVisible();
+
+        // Verify package description
+        const description = canvas.getByText(pkg.description);
+        await expect(description).toBeVisible();
+      }
+    });
+
+    await step("Verify GitHub links for all packages", async () => {
+      for (const pkg of SZUM_TECH_PACKAGES) {
+        const githubLink = canvas.getByRole("button", { name: new RegExp(`view ${pkg.name} on github`, "i") });
+        await expect(githubLink).toBeVisible();
+        await expect(githubLink).toHaveAttribute("href", pkg.githubUrl);
+      }
+    });
+
+    await step("Verify documentation link for Design System", async () => {
+      // Only Design System has a docs link
+      const designSystem = SZUM_TECH_PACKAGES.find((pkg) => pkg.docsUrl);
+      if (designSystem) {
+        const docsLink = canvas.getByRole("button", {
+          name: new RegExp(`view documentation for ${designSystem.name}`, "i")
+        });
+        await expect(docsLink).toBeVisible();
+        await expect(docsLink).toHaveAttribute("href", designSystem.docsUrl);
+      }
+    });
+
+    await step("Verify Explore All Packages button", async () => {
+      const exploreButton = canvas.getByRole("button", { name: /explore all packages/i });
+      await expect(exploreButton).toBeVisible();
+      await expect(exploreButton).toHaveAttribute("href", "https://github.com/JanSzewczyk");
     });
   }
 };
@@ -312,9 +386,9 @@ export const PageStructureAndAccessibility: Story = {
       const h1 = canvas.getByRole("heading", { level: 1 });
       await expect(h1).toBeVisible();
 
-      // H2 - Section headings (features, tech stack, quick start, scripts, cta)
+      // H2 - Section headings (features, ecosystem, tech stack, quick start, scripts, cta)
       const h2Headings = canvas.getAllByRole("heading", { level: 2 });
-      await expect(h2Headings.length).toBeGreaterThanOrEqual(5);
+      await expect(h2Headings.length).toBeGreaterThanOrEqual(6);
     });
 
     await step("Verify main content structure", async () => {

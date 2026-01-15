@@ -1,25 +1,71 @@
 {
+  "enableAllProjectMcpServers": true,
+  "enabledMcpjsonServers": [
+    "next-devtools",
+    "playwright",
+    "context7",
+    "jetbrains"
+  ],
   "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "echo '🚀 Session started in: $CLAUDE_PROJECT_DIR' >&2"
+          }
+        ]
+      }
+    ],
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "echo '{\"systemMessage\": \"Remember: Always check Context7 for latest library documentation before implementation.\"}'"
+          }
+        ]
+      }
+    ],
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "[[ \"$TOOL_INPUT\" =~ (rm -rf|git push.*--force|drop database) ]] && echo 'Dangerous command blocked' >&2 && exit 2 || true"
+          }
+        ]
+      }
+    ],
     "PostToolUse": [
       {
         "matcher": "Edit|Write",
         "hooks": [
           {
             "type": "command",
-            "command": "npx prettier --write \"$CLAUDE_FILE_PATH\""
+            "command": "npx prettier --write \"$CLAUDE_FILE_PATH\" 2>/dev/null || true"
           },
           {
             "type": "command",
-            "command": "npx eslint --fix \"$CLAUDE_FILE_PATH\""
+            "command": "[[ \"$CLAUDE_FILE_PATH\" =~ \\.(ts|tsx|js|jsx|mjs|cjs)$ ]] && npx eslint --fix \"$CLAUDE_FILE_PATH\" 2>/dev/null || true"
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "prompt",
+            "prompt": "Before finishing, verify: 1) All requested changes are complete, 2) No TypeScript errors introduced, 3) Code follows project patterns from CLAUDE.md. If something is incomplete, list it.",
+            "timeout": 30
           }
         ]
       }
     ]
   },
-  "enableAllProjectMcpServers": true,
-  "enabledMcpjsonServers": [
-    "next-devtools",
-    "playwright",
-    "context7"
-  ]
+  "enabledPlugins": {
+    "claude-mem@thedotmack": true
+  }
 }

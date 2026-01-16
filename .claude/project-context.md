@@ -5,170 +5,133 @@ When using this configuration in other projects, update this file with your proj
 
 ## Tech Stack
 
-| Category | Technology | Version |
-|----------|------------|---------|
-| Framework | Next.js | 16 (App Router, Turbopack) |
-| UI Library | React | 19.2 (with React Compiler) |
-| Authentication | Clerk | proxy-based (proxy.ts, NOT middleware.ts) |
-| Database | Firebase Firestore | Admin SDK |
-| Styling | Tailwind CSS | 4 |
-| Design System | @szum-tech/design-system | (shadcn/ui based) |
-| Type Safety | TypeScript | strict mode |
-| Env Validation | T3 Env | @t3-oss/env-nextjs |
-| Logging | Pino | with pretty-printing in dev |
+| Category         | Technology                 | Version/Notes                       |
+| ---------------- | -------------------------- | ----------------------------------- |
+| Framework        | Next.js                    | 16 (App Router)                     |
+| UI Library       | React                      | 19.2 (with React Compiler)          |
+| Styling          | Tailwind CSS               | 4 (CSS-first config in globals.css) |
+| Design System    | @szum-tech/design-system   | (shadcn/ui based)                   |
+| Type Safety      | TypeScript                 | strict mode                         |
+| Env Validation   | T3 Env                     | @t3-oss/env-nextjs                  |
+| Logging          | Pino                       | JSON structured logging             |
+| Forms            | React Hook Form            | with Zod validation                 |
+| Schema Validation| Zod                        | v4                                  |
 
 ## Testing Stack
 
-| Type | Tool | Location | Command |
-|------|------|----------|---------|
-| Unit | Vitest | `tests/unit/`, `*.test.ts` | `npm run test:unit` |
-| Component | Storybook + Vitest | `*.stories.tsx` | `npm run test:storybook` |
-| E2E | Playwright | `tests/e2e/` | `npm run test:e2e` |
-| All | Vitest | - | `npm run test` |
+| Type      | Tool             | Location              | Command                |
+| --------- | ---------------- | --------------------- | ---------------------- |
+| Unit      | Vitest           | `tests/unit/`, `*.test.ts` | `npm run test:unit`    |
+| Component | Storybook + Vitest | `*.stories.tsx`       | `npm run test:storybook` |
+| E2E       | Playwright       | `tests/e2e/`          | `npm run test:e2e`     |
+| All       | Vitest           | -                     | `npm run test`         |
 
 ## Key Files
 
-| Purpose | File |
-|---------|------|
-| Next.js config | `next.config.ts` |
-| Auth config | `proxy.ts` (NOT middleware.ts) |
-| Dependencies | `package.json` |
-| TypeScript | `tsconfig.json` |
-| Tailwind | `tailwind.config.ts` |
-| Firebase setup | `lib/firebase/` |
-| Environment vars | `data/env/server.ts`, `data/env/client.ts` |
-
-## Database Patterns
-
-### Type Lifecycle (Firebase)
-
-```typescript
-// 1. Base type - Business fields only
-export type ResourceBase = {
-  name: string;
-  status: "active" | "inactive";
-};
-
-// 2. Firestore type - With Timestamp objects
-export type ResourceFirestore = WithFirestoreTimestamps<ResourceBase>;
-
-// 3. Application type - With id and Date objects
-export type Resource = WithDates<ResourceBase>;
-
-// 4. Create DTO - For creating documents
-export type CreateResourceDto = CreateDto<ResourceBase>;
-
-// 5. Update DTO - For updating documents
-export type UpdateResourceDto = UpdateDto<ResourceBase>;
-```
-
-### Error Handling Pattern (DbError)
-
-```typescript
-import { categorizeDbError, DbError } from "~/lib/firebase/errors";
-
-export async function getResourceById(id: string): Promise<[null, Resource] | [DbError, null]> {
-  if (!id || id.trim() === "") {
-    const error = DbError.validation("Invalid id provided");
-    return [error, null];
-  }
-
-  try {
-    const doc = await db.collection(COLLECTION_NAME).doc(id).get();
-
-    if (!doc.exists) {
-      return [DbError.notFound(RESOURCE_NAME), null];
-    }
-
-    return [null, transformFirestoreToResource(doc.id, doc.data()!)];
-  } catch (error) {
-    return [categorizeDbError(error, RESOURCE_NAME), null];
-  }
-}
-```
-
-## Server Action Patterns
-
-```typescript
-import type { ActionResponse, RedirectAction } from "~/lib/action-types";
-
-// Action that returns data
-export async function submitData(formData: FormData): ActionResponse<User> {
-  const parsed = schema.safeParse(formData);
-  if (!parsed.success) {
-    return {
-      success: false,
-      error: "Validation failed",
-      fieldErrors: parsed.error.flatten().fieldErrors
-    };
-  }
-
-  const [error, user] = await createUser(parsed.data);
-  if (error) {
-    await setToastCookie(error.message, "error");
-    return { success: false, error: error.message };
-  }
-
-  await setToastCookie("User created successfully", "success");
-  return { success: true, data: user };
-}
-
-// Action that redirects
-export async function submitAndRedirect(formData: FormData): RedirectAction {
-  const [error] = await updateData(formData);
-  if (error) return { success: false, error: error.message };
-  return redirect("/success");
-}
-```
+| Purpose           | File                                    |
+| ----------------- | --------------------------------------- |
+| Next.js config    | `next.config.ts`                        |
+| Request logging   | `proxy.ts` (middleware helper)          |
+| Dependencies      | `package.json`                          |
+| TypeScript        | `tsconfig.json`                         |
+| Tailwind styles   | `app/globals.css` (Tailwind v4 config)  |
+| Environment vars  | `data/env/server.ts`, `data/env/client.ts` |
+| Logger            | `lib/logger.ts`                         |
+| Vitest config     | `vitest.config.ts`                      |
+| Playwright config | `playwright.config.ts`                  |
+| Storybook config  | `.storybook/main.ts`                    |
 
 ## Import Conventions
 
 ```typescript
-// Path alias
-import { db } from "~/lib/firebase";
-import { createLogger } from "~/lib/logger";
+// Path alias (use ~/ for all absolute imports)
+import logger, { createLogger } from "~/lib/logger";
+import { env } from "~/data/env/server";
 
-// Design system
+// Design system components
 import { Button, Card } from "@szum-tech/design-system";
 
-// Server-only code
+// Server-only code (prevents client bundle inclusion)
 import "server-only";
 ```
 
 ## Component Location
 
-- **Shared components**: `components/`
+- **Shared components**: `components/` (ui/, layout/, providers/)
 - **Feature components**: `features/[feature]/components/`
 - **Stories**: Same directory as component (`component.stories.tsx`)
+- **Constants/data**: `constants/`
+
+## Feature Module Structure
+
+```
+features/
+└── example-feature/
+    ├── components/    # Feature-specific React components
+    ├── schemas/       # Zod validation schemas
+    └── server/        # Server-side logic (actions, data fetching)
+```
 
 ## Logging Pattern
 
 ```typescript
-const logger = createLogger({ module: "feature-name" });
+import logger, { createLogger } from "~/lib/logger";
 
-// Success
-logger.info({ userId, resourceId }, "Operation completed");
+// Create module-specific logger
+const featureLogger = createLogger({ module: "feature-name" });
 
-// Warning
-logger.warn({ userId, errorCode: error.code }, "Resource not found");
-
-// Error - always include errorCode and isRetryable
-logger.error({
-  userId,
-  errorCode: dbError.code,
-  isRetryable: dbError.isRetryable
-}, "Operation failed");
+// Log with context
+featureLogger.info({ userId, action: "create" }, "Resource created");
+featureLogger.warn({ resourceId }, "Resource not found");
+featureLogger.error({ error, userId }, "Operation failed");
 ```
+
+Request logging is automatic via `proxy.ts` with `X-Request-ID` header tracking.
+
+## Storybook Patterns
+
+```typescript
+import type { Meta, StoryObj } from "@storybook/nextjs-vite";
+
+const meta = {
+  title: "Components/MyComponent",
+  component: MyComponent,
+  tags: ["autodocs"],
+} satisfies Meta<typeof MyComponent>;
+
+export default meta;
+type Story = StoryObj<typeof meta>;
+
+// Story with interaction test
+export const Default: Story = {
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    await userEvent.click(canvas.getByRole("button"));
+    await expect(canvas.getByText("Clicked")).toBeInTheDocument();
+  },
+};
+
+// Test-only story (excluded from docs)
+export const TestOnly: Story = {
+  tags: ["test-only"],
+};
+```
+
+## Environment Variables
+
+- Server: `data/env/server.ts` (NODE_ENV, LOG_LEVEL, ANALYZE, CI, VERCEL_URL)
+- Client: `data/env/client.ts` (must use `NEXT_PUBLIC_` prefix)
+- Skip validation: `SKIP_ENV_VALIDATION=true`
 
 ## Form Pattern
 
-- Use React Hook Form for all forms
+- Use React Hook Form for form state management
 - Use Zod schemas for validation
-- Use ActionResponse pattern for server actions
-- Use toast notifications for user feedback
+- Design system provides form components
 
-## Test Data Pattern
+## Conventions
 
-- Use `@jackfranklin/test-data-bot` for builders
-- Use `@faker-js/faker/locale/pl` for Polish localization
-- Builder location: `features/[feature]/test/builders/`
+- Commits follow [Conventional Commits](https://www.conventionalcommits.org/)
+- ESLint: `@szum-tech/eslint-config`
+- Prettier: `@szum-tech/prettier-config`
+- Semantic Release: `@szum-tech/semantic-release-config`

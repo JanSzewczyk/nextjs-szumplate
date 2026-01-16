@@ -6,6 +6,9 @@ on:
 env:
   NODE_VERSION: 24.x
 
+permissions:
+  pull-requests: write
+
 jobs:
   build:
     name: Build 🏗️
@@ -100,6 +103,9 @@ jobs:
   test:
     name: Test 🧪
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
     steps:
       - name: Checkout code 📚
         uses: actions/checkout@v6

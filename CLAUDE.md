@@ -4,16 +4,16 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-Next.js Szumplate is an enterprise-ready Next.js 16 template with TypeScript, Tailwind CSS, and comprehensive testing
-infrastructure.
+Next.js Szumplate is an enterprise-ready Next.js 16 template with TypeScript, Tailwind CSS, React Compiler, and
+comprehensive testing infrastructure.
 
 ## Commands
 
 ### Development
 
 ```bash
-npm run dev          # Start dev server with Turbopack
-npm run build        # Production build with Turbopack
+npm run dev          # Start dev server
+npm run build        # Production build
 npm run start        # Start production server
 ```
 
@@ -36,8 +36,12 @@ npm run test:storybook        # Storybook component tests (with coverage)
 npm run test:watch            # Watch mode
 npm run test:ui               # Vitest UI
 
-# E2E tests (Playwright)
-npm run test:e2e              # Run E2E tests
+# Run a single test file
+npx vitest run path/to/file.test.ts
+npx vitest run --project=unit path/to/file.test.ts
+
+# E2E tests (Playwright) - requires build first
+npm run build && npm run test:e2e
 npm run test:e2e:ui           # Playwright UI mode
 ```
 
@@ -68,12 +72,26 @@ import { env } from "~/data/env/server";
 ### Key Directories
 
 - **app/**: Next.js App Router pages, layouts, and API routes
-- **features/**: Feature-based modules containing components, schemas, and server logic
+- **features/**: Feature-based modules (see structure below)
+- **components/**: Shared reusable components (ui/, layout/, providers/)
 - **lib/**: Utilities and configurations (logger)
 - **data/env/**: T3 Env type-safe environment variables (server.ts, client.ts)
+- **constants/**: Static data and configuration constants
 - **tests/e2e/**: Playwright E2E tests (\*.e2e.ts pattern)
 - **tests/unit/**: Vitest unit tests (\*.test.ts pattern)
 - **tests/integration/**: Storybook integration tests
+
+### Feature Module Structure
+
+Features follow a modular architecture pattern:
+
+```
+features/
+└── example-feature/
+    ├── components/    # Feature-specific components
+    ├── schemas/       # Zod validation schemas
+    └── server/        # Server-side logic (actions, data fetching)
+```
 
 ### Environment Variables
 
@@ -92,14 +110,17 @@ import logger, { createLogger } from "~/lib/logger";
 const apiLogger = createLogger({ module: "api" });
 ```
 
+Request logging is handled automatically via `middleware.ts` with request ID tracking.
+
 ### Testing Configuration
 
 Vitest is configured with two project modes:
 
-- **unit**: Node environment for unit tests
+- **unit**: Node environment for unit tests (`*.test.ts` files)
 - **storybook**: Browser environment (Playwright) for Storybook component tests
 
 Storybook tests use play functions for interaction testing with accessibility checks via @storybook/addon-a11y.
+Use `test-only` tag for stories that should be excluded from docs but run in tests.
 
 ### Design System
 
@@ -113,8 +134,15 @@ import { Button } from "@szum-tech/design-system";
 
 Built-in health endpoint at `/api/health` with multiple URL aliases: `/healthz`, `/api/healthz`, `/health`, `/ping`
 
-## External Configurations
+### Next.js Configuration
 
+- React Compiler enabled (`reactCompiler: true`)
+- Pino externalized for server-side logging
+- Bundle analyzer available via `ANALYZE=true`
+
+## Conventions
+
+- Commits follow [Conventional Commits](https://www.conventionalcommits.org/) for semantic release
 - ESLint: Uses `@szum-tech/eslint-config`
 - Prettier: Uses `@szum-tech/prettier-config`
 - Semantic Release: Uses `@szum-tech/semantic-release-config`

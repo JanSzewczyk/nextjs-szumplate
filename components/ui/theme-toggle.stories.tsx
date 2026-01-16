@@ -68,6 +68,25 @@ Default.test("Theme cycling behavior", async ({ canvas, step, userEvent }) => {
   });
 });
 
+Default.test("Button Has Correct Role", async ({ canvas, step }) => {
+  await step("Verify element has button role", async () => {
+    const button = canvas.getByRole("button");
+    await expect(button).toBeVisible();
+    await expect(button.tagName.toLowerCase()).toBe("button");
+  });
+
+  await step("Verify button is not disabled in mounted state", async () => {
+    const button = canvas.getByRole("button");
+    await expect(button).not.toBeDisabled();
+  });
+
+  await step("Verify button is focusable", async () => {
+    const button = canvas.getByRole("button");
+    button.focus();
+    await expect(button).toHaveFocus();
+  });
+});
+
 /**
  * Tests that the component renders with the correct initial state.
  * Verifies button visibility and presence of an icon.
@@ -378,32 +397,6 @@ export const AccessibleAriaLabels = meta.story({
         const afterClick = getThemeInfo();
         await expect(afterClick.current).toBe(beforeClick.next);
       });
-    });
-  }
-});
-
-/**
- * Tests button has correct semantic role.
- * Verifies the component renders as a button element.
- */
-export const ButtonHasCorrectRole = meta.story({
-  tags: ["test-only"],
-  play: async ({ canvas, step }) => {
-    await step("Verify element has button role", async () => {
-      const button = canvas.getByRole("button");
-      await expect(button).toBeVisible();
-      await expect(button.tagName.toLowerCase()).toBe("button");
-    });
-
-    await step("Verify button is not disabled in mounted state", async () => {
-      const button = canvas.getByRole("button");
-      await expect(button).not.toBeDisabled();
-    });
-
-    await step("Verify button is focusable", async () => {
-      const button = canvas.getByRole("button");
-      button.focus();
-      await expect(button).toHaveFocus();
     });
   }
 });

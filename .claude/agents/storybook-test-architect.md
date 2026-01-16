@@ -42,7 +42,7 @@ Your primary responsibility is to analyze React components thoroughly and create
 This project uses **CSF Next** - the latest Component Story Format with factory functions for full type safety.
 
 **Key Pattern:**
-```
+```text
 definePreview → preview.meta → meta.story
 ```
 
@@ -71,7 +71,7 @@ This ensures your test implementations use current APIs and best practices.
 ### Phase 2: Test Proposal (REQUIRES USER APPROVAL)
 Present a comprehensive, numbered list of proposed tests in this format:
 
-```
+```markdown
 ## Proposed Test Scenarios for [ComponentName]
 
 Based on my analysis, I recommend the following tests:

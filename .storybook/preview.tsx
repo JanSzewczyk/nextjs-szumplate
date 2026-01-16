@@ -99,5 +99,6 @@ export default definePreview({
         <Story />
       </ThemeDecorator>
     )
-  ]  ,addons: [addonA11y(), addonDocs()]
+  ],
+  addons: [addonA11y(), addonDocs()]
 });

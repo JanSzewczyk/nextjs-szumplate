@@ -1,41 +1,58 @@
-# Storybook Testing Best Practices
+# Storybook Testing Best Practices (CSF Next)
 
-## Best Practices
+## CSF Next Format Best Practices
 
-1. **Use Semantic Queries**
-   - Prefer `getByRole`, `getByLabelText` over `getByTestId`
-   - Use case-insensitive regex: `/text/i`
+### 1. Always Import Preview
 
-2. **Await Async Operations**
-   - Always `await` user interactions
-   - Use `waitFor` for dynamic content
-   - Use `findBy*` for async elements
+```typescript
+// GOOD - Import preview for type-safe factory functions
+import preview from "~/.storybook/preview";
 
-3. **Test User-Visible Behavior**
-   - Don't test implementation details
-   - Verify outcomes, not internal state
+const meta = preview.meta({
+  component: MyComponent
+});
 
-4. **Mock External Dependencies**
-   - Use `fn()` to mock callbacks
-   - Use builders for test data
+export const Default = meta.story({});
+```
 
-5. **Organize with Steps**
-   - Use `step()` to group related assertions
+### 2. No Default Export Needed
 
-6. **Handle Portals Correctly**
-   - Use `screen` for modals/dropdowns
-   - Wait for portal content with `waitFor`
+```typescript
+// CSF 3.0 (old)
+export default meta;
 
-7. **Include Edge Cases**
-   - Empty forms, invalid inputs
-   - Server errors, loading states
+// CSF Next (new) - No default export required
+const meta = preview.meta({ ... });
+```
 
-8. **Keep Stories Focused**
-   - One scenario per story
+### 3. Let Types Be Inferred
 
-## Common Pitfalls
+```typescript
+// BAD - Unnecessary type annotations
+import type { Meta, StoryObj } from "@storybook/nextjs-vite";
+type Story = StoryObj<typeof meta>;
+export const Default: Story = { };
 
-### 1. Not awaiting async operations
+// GOOD - Types inferred automatically
+const meta = preview.meta({ component: MyComponent });
+export const Default = meta.story({ });
+```
+
+## Testing Best Practices
+
+### 1. Use Semantic Queries
+
+```typescript
+// GOOD - Accessible queries
+canvas.getByRole("button", { name: /submit/i });
+canvas.getByLabelText(/email/i);
+
+// AVOID - Implementation-dependent queries
+canvas.getByTestId("submit-btn");
+canvas.querySelector(".btn-primary");
+```
+
+### 2. Await Async Operations
 
 ```typescript
 // BAD
@@ -47,7 +64,7 @@ await userEvent.click(button);
 await expect(args.onSubmit).toHaveBeenCalled();
 ```
 
-### 2. Not using waitFor for dynamic content
+### 3. Use waitFor for Dynamic Content
 
 ```typescript
 // BAD
@@ -58,39 +75,168 @@ await waitFor(async () => {
   const message = canvas.getByText(/success/i);
   await expect(message).toBeVisible();
 });
+
+// ALSO GOOD - findBy* waits automatically
+const message = await canvas.findByText(/success/i);
 ```
 
-### 3. Using getBy* for elements that might not exist
+### 4. Test User-Visible Behavior
 
 ```typescript
-// BAD (throws if not found)
+// BAD - Testing implementation details
+await expect(component.state.isLoading).toBe(true);
+
+// GOOD - Testing visible outcomes
+await expect(canvas.getByRole("button")).toBeDisabled();
+await expect(canvas.getByText(/loading/i)).toBeVisible();
+```
+
+### 5. Mock Functions with fn()
+
+```typescript
+// BAD - Not trackable
+args: { onSubmit: async () => {} }
+
+// GOOD - Trackable with fn()
+args: { onSubmit: fn(async () => ({ success: true })) }
+```
+
+### 6. Organize with Steps
+
+```typescript
+// GOOD - Clear test organization
+play: async ({ canvas, userEvent, step }) => {
+  await step("Fill in credentials", async () => {
+    await userEvent.type(canvas.getByLabelText(/email/i), "user@example.com");
+    await userEvent.type(canvas.getByLabelText(/password/i), "secret");
+  });
+
+  await step("Submit and verify", async () => {
+    await userEvent.click(canvas.getByRole("button", { name: /submit/i }));
+    await expect(canvas.getByText(/success/i)).toBeVisible();
+  });
+}
+```
+
+### 7. Handle Portals Correctly
+
+```typescript
+import { within } from "storybook/test";
+
+// BAD - Won't find portal content
+const option = canvas.getByRole("option");
+
+// GOOD - Query parent element for portals
+const portal = within(canvasElement.parentElement as HTMLElement);
+const option = await portal.findByRole("option");
+```
+
+### 8. Use queryBy* for Negative Assertions
+
+```typescript
+// BAD - Throws error if not found
 const error = canvas.getByText(/error/i);
 await expect(error).toBeNull();
 
-// GOOD (returns null if not found)
+// GOOD - Returns null if not found
 const error = canvas.queryByText(/error/i);
 await expect(error).toBeNull();
 ```
 
-### 4. Not handling portals correctly
+### 9. Keep Stories Focused
 
 ```typescript
-// BAD
-const option = canvas.getByRole("option"); // Won't find portal content
+// BAD - Too many concerns in one story
+export const EverythingTest = meta.story({
+  play: async ({ canvas }) => {
+    // Tests initial state, validation, submission, error handling...
+  }
+});
 
-// GOOD
-import { screen } from "storybook/test";
-const option = screen.getByRole("option");
+// GOOD - One scenario per story
+export const InitialState = meta.story({ ... });
+export const ValidationErrors = meta.story({ ... });
+export const SuccessfulSubmission = meta.story({ ... });
+export const ServerError = meta.story({ ... });
 ```
 
-### 5. Not mocking functions properly
+### 10. Use Test-Only Tag for Hidden Tests
 
 ```typescript
-// BAD (not trackable)
-args: { onSubmit: async () => {} }
+// Stories that should run in tests but not appear in Storybook UI
+export const InternalTest = meta.story({
+  tags: ["test-only"],
+  play: async ({ canvas }) => {
+    // Implementation tests hidden from docs
+  }
+});
+```
 
-// GOOD (with fn())
-args: { onSubmit: fn(async () => ({ success: true })) }
+## Common Pitfalls
+
+### 1. Not Awaiting userEvent
+
+```typescript
+// BAD - Race condition
+userEvent.click(button);
+expect(args.onClick).toHaveBeenCalled();
+
+// GOOD
+await userEvent.click(button);
+await expect(args.onClick).toHaveBeenCalled();
+```
+
+### 2. Using getBy* for Elements That May Not Exist
+
+```typescript
+// BAD - Throws immediately if not found
+const error = canvas.getByText(/error/i);
+
+// GOOD - Returns null, doesn't throw
+const error = canvas.queryByText(/error/i);
+await expect(error).toBeNull();
+```
+
+### 3. Not Handling Async State Changes
+
+```typescript
+// BAD - May fail due to timing
+await userEvent.click(submitButton);
+const success = canvas.getByText(/success/i);
+
+// GOOD - Wait for state change
+await userEvent.click(submitButton);
+await waitFor(async () => {
+  const success = canvas.getByText(/success/i);
+  await expect(success).toBeVisible();
+});
+```
+
+### 4. Forgetting Portal Queries
+
+```typescript
+// BAD - Portal content not in canvas
+const tooltip = canvas.getByRole("tooltip");
+
+// GOOD - Query parent element
+const portal = within(canvasElement.parentElement as HTMLElement);
+const tooltip = await portal.findByRole("tooltip");
+```
+
+### 5. Hardcoding Test Data
+
+```typescript
+// BAD - Inline mock data
+args: {
+  user: { id: "1", name: "John", email: "john@example.com" }
+}
+
+// GOOD - Use test builders
+import { userBuilder } from "~/features/users/test/builders";
+
+args: {
+  user: userBuilder.one()
+}
 ```
 
 ## Story Categories Checklist
@@ -102,7 +248,8 @@ For each component, consider:
 - [ ] Loading State
 - [ ] Error State (validation, server)
 - [ ] Success State
-- [ ] Edge Cases
+- [ ] Edge Cases (empty, max values)
 - [ ] User Interactions
-- [ ] Complete Flows
-- [ ] Accessibility (keyboard nav)
+- [ ] Complete User Flows
+- [ ] Keyboard Navigation
+- [ ] Accessibility (screen reader, focus)

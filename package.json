@@ -46,14 +46,13 @@
     "zod": "^4.3.5"
   },
   "devDependencies": {
-    "@chromatic-com/storybook": "^4.1.1",
+    "@chromatic-com/storybook": "^5.0.0",
     "@playwright/test": "^1.56.0",
     "@storybook-community/storybook-dark-mode": "^7.1.0",
     "@storybook/addon-a11y": "^10.1.11",
     "@storybook/addon-docs": "^10.1.11",
     "@storybook/addon-vitest": "^10.1.11",
     "@storybook/nextjs-vite": "^10.1.11",
-    "@storybook/react": "^10.1.11",
     "@szum-tech/eslint-config": "^2.1.15",
     "@szum-tech/prettier-config": "^1.6.2",
     "@szum-tech/semantic-release-config": "^2.3.3",

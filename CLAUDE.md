@@ -110,7 +110,7 @@ import logger, { createLogger } from "~/lib/logger";
 const apiLogger = createLogger({ module: "api" });
 ```
 
-Request logging is handled automatically via `middleware.ts` with request ID tracking.
+Request logging is handled automatically via `proxy.ts` with request ID tracking.
 
 ### Testing Configuration
 

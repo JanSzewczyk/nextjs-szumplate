@@ -1,7 +1,9 @@
 import * as React from "react";
 
+import addonA11y from "@storybook/addon-a11y";
+import addonDocs from "@storybook/addon-docs";
 import { DocsContainer, type DocsContainerProps } from "@storybook/addon-docs/blocks";
-import { type Preview } from "@storybook/react";
+import { definePreview } from "@storybook/nextjs-vite";
 import { DARK_MODE_EVENT_NAME } from "@storybook-community/storybook-dark-mode";
 import { ThemeProvider } from "~/components/providers/theme-provider";
 
@@ -57,7 +59,7 @@ function ThemeDecorator({ children }: { children: React.ReactNode }) {
   );
 }
 
-export default {
+export default definePreview({
   parameters: {
     darkMode: {
       dark,
@@ -85,7 +87,10 @@ export default {
       // 'todo' - show a11y violations in the test UI only
       // 'error' - fail CI on a11y violations
       // 'off' - skip a11y checks entirely
-      test: "todo"
+      test: "todo",
+      options: {
+        xpath: true
+      }
     }
   },
   decorators: [
@@ -94,5 +99,5 @@ export default {
         <Story />
       </ThemeDecorator>
     )
-  ]
-} satisfies Preview;
+  ]  ,addons: [addonA11y(), addonDocs()]
+});

@@ -1,4 +1,3 @@
-import { type Meta, type StoryObj } from "@storybook/nextjs-vite";
 import { expect, userEvent, within } from "storybook/test";
 import Page from "~/app/page";
 import {
@@ -11,7 +10,9 @@ import {
   TECH_STACK_ITEMS
 } from "~/constants";
 
-const meta = {
+import preview from "~/.storybook/preview";
+
+const meta = preview.meta({
   title: "App/Home Page",
   component: Page,
   parameters: {
@@ -22,17 +23,13 @@ const meta = {
     },
     layout: "fullscreen"
   }
-} satisfies Meta<typeof Page>;
-
-export default meta;
-
-type Story = StoryObj<typeof meta>;
+});
 
 /**
  * Tests the hero section with badge, heading, description, and CTA buttons.
  * Verifies all content matches the current design.
  */
-export const HeroSection: Story = {
+export const HeroSection = meta.story({
   tags: ["test-only"],
   play: async ({ canvas, step }) => {
     await step("Verify technology badge", async () => {
@@ -63,13 +60,13 @@ export const HeroSection: Story = {
       await expect(viewOnGitHubButton).toHaveAttribute("href", "https://github.com/JanSzewczyk/nextjs-szumplate");
     });
   }
-};
+});
 
 /**
  * Tests the features section with all 9 feature cards.
  * Verifies section heading and all feature titles are visible.
  */
-export const FeaturesSection: Story = {
+export const FeaturesSection = meta.story({
   tags: ["test-only"],
   play: async ({ canvas, step }) => {
     await step("Verify features section heading", async () => {
@@ -90,7 +87,7 @@ export const FeaturesSection: Story = {
       }
     });
   }
-};
+});
 
 /**
  * Tests the Szum-Tech Ecosystem section with all 4 package cards.
@@ -162,7 +159,7 @@ export const SzumTechEcosystemSection: Story = {
  * Tests the tech stack section with all 7 categories and 15 technologies.
  * Verifies category badges and technology links.
  */
-export const TechStackSection: Story = {
+export const TechStackSection = meta.story({
   tags: ["test-only"],
   play: async ({ canvas, step }) => {
     await step("Verify tech stack section heading", async () => {
@@ -192,13 +189,13 @@ export const TechStackSection: Story = {
       }
     });
   }
-};
+});
 
 /**
  * Tests tooltip interaction on tech stack items.
  * Verifies tooltip appears on hover with technology name and description.
  */
-export const TechStackTooltipInteraction: Story = {
+export const TechStackTooltipInteraction = meta.story({
   tags: ["test-only"],
   play: async ({ canvas, canvasElement, step }) => {
     // Select a sample tech item to test tooltip behavior
@@ -246,13 +243,13 @@ export const TechStackTooltipInteraction: Story = {
       }
     });
   }
-};
+});
 
 /**
  * Tests the quick start section with 3 steps.
  * Verifies step titles, descriptions, and commands.
  */
-export const QuickStartSection: Story = {
+export const QuickStartSection = meta.story({
   tags: ["test-only"],
   play: async ({ canvas, step }) => {
     await step("Verify quick start section heading", async () => {
@@ -277,13 +274,13 @@ export const QuickStartSection: Story = {
       }
     });
   }
-};
+});
 
 /**
  * Tests the built-in scripts section with 6 npm scripts.
  * Verifies section heading and all script commands.
  */
-export const ScriptsSection: Story = {
+export const ScriptsSection = meta.story({
   tags: ["test-only"],
   play: async ({ canvas, step }) => {
     await step("Verify scripts section heading", async () => {
@@ -311,13 +308,13 @@ export const ScriptsSection: Story = {
       await expect(reference).toBeVisible();
     });
   }
-};
+});
 
 /**
  * Tests the CTA (Call to Action) section at the bottom.
  * Verifies heading and action buttons.
  */
-export const CTASection: Story = {
+export const CTASection = meta.story({
   tags: ["test-only"],
   play: async ({ canvas, step }) => {
     await step("Verify CTA section heading", async () => {
@@ -340,13 +337,13 @@ export const CTASection: Story = {
       await expect(exploreCodeButton).toHaveAttribute("href", "https://github.com/JanSzewczyk/nextjs-szumplate");
     });
   }
-};
+});
 
 /**
  * Tests the footer section with branding and links.
  * Verifies footer content and external links.
  */
-export const FooterSection: Story = {
+export const FooterSection = meta.story({
   tags: ["test-only"],
   play: async ({ canvas, step }) => {
     await step("Verify footer branding", async () => {
@@ -372,13 +369,13 @@ export const FooterSection: Story = {
       await expect(sourceLink).toHaveAttribute("href", "https://github.com/JanSzewczyk/nextjs-szumplate");
     });
   }
-};
+});
 
 /**
  * Tests page structure and accessibility across the entire page.
  * Verifies heading hierarchy, main content structure, and sample external link attributes.
  */
-export const PageStructureAndAccessibility: Story = {
+export const PageStructureAndAccessibility = meta.story({
   tags: ["test-only"],
   play: async ({ canvas, step }) => {
     await step("Verify heading hierarchy", async () => {
@@ -421,4 +418,4 @@ export const PageStructureAndAccessibility: Story = {
       await expect(techLink).toHaveAttribute("rel", expect.stringContaining("noreferrer"));
     });
   }
-};
+});

@@ -1,74 +1,77 @@
-import { defineConfig } from "vite";
-import tsConfigPaths from "vite-tsconfig-paths";
+import tsconfigPaths from "vite-tsconfig-paths";
 
 import { storybookTest } from "@storybook/addon-vitest/vitest-plugin";
-import react from "@vitejs/plugin-react";
 import { playwright } from "@vitest/browser-playwright";
+import { defineConfig } from "vitest/config";
 
-import { env } from "./data/env/server";
-
-const reporters = env.CI ? ["dot", "github-actions"] : ["default"];
+// Skip environment validation in tests
+process.env.SKIP_ENV_VALIDATION = "true";
 
 export default defineConfig({
-  plugins: [react(), tsConfigPaths()],
   test: {
     globals: true,
-    reporters,
-    exclude: [
-      "**\/node_modules/**",
-      "**\/dist/**",
-      "**\/cypress/**",
-      "**\/.{idea,git,cache,output,temp}/**",
-      "**\/{karma,rollup,webpack,vite,vitest,jest,ava,babel,nyc,cypress,tsup,build,eslint,prettier}.config.*"
-    ],
+    reporters: process.env.CI ? ["dot", "github-actions"] : ["tree"],
     coverage: {
-      include: ["**"],
-      exclude: [
-        "**\/{node_modules,coverage,storybook-static}/**",
-        "**\/dist/**",
-        "**\/[.]**",
-        "packages/*\/test?(s)/**",
-        "**\/*.d.ts",
-        "**\/virtual:*",
-        "**\/__x00__*",
-        "**\/\x00*",
-        "cypress/**",
-        "**\/test?(s)/**",
-        "test?(-*).?(c|m)[jt]s?(x)",
-        "**\/*{.,-}{test,spec,e2e}?(-d).?(c|m)[jt]s?(x)",
-        "**\/__tests__/**",
-        "**\/{karma,rollup,webpack,vite,jest,ava,babel,nyc,cypress,tsup,build,prettier,release,postcss,eslint,playwright,next}.config.*",
-        "**\/vitest.{workspace,projects,config}.[jt]s?(on)",
-        "**\/.{eslint,mocha,prettier}rc.{?(c|m)js,yml}",
-        "**\/*.{types,styles,stories}.?(c|m)[jt]s?(x)",
-        "env.ts",
-        "**\/app\/{sitemap,robots,icon,manifest}.ts?(x)"
-      ],
+      provider: "v8",
       reporter: ["text", "html", "json-summary", "json"],
       reportOnFailure: true,
-      provider: "v8"
+      include: [
+        "app/**/*.{js,jsx,ts,tsx}",
+        "components/**/*.{js,jsx,ts,tsx}",
+        "features/**/*.{js,jsx,ts,tsx}",
+        "lib/**/*.{js,ts}",
+        "utils/**/*.{js,ts}"
+      ],
+      exclude: [
+        "**/{node_modules,coverage,storybook-static}/**",
+        "**/.next/**",
+        "**/dist/**",
+        "**/.{idea,git,cache,output,temp}/**",
+        "**/*.d.ts",
+        "**/virtual:*",
+        "**/__x00__*",
+        "**/{karma,rollup,webpack,vite,jest,ava,babel,nyc,cypress,tsup,build,prettier,release,postcss,eslint,playwright,next}.config.*",
+        "**/vitest.{workspace,projects,config}.[jt]s?(on)",
+        "**/.{eslint,mocha,prettier}rc.{?(c|m)js,yml}",
+        "**/*.{types,styles,stories}.?(c|m)[jt]s?(x)",
+        "**/env.ts",
+        "**/app/{sitemap,robots,icon,manifest}.ts?(x)",
+        "**/tests/**",
+        "**/test?(s)/**",
+        "test?(-*).?(c|m)[jt]s?(x)",
+        "**/*{.,-}{test,spec,e2e}?(-d).?(c|m)[jt]s?(x)",
+        "**/__tests__/**"
+      ]
     },
     projects: [
+      // Unit tests project - runs in Node environment
       {
-        extends: "vitest.config.ts",
+        plugins: [tsconfigPaths()],
         test: {
-          include: ["**\/*.{test,spec}.ts"],
           name: "unit",
+          globals: true,
+          include: ["**/*.{test,spec}.{ts,tsx}"],
           environment: "node",
-          setupFiles: ["tests/unit/vitest.setup.ts"]
+          setupFiles: ["./tests/unit/vitest.setup.ts"]
         }
       },
+      // Storybook tests project - runs in browser with Playwright
       {
-        extends: "vitest.config.ts",
         plugins: [storybookTest()],
         test: {
           name: "storybook",
+          exclude: ["**/node_modules/**", "**/dist/**", "**/.next/**"],
           browser: {
             enabled: true,
             provider: playwright(),
-            instances: [{ browser: "chromium", headless: true }]
+            instances: [
+              {
+                browser: "chromium",
+                headless: true
+              }
+            ]
           },
-          setupFiles: ["tests/integration/vitest.setup.ts"]
+          setupFiles: ["./tests/integration/vitest.setup.ts"]
         }
       }
     ]

@@ -1,9 +1,10 @@
-import { type Meta, type StoryObj } from "@storybook/nextjs-vite";
-import { expect, waitFor, screen } from "storybook/test";
+import { expect, waitFor, within } from "storybook/test";
 
 import { ThemeToggle } from "./theme-toggle";
 
-const meta = {
+import preview from "~/.storybook/preview";
+
+const meta = preview.meta({
   title: "Components/UI/Theme Toggle",
   component: ThemeToggle,
   decorators: [
@@ -16,24 +17,63 @@ const meta = {
   parameters: {
     layout: "centered"
   }
-} satisfies Meta<typeof ThemeToggle>;
-
-export default meta;
-
-type Story = StoryObj<typeof meta>;
+});
 
 /**
  * Default story showing the ThemeToggle component.
  * The displayed icon depends on the current Storybook theme mode.
  */
-export const Default: Story = {};
+export const Default = meta.story({});
+Default.test("Theme cycling behavior", async ({ canvas, step, userEvent }) => {
+  const button = canvas.getByRole("button");
+
+  // Get initial theme from aria-label
+  const getThemeFromLabel = () => {
+    const label = button.getAttribute("aria-label") || "";
+    const match = label.match(/Current: (System|Light|Dark) theme/);
+    return match ? match[1] : null;
+  };
+
+  const initialTheme = getThemeFromLabel();
+
+  await step(`Starting from ${initialTheme} theme, click to cycle to next theme`, async () => {
+    await userEvent.click(button);
+
+    await waitFor(async () => {
+      const newTheme = getThemeFromLabel();
+      await expect(newTheme).not.toBe(initialTheme);
+    });
+  });
+
+  const secondTheme = getThemeFromLabel();
+
+  await step(`From ${secondTheme} theme, click to cycle to next theme`, async () => {
+    await userEvent.click(button);
+
+    await waitFor(async () => {
+      const newTheme = getThemeFromLabel();
+      await expect(newTheme).not.toBe(secondTheme);
+    });
+  });
+
+  const thirdTheme = getThemeFromLabel();
+
+  await step(`From ${thirdTheme} theme, click to cycle back to initial theme`, async () => {
+    await userEvent.click(button);
+
+    await waitFor(async () => {
+      const newTheme = getThemeFromLabel();
+      await expect(newTheme).toBe(initialTheme);
+    });
+  });
+});
 
 /**
  * Tests that the component renders with the correct initial state.
  * Verifies button visibility and presence of an icon.
  * Note: The actual theme depends on Storybook's dark mode setting.
  */
-export const InitialState: Story = {
+export const InitialState = meta.story({
   tags: ["test-only"],
   play: async ({ canvas, step }) => {
     await step("Verify button is visible and enabled", async () => {
@@ -55,64 +95,13 @@ export const InitialState: Story = {
       await expect(ariaLabel).toMatch(/Click to switch to (System|Light|Dark) theme/);
     });
   }
-};
-
-/**
- * Tests theme cycling behavior.
- * Verifies that clicking the button cycles through themes.
- */
-export const ThemeCyclingBehavior: Story = {
-  tags: ["test-only"],
-  play: async ({ canvas, step, userEvent }) => {
-    const button = canvas.getByRole("button");
-
-    // Get initial theme from aria-label
-    const getThemeFromLabel = () => {
-      const label = button.getAttribute("aria-label") || "";
-      const match = label.match(/Current: (System|Light|Dark) theme/);
-      return match ? match[1] : null;
-    };
-
-    const initialTheme = getThemeFromLabel();
-
-    await step(`Starting from ${initialTheme} theme, click to cycle to next theme`, async () => {
-      await userEvent.click(button);
-
-      await waitFor(async () => {
-        const newTheme = getThemeFromLabel();
-        await expect(newTheme).not.toBe(initialTheme);
-      });
-    });
-
-    const secondTheme = getThemeFromLabel();
-
-    await step(`From ${secondTheme} theme, click to cycle to next theme`, async () => {
-      await userEvent.click(button);
-
-      await waitFor(async () => {
-        const newTheme = getThemeFromLabel();
-        await expect(newTheme).not.toBe(secondTheme);
-      });
-    });
-
-    const thirdTheme = getThemeFromLabel();
-
-    await step(`From ${thirdTheme} theme, click to cycle back to initial theme`, async () => {
-      await userEvent.click(button);
-
-      await waitFor(async () => {
-        const newTheme = getThemeFromLabel();
-        await expect(newTheme).toBe(initialTheme);
-      });
-    });
-  }
-};
+});
 
 /**
  * Tests that clicking cycles through all three themes.
  * Verifies complete cycle: initial -> second -> third -> initial
  */
-export const FullThemeCycle: Story = {
+export const FullThemeCycle = meta.story({
   tags: ["test-only"],
   play: async ({ canvas, step, userEvent }) => {
     const button = canvas.getByRole("button");
@@ -162,13 +151,13 @@ export const FullThemeCycle: Story = {
       await expect(themesVisited).toContain("Dark");
     });
   }
-};
+});
 
 /**
  * Tests keyboard accessibility with Enter key.
  * Verifies Enter key press cycles through themes.
  */
-export const KeyboardAccessibilityEnter: Story = {
+export const KeyboardAccessibilityEnter = meta.story({
   tags: ["test-only"],
   play: async ({ canvas, step, userEvent }) => {
     const button = canvas.getByRole("button");
@@ -204,13 +193,13 @@ export const KeyboardAccessibilityEnter: Story = {
       });
     });
   }
-};
+});
 
 /**
  * Tests keyboard accessibility with Space key.
  * Verifies Space key press cycles through themes.
  */
-export const KeyboardAccessibilitySpace: Story = {
+export const KeyboardAccessibilitySpace = meta.story({
   tags: ["test-only"],
   play: async ({ canvas, step, userEvent }) => {
     const button = canvas.getByRole("button");
@@ -246,16 +235,17 @@ export const KeyboardAccessibilitySpace: Story = {
       });
     });
   }
-};
+});
 
 /**
  * Tests tooltip display on hover.
  * Verifies tooltip appears when hovering over the button.
  */
-export const TooltipDisplayOnHover: Story = {
+export const TooltipDisplayOnHover = meta.story({
   tags: ["test-only"],
-  play: async ({ canvas, step, userEvent }) => {
+  play: async ({ canvas, canvasElement, step, userEvent }) => {
     const button = canvas.getByRole("button");
+    const portal = within(canvasElement.parentElement as HTMLElement);
 
     await step("Hover over the theme toggle button", async () => {
       await userEvent.hover(button);
@@ -263,7 +253,7 @@ export const TooltipDisplayOnHover: Story = {
 
     await step("Verify tooltip appears", async () => {
       await waitFor(async () => {
-        const tooltip = await screen.findByRole("tooltip");
+        const tooltip = await portal.findByRole("tooltip");
         await expect(tooltip).toBeInTheDocument();
       });
     });
@@ -273,7 +263,7 @@ export const TooltipDisplayOnHover: Story = {
 
       // Wait for tooltip to close
       await waitFor(async () => {
-        const tooltip = screen.queryByRole("tooltip");
+        const tooltip = portal.queryByRole("tooltip");
         // Tooltip should be closed or have closed state
         if (tooltip) {
           await expect(tooltip).toHaveAttribute("data-state", "closed");
@@ -281,16 +271,17 @@ export const TooltipDisplayOnHover: Story = {
       });
     });
   }
-};
+});
 
 /**
  * Tests that tooltip shows theme name matching aria-label.
  * Verifies tooltip content is consistent with button state.
  */
-export const TooltipShowsThemeName: Story = {
+export const TooltipShowsThemeName = meta.story({
   tags: ["test-only"],
-  play: async ({ canvas, step, userEvent }) => {
+  play: async ({ canvas, canvasElement, step, userEvent }) => {
     const button = canvas.getByRole("button");
+    const portal = within(canvasElement.parentElement as HTMLElement);
 
     const getThemeFromLabel = () => {
       const label = button.getAttribute("aria-label") || "";
@@ -303,7 +294,7 @@ export const TooltipShowsThemeName: Story = {
       await userEvent.hover(button);
 
       await waitFor(async () => {
-        const tooltip = await screen.findByRole("tooltip");
+        const tooltip = await portal.findByRole("tooltip");
         await expect(tooltip).toHaveTextContent(`${currentTheme} theme`);
       });
 
@@ -311,7 +302,7 @@ export const TooltipShowsThemeName: Story = {
 
       // Wait for tooltip to close before proceeding
       await waitFor(async () => {
-        const tooltip = screen.queryByRole("tooltip");
+        const tooltip = portal.queryByRole("tooltip");
         if (tooltip) {
           await expect(tooltip).toHaveAttribute("data-state", "closed");
         }
@@ -333,18 +324,18 @@ export const TooltipShowsThemeName: Story = {
       await userEvent.hover(button);
 
       await waitFor(async () => {
-        const tooltip = await screen.findByRole("tooltip");
+        const tooltip = await portal.findByRole("tooltip");
         await expect(tooltip).toHaveTextContent(`${currentTheme} theme`);
       });
     });
   }
-};
+});
 
 /**
  * Tests accessible aria-labels are properly set.
  * Verifies aria-label includes current theme and next theme information.
  */
-export const AccessibleAriaLabels: Story = {
+export const AccessibleAriaLabels = meta.story({
   tags: ["test-only"],
   play: async ({ canvas, step, userEvent }) => {
     const button = canvas.getByRole("button");
@@ -389,13 +380,13 @@ export const AccessibleAriaLabels: Story = {
       });
     });
   }
-};
+});
 
 /**
  * Tests button has correct semantic role.
  * Verifies the component renders as a button element.
  */
-export const ButtonHasCorrectRole: Story = {
+export const ButtonHasCorrectRole = meta.story({
   tags: ["test-only"],
   play: async ({ canvas, step }) => {
     await step("Verify element has button role", async () => {
@@ -415,13 +406,13 @@ export const ButtonHasCorrectRole: Story = {
       await expect(button).toHaveFocus();
     });
   }
-};
+});
 
 /**
  * Tests that icon changes when theme changes.
  * Verifies visual feedback updates with theme state.
  */
-export const IconChangesWithTheme: Story = {
+export const IconChangesWithTheme = meta.story({
   tags: ["test-only"],
   play: async ({ canvas, step, userEvent }) => {
     const button = canvas.getByRole("button");
@@ -443,4 +434,4 @@ export const IconChangesWithTheme: Story = {
       });
     });
   }
-};
+});

@@ -1,11 +1,32 @@
-# Storybook Testing Patterns
+# Storybook Testing Patterns (CSF Next)
 
-Reference patterns for different testing scenarios.
+Reference patterns for different testing scenarios using CSF Next format.
+
+## Basic Story Structure
+
+```typescript
+import { expect, fn, waitFor, within } from "storybook/test";
+
+import preview from "~/.storybook/preview";
+
+import { MyComponent } from "./my-component";
+
+const meta = preview.meta({
+  title: "Features/MyFeature/MyComponent",
+  component: MyComponent,
+  args: {
+    onSubmit: fn()
+  }
+});
+
+// Stories defined using meta.story()
+export const Default = meta.story({});
+```
 
 ## Initial State Testing
 
 ```typescript
-export const InitialForm: Story = {
+export const InitialForm = meta.story({
   play: async ({ canvas, step }) => {
     await step("Verify initial field visibility", async () => {
       const input = canvas.getByLabelText(/email/i);
@@ -18,13 +39,13 @@ export const InitialForm: Story = {
       await expect(button).toBeEnabled();
     });
   }
-};
+});
 ```
 
 ## Prefilled Values Testing
 
 ```typescript
-export const Prefilled: Story = {
+export const Prefilled = meta.story({
   args: {
     defaultValues: {
       email: "user@example.com",
@@ -35,13 +56,13 @@ export const Prefilled: Story = {
     const emailInput = canvas.getByLabelText(/email/i);
     await expect(emailInput).toHaveValue(args.defaultValues?.email);
   }
-};
+});
 ```
 
 ## Validation Error Testing
 
 ```typescript
-export const ValidationEmptyForm: Story = {
+export const ValidationEmptyForm = meta.story({
   args: { onSubmit: fn() },
   play: async ({ canvas, userEvent, args }) => {
     const submitButton = canvas.getByRole("button", { name: /submit/i });
@@ -54,13 +75,13 @@ export const ValidationEmptyForm: Story = {
 
     await expect(args.onSubmit).not.toHaveBeenCalled();
   }
-};
+});
 ```
 
 ## User Interaction Flow Testing
 
 ```typescript
-export const Interaction: Story = {
+export const Interaction = meta.story({
   args: { onSubmit: fn() },
   play: async ({ canvas, userEvent, args }) => {
     await userEvent.type(canvas.getByLabelText(/email/i), "user@example.com");
@@ -74,13 +95,13 @@ export const Interaction: Story = {
       });
     });
   }
-};
+});
 ```
 
 ## Loading State Testing
 
 ```typescript
-export const LoadingState: Story = {
+export const LoadingState = meta.story({
   args: {
     onSubmit: async () => new Promise((resolve) => setTimeout(resolve, 2000))
   },
@@ -91,48 +112,75 @@ export const LoadingState: Story = {
     await expect(submitButton).toBeDisabled();
     await expect(submitButton).toHaveAttribute("data-state", "loading");
   }
-};
+});
 ```
 
 ## Portal/Dropdown Testing
 
-Use `screen` for elements rendered outside story root (modals, dropdowns):
+Use `within(canvasElement.parentElement)` or `screen` for elements rendered outside story root:
 
 ```typescript
-import { screen } from "storybook/test";
+import { screen, within } from "storybook/test";
 
-export const DropdownInteraction: Story = {
-  play: async ({ canvas, userEvent }) => {
+export const DropdownInteraction = meta.story({
+  play: async ({ canvas, canvasElement, userEvent }) => {
     const trigger = canvas.getByLabelText("Select option");
     await userEvent.click(trigger);
 
+    // For portal content, query the parent element
+    const portal = within(canvasElement.parentElement as HTMLElement);
+
     await waitFor(async () => {
-      const option = screen.getByRole("option", { name: /option 1/i });
+      const option = portal.getByRole("option", { name: /option 1/i });
       await expect(option).toBeVisible();
       await userEvent.click(option);
     });
 
     await expect(trigger).toHaveTextContent("Option 1");
   }
-};
+});
+```
+
+## Tooltip Testing
+
+```typescript
+export const TooltipInteraction = meta.story({
+  play: async ({ canvas, canvasElement, userEvent, step }) => {
+    await step("Hover to show tooltip", async () => {
+      const trigger = canvas.getByRole("button", { name: /info/i });
+      await userEvent.hover(trigger);
+    });
+
+    await step("Verify tooltip content", async () => {
+      const portal = within(canvasElement.parentElement as HTMLElement);
+      const tooltip = await portal.findByRole("tooltip");
+      await expect(tooltip).toHaveTextContent(/helpful information/i);
+    });
+
+    await step("Unhover to hide tooltip", async () => {
+      const trigger = canvas.getByRole("button", { name: /info/i });
+      await userEvent.unhover(trigger);
+    });
+  }
+});
 ```
 
 ## Navigation/Callback Testing
 
 ```typescript
-export const BackNavigation: Story = {
+export const BackNavigation = meta.story({
   args: { onBack: fn() },
   play: async ({ canvas, userEvent, args }) => {
     await userEvent.click(canvas.getByRole("button", { name: /back/i }));
     await expect(args.onBack).toHaveBeenCalledOnce();
   }
-};
+});
 ```
 
 ## Server Error Handling Testing
 
 ```typescript
-export const ServerErrorHandling: Story = {
+export const ServerErrorHandling = meta.story({
   args: {
     onSubmit: fn(async () => ({
       success: false as const,
@@ -146,13 +194,13 @@ export const ServerErrorHandling: Story = {
       await expect(args.onSubmit).toHaveBeenCalled();
     });
   }
-};
+});
 ```
 
 ## Using Steps for Organization
 
 ```typescript
-export const Interaction: Story = {
+export const CompleteFlow = meta.story({
   play: async ({ canvas, userEvent, step }) => {
     await step("Fill in user information", async () => {
       await userEvent.type(canvas.getByLabelText(/name/i), "John Doe");
@@ -166,13 +214,13 @@ export const Interaction: Story = {
       await userEvent.click(canvas.getByRole("button", { name: /submit/i }));
     });
   }
-};
+});
 ```
 
 ## Complete User Flow Testing
 
 ```typescript
-export const CompleteUserFlow: Story = {
+export const CompleteUserFlow = meta.story({
   args: { onSubmit: fn() },
   play: async ({ canvas, userEvent, args }) => {
     await expect(canvas.getByText("Welcome")).toBeInTheDocument();
@@ -190,5 +238,39 @@ export const CompleteUserFlow: Story = {
       });
     });
   }
-};
+});
+```
+
+## Test-Only Stories
+
+Use `tags: ["test-only"]` for stories that should run in tests but not appear in Storybook UI:
+
+```typescript
+export const TestOnlyStory = meta.story({
+  tags: ["test-only"],
+  play: async ({ canvas }) => {
+    // This story runs in tests but is hidden from Storybook sidebar
+    await expect(canvas.getByRole("main")).toBeVisible();
+  }
+});
+```
+
+## Keyboard Navigation Testing
+
+```typescript
+export const KeyboardNavigation = meta.story({
+  play: async ({ canvas, userEvent }) => {
+    const firstInput = canvas.getByLabelText(/first name/i);
+    firstInput.focus();
+
+    await userEvent.tab();
+    await expect(canvas.getByLabelText(/last name/i)).toHaveFocus();
+
+    await userEvent.tab();
+    await expect(canvas.getByLabelText(/email/i)).toHaveFocus();
+
+    await userEvent.keyboard("{Enter}");
+    // Verify form submission
+  }
+});
 ```

@@ -1,8 +1,8 @@
 ---
 name: storybook-testing
-version: 2.0.0
-description: Create comprehensive Storybook stories with interactive tests for React components using play functions. Use when writing component tests, interaction tests, or documenting component behavior.
-tags: [testing, storybook, react, component-testing, integration-testing, play-function, test-function]
+version: 3.0.0
+description: Create comprehensive Storybook stories with interactive tests for React components using CSF Next format and play functions. Use when writing component tests, interaction tests, or documenting component behavior.
+tags: [testing, storybook, react, component-testing, integration-testing, play-function, csf-next]
 author: Szum Tech Team
 allowed-tools: Read, Write, Edit, Glob, Grep, Bash
 user-invocable: true
@@ -15,7 +15,7 @@ examples:
 
 # Storybook Testing Skill
 
-Generate comprehensive Storybook stories with interactive tests using `play` functions for React components.
+Generate comprehensive Storybook stories with interactive tests using CSF Next format and `play` functions for React components.
 
 > **Reference Files:**
 > - `patterns.md` - Testing patterns and examples
@@ -23,6 +23,8 @@ Generate comprehensive Storybook stories with interactive tests using `play` fun
 > - `best-practices.md` - Best practices and pitfalls
 
 ## Context
+
+This project uses **Storybook 10+ with CSF Next format** - the latest Component Story Format with factory functions for full type safety.
 
 Stories are used for:
 - **Component testing** - Test components in isolation
@@ -34,37 +36,53 @@ Stories are used for:
 
 1. **Analyze component** - Props, interactions, states, callbacks
 2. **Create story file** - Same directory as component: `component.stories.tsx`
-3. **Write stories** - Cover different scenarios
+3. **Write stories** - Cover different scenarios using CSF Next format
 4. **Add play functions** - Test assertions and interactions
 5. **Run tests** - `npm run test:storybook`
 
-## Story File Structure
+## CSF Next Format
+
+CSF Next uses factory functions that provide full type safety:
+
+```
+definePreview → preview.meta → meta.story
+```
+
+### Story File Structure
 
 ```typescript
-import { type Meta, type StoryObj } from "@storybook/nextjs-vite";
 import { expect, fn, waitFor } from "storybook/test";
+
+import preview from "~/.storybook/preview";
 
 import { ComponentName } from "./component-name";
 
-const meta = {
+const meta = preview.meta({
   title: "Features/[FeatureName]/ComponentName",
   component: ComponentName,
   args: {
     onAction: fn()
   }
-} satisfies Meta<typeof ComponentName>;
+});
 
-export default meta;
-type Story = StoryObj<typeof meta>;
-
-export const Default: Story = {
+export const Default = meta.story({
   play: async ({ canvas, userEvent, args, step }) => {
     const button = canvas.getByRole("button");
     await userEvent.click(button);
     await expect(args.onAction).toHaveBeenCalled();
   }
-};
+});
 ```
+
+### Key Differences from CSF 3.0
+
+| CSF 3.0 | CSF Next |
+|---------|----------|
+| `import type { Meta, StoryObj }` | `import preview from "~/.storybook/preview"` |
+| `const meta = { } satisfies Meta<typeof C>` | `const meta = preview.meta({ })` |
+| `export default meta` | No default export needed |
+| `type Story = StoryObj<typeof meta>` | Types inferred automatically |
+| `export const Story: Story = { }` | `export const Story = meta.story({ })` |
 
 ## Story Naming Conventions
 
@@ -79,6 +97,7 @@ export const Default: Story = {
 ## Play Function Parameters
 
 - `canvas` - Testing Library queries scoped to component
+- `canvasElement` - Raw DOM element (for portal queries)
 - `userEvent` - Pre-configured interaction methods
 - `args` - Story args (props)
 - `step` - Group assertions into named steps
@@ -88,14 +107,23 @@ export const Default: Story = {
 **Always prefer builders over inline mock data:**
 
 ```typescript
-import { userBuilder } from "~/features/*/test/builders";
+import preview from "~/.storybook/preview";
 
-export const WithData: Story = {
+import { userBuilder } from "~/features/*/test/builders";
+import { fn } from "storybook/test";
+
+import { UserCard } from "./user-card";
+
+const meta = preview.meta({
+  component: UserCard
+});
+
+export const WithData = meta.story({
   args: {
     user: userBuilder.one(),
     onSubmit: fn()
   }
-};
+});
 ```
 
 If builder doesn't exist, invoke `/builder-factory` skill first.

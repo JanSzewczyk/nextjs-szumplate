@@ -14,6 +14,9 @@ const tags: PresetValue<TagsOptions | undefined> = {
 
 export default defineMain({
   stories: ["../**/*.mdx", "../**/*.stories.@(js|jsx|ts|tsx)"],
+  features: {
+    experimentalTestSyntax: true
+  },
   addons: [
     "@storybook/addon-a11y",
     "@chromatic-com/storybook",

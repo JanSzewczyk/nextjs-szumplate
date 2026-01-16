@@ -108,12 +108,25 @@ jobs:
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: "npm"
-      - name: Install dependencies ⚙️
+      - name: Install packages ⚙️
         run: npm ci
-      - name: Install Playwright Browsers ⚙️
-        run: npx playwright install --with-deps
-      - name: Test Check 🧪
+      - name: Cache Playwright Browsers
+        uses: actions/cache@v5
+        id: playwright-cache
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-${{ runner.os }}-${{ hashFiles('**/package-lock.json') }}
+      - name: Install Playwright (Chromium only)
+        if: steps.playwright-cache.outputs.cache-hit != 'true'
+        run: npx playwright install chromium --with-deps
+      - name: Ensure Playwright deps
+        if: steps.playwright-cache.outputs.cache-hit == 'true'
+        run: npx playwright install-deps chromium
+      - name: Check Tests 🧪
         run: npm run test:ci
+      - name: Report Coverage
+        if: always()
+        uses: davelosert/vitest-coverage-report-action@v2
 
   e2e-test:
     name: Playwright 🎭

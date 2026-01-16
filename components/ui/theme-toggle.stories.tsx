@@ -1,4 +1,4 @@
-import { expect, waitFor, within } from "storybook/test";
+import { expect, waitFor, screen } from "storybook/test";
 
 import { ThemeToggle } from "./theme-toggle";
 
@@ -262,9 +262,8 @@ export const KeyboardAccessibilitySpace = meta.story({
  */
 export const TooltipDisplayOnHover = meta.story({
   tags: ["test-only"],
-  play: async ({ canvas, canvasElement, step, userEvent }) => {
+  play: async ({ canvas, step, userEvent }) => {
     const button = canvas.getByRole("button");
-    const portal = within(canvasElement.parentElement as HTMLElement);
 
     await step("Hover over the theme toggle button", async () => {
       await userEvent.hover(button);
@@ -272,7 +271,7 @@ export const TooltipDisplayOnHover = meta.story({
 
     await step("Verify tooltip appears", async () => {
       await waitFor(async () => {
-        const tooltip = await portal.findByRole("tooltip");
+        const tooltip = await screen.findByRole("tooltip");
         await expect(tooltip).toBeInTheDocument();
       });
     });
@@ -282,7 +281,7 @@ export const TooltipDisplayOnHover = meta.story({
 
       // Wait for tooltip to close
       await waitFor(async () => {
-        const tooltip = portal.queryByRole("tooltip");
+        const tooltip = screen.queryByRole("tooltip");
         // Tooltip should be closed or have closed state
         if (tooltip) {
           await expect(tooltip).toHaveAttribute("data-state", "closed");
@@ -298,9 +297,8 @@ export const TooltipDisplayOnHover = meta.story({
  */
 export const TooltipShowsThemeName = meta.story({
   tags: ["test-only"],
-  play: async ({ canvas, canvasElement, step, userEvent }) => {
+  play: async ({ canvas, step, userEvent }) => {
     const button = canvas.getByRole("button");
-    const portal = within(canvasElement.parentElement as HTMLElement);
 
     const getThemeFromLabel = () => {
       const label = button.getAttribute("aria-label") || "";
@@ -313,7 +311,7 @@ export const TooltipShowsThemeName = meta.story({
       await userEvent.hover(button);
 
       await waitFor(async () => {
-        const tooltip = await portal.findByRole("tooltip");
+        const tooltip = await screen.findByRole("tooltip");
         await expect(tooltip).toHaveTextContent(`${currentTheme} theme`);
       });
 
@@ -321,7 +319,7 @@ export const TooltipShowsThemeName = meta.story({
 
       // Wait for tooltip to close before proceeding
       await waitFor(async () => {
-        const tooltip = portal.queryByRole("tooltip");
+        const tooltip = screen.queryByRole("tooltip");
         if (tooltip) {
           await expect(tooltip).toHaveAttribute("data-state", "closed");
         }
@@ -343,7 +341,7 @@ export const TooltipShowsThemeName = meta.story({
       await userEvent.hover(button);
 
       await waitFor(async () => {
-        const tooltip = await portal.findByRole("tooltip");
+        const tooltip = await screen.findByRole("tooltip");
         await expect(tooltip).toHaveTextContent(`${currentTheme} theme`);
       });
     });

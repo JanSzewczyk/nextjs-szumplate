@@ -93,7 +93,7 @@ export const FeaturesSection = meta.story({
  * Tests the Szum-Tech Ecosystem section with all 4 package cards.
  * Verifies section heading, description, and all package information.
  */
-export const SzumTechEcosystemSection: Story = {
+export const SzumTechEcosystemSection = meta.story({
   tags: ["test-only"],
   play: async ({ canvas, step }) => {
     await step("Verify ecosystem section heading", async () => {
@@ -153,7 +153,7 @@ export const SzumTechEcosystemSection: Story = {
       await expect(exploreButton).toHaveAttribute("href", "https://github.com/JanSzewczyk");
     });
   }
-};
+});
 
 /**
  * Tests the tech stack section with all 7 categories and 15 technologies.

@@ -288,7 +288,7 @@ export const DocsStory = meta.story({
 
 ```typescript
 // From storybook/test (most common)
-import { expect, fn, waitFor, within, userEvent } from "storybook/test";
+import { expect, fn, waitFor } from "storybook/test";
 
 // Preview import
 import preview from "~/.storybook/preview";

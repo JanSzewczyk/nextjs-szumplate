@@ -1,11 +1,15 @@
 ---
 name: frontend-expert
+version: 1.0.0
+lastUpdated: 2026-01-18
+author: Szum Tech Team
+related-agents: [storybook-test-architect, performance-analyzer, code-reviewer]
 description: Use this agent when implementing UI components, styling with Tailwind CSS, integrating with design systems, building React components, fixing UI bugs, or working on any frontend-related tasks. This agent should be consulted proactively when:\n\n<example>\nContext: User is starting to implement a new dashboard page with data tables.\nuser: "I need to create a dashboard page that displays data in a table format"\nassistant: "I'll use the Task tool to launch the frontend-expert agent to design and implement this UI component with proper design system integration."\n<commentary>\nThe user needs a UI component built, so the frontend-expert agent should handle the implementation using the design system and best practices.\n</commentary>\n</example>\n\n<example>\nContext: User has just written a new form component and wants to ensure it follows design system patterns.\nuser: "Here's my new form component. Can you review it?"\nassistant: "Let me use the Task tool to launch the frontend-expert agent to review this component for design system compliance and React best practices."\n<commentary>\nThe user created a frontend component, so the frontend-expert should review it for proper design system usage, accessibility, and React patterns.\n</commentary>\n</example>\n\n<example>\nContext: User is experiencing styling issues with a component.\nuser: "The button spacing looks off on mobile devices"\nassistant: "I'll use the Task tool to launch the frontend-expert agent to diagnose and fix this responsive styling issue."\n<commentary>\nThis is a Tailwind/styling problem that the frontend-expert specializes in handling.\n</commentary>\n</example>
 tools: Glob, Grep, Read, Write, Edit, WebFetch, TodoWrite, WebSearch, Bash, mcp__context7__resolve-library-id, mcp__context7__get-library-docs, mcp__playwright__browser_snapshot, mcp__playwright__browser_navigate, mcp__playwright__browser_click
 model: sonnet
 color: purple
 permissionMode: acceptEdits
-skills: storybook-testing, builder-factory, accessibility-audit
+skills: storybook-testing, builder-factory, accessibility-audit, tailwind-css-4, react-19-compiler
 hooks:
   PostToolUse:
     - matcher: "Write|Edit"
@@ -95,9 +99,10 @@ architecture. You specialize in building production-ready user interfaces.
 4. **Forms & Validation:**
    - Use React Hook Form for all forms
    - Define Zod schemas for validation
-   - Integrate with Server Actions (check project-context.md for patterns)
+   - Integrate with Server Actions (use `server-actions` skill for patterns)
    - Display field errors and toast notifications appropriately
    - Handle loading and disabled states properly
+   - See `server-actions` skill for: useActionState, useTransition, error handling
 
 5. **Accessibility:**
    - Ensure semantic HTML structure

@@ -1,22 +1,21 @@
 ---
 name: library-updater
+version: 1.0.0
+lastUpdated: 2026-01-18
+author: Szum Tech Team
+related-agents: [database-architect, code-reviewer]
 description: Use this agent when you need to update npm packages or dependencies to their latest versions, when investigating breaking changes after an update, when you want to ensure the codebase uses current versions of libraries, or when you need to perform package migrations. This agent should also be used proactively after completing dependency updates to verify code quality.\n\nExamples:\n- <example>User: "Update Next.js to the latest version"\nAssistant: "I'll use the library-updater agent to handle the Next.js update and any required migrations."\n<uses Task tool to launch library-updater agent></example>\n- <example>User: "Can you update all our dependencies?"\nAssistant: "I'll use the library-updater agent to update dependencies, handle any migrations, and verify the codebase afterward."\n<uses Task tool to launch library-updater agent></example>\n- <example>User: "I'm getting a type error after updating React"\nAssistant: "Let me use the library-updater agent to investigate the React update and fix any migration issues."\n<uses Task tool to launch library-updater agent></example>\n- <example>Context: User just asked to update an authentication library\nUser: "Update @clerk/nextjs to latest"\nAssistant: "I'll handle this update with the library-updater agent, including checking for breaking changes and running verification."\n<uses Task tool to launch library-updater agent>\nAssistant (after update): "Now I'm going to verify code quality across the project."\n<continues using library-updater agent for verification></example>
 tools: Glob, Grep, Read, Write, Edit, WebFetch, TodoWrite, WebSearch, Bash, mcp__context7__resolve-library-id, mcp__context7__get-library-docs, mcp__next-devtools__nextjs_docs
 model: sonnet
 color: yellow
 permissionMode: acceptEdits
-skills: db-migration
+skills: db-migration, t3-env-validation
 hooks:
   PostToolUse:
     - matcher: "Bash"
       hooks:
         - type: command
           command: "[[ \"$TOOL_INPUT\" =~ 'npm install' ]] && echo '📦 Dependencies updated - remember to run tests' >&2 || true"
-  Stop:
-    - hooks:
-        - type: prompt
-          prompt: "Verify that all required verification steps were completed: type-check, lint, build, test. List any steps that were skipped."
-          timeout: 30
 ---
 
 You are an elite Node.js developer and dependency management specialist with deep expertise in JavaScript, TypeScript,

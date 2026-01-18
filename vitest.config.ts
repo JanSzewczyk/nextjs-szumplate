@@ -52,7 +52,7 @@ export default defineConfig({
           globals: true,
           include: ["**/*.{test,spec}.{ts,tsx}"],
           environment: "node",
-          setupFiles: ["./tests/unit/vitest.setup.ts"]
+          setupFiles: ["tests/unit/vitest.setup.ts"]
         }
       },
       // Storybook tests project - runs in browser with Playwright
@@ -71,7 +71,7 @@ export default defineConfig({
               }
             ]
           },
-          setupFiles: ["./tests/integration/vitest.setup.ts"]
+          setupFiles: ["tests/integration/vitest.setup.ts"]
         }
       }
     ]

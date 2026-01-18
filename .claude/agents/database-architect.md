@@ -1,11 +1,15 @@
 ---
 name: database-architect
+version: 1.0.0
+lastUpdated: 2026-01-18
+author: Szum Tech Team
+related-agents: [nextjs-backend-engineer, library-updater]
 description: Use this agent when designing data models, optimizing database queries, planning data migrations, or working with database type patterns. This agent should be consulted proactively when:\n\n<example>\nContext: User is starting to implement a new feature that requires data storage.\nuser: "I need to store user preferences and their categories"\nassistant: "I'll use the database-architect agent to design the schema with proper type patterns and relationships."\n<commentary>\nThe user needs data modeling, so the database-architect should design the schema following project conventions.\n</commentary>\n</example>\n\n<example>\nContext: User is experiencing slow queries or data inconsistencies.\nuser: "The dashboard page is loading slowly, I think it's the database queries"\nassistant: "Let me use the database-architect agent to analyze the queries and propose optimizations."\n<commentary>\nPerformance issues related to database queries are core responsibility of this agent.\n</commentary>\n</example>\n\n<example>\nContext: User needs to add new fields to existing documents.\nuser: "We need to add a 'tags' field to all entries"\nassistant: "I'll use the database-architect agent to plan the migration strategy and update the type definitions."\n<commentary>\nData migrations and schema evolution are handled by this agent.\n</commentary>\n</example>
 tools: Glob, Grep, Read, Write, Edit, WebFetch, TodoWrite, WebSearch, Bash, mcp__context7__resolve-library-id, mcp__context7__get-library-docs
 model: sonnet
 color: orange
 permissionMode: default
-skills: db-migration, builder-factory
+skills: firebase-firestore, db-migration, builder-factory, structured-logging, error-handling
 hooks:
   PostToolUse:
     - matcher: "Write|Edit"
@@ -152,7 +156,7 @@ export async function getResourcesByUser(
   userId: string
 ): Promise<[null, Resource[]] | [Error, null]> {
   // Input validation
-  if (!userId || userId.trim() === "") {
+  if (!userId?.trim()) {
     return [new ValidationError("Invalid userId"), null];
   }
 

@@ -117,21 +117,21 @@ export const LoadingState = meta.story({
 
 ## Portal/Dropdown Testing
 
-Use `within(canvasElement.parentElement)` or `screen` for elements rendered outside story root:
+For elements rendered in portals (outside the story canvas), use `screen`:
 
 ```typescript
-import { screen, within } from "storybook/test";
+import { screen } from "storybook/test";
 
 export const DropdownInteraction = meta.story({
-  play: async ({ canvas, canvasElement, userEvent }) => {
+  play: async ({ canvas, userEvent }) => {
     const trigger = canvas.getByLabelText("Select option");
     await userEvent.click(trigger);
 
-    // For portal content, query the parent element
-    const portal = within(canvasElement.parentElement as HTMLElement);
+    // For portal content (modals, dropdowns, tooltips), use screen
+    // Portals typically render to document.body
 
     await waitFor(async () => {
-      const option = portal.getByRole("option", { name: /option 1/i });
+      const option = screen.getByRole("option", { name: /option 1/i });
       await expect(option).toBeVisible();
       await userEvent.click(option);
     });
@@ -145,15 +145,14 @@ export const DropdownInteraction = meta.story({
 
 ```typescript
 export const TooltipInteraction = meta.story({
-  play: async ({ canvas, canvasElement, userEvent, step }) => {
+  play: async ({ canvas, userEvent, step }) => {
     await step("Hover to show tooltip", async () => {
       const trigger = canvas.getByRole("button", { name: /info/i });
       await userEvent.hover(trigger);
     });
 
     await step("Verify tooltip content", async () => {
-      const portal = within(canvasElement.parentElement as HTMLElement);
-      const tooltip = await portal.findByRole("tooltip");
+      const tooltip = await screen.findByRole("tooltip");
       await expect(tooltip).toHaveTextContent(/helpful information/i);
     });
 

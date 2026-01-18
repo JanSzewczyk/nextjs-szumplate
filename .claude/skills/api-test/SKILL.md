@@ -1,6 +1,7 @@
 ---
 name: api-test
 version: 1.0.0
+lastUpdated: 2026-01-18
 description: Test Next.js Route Handlers and API endpoints using Playwright for real HTTP requests. Use when testing API endpoints, route handlers, or backend integrations.
 tags: [testing, api, route-handlers, playwright, e2e]
 author: Szum Tech Team

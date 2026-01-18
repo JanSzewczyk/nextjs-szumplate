@@ -16,7 +16,7 @@ const RESOURCE_NAME = "Resource";
 
 export async function getResourceById(id: string): Promise<[null, Resource] | [DbError, null]> {
   // Input validation
-  if (!id || id.trim() === "") {
+  if (!id?.trim()) {
     const error = DbError.validation("Invalid id provided");
     logger.warn({ id, errorCode: error.code }, "Invalid id");
     return [error, null];
@@ -58,7 +58,7 @@ export async function getResourcesByUser(
   userId: string,
   options: { status?: string; limit?: number } = {}
 ): Promise<[null, Resource[]] | [DbError, null]> {
-  if (!userId || userId.trim() === "") {
+  if (!userId?.trim()) {
     return [DbError.validation("Invalid userId"), null];
   }
 
@@ -123,7 +123,7 @@ export async function updateResource(
   id: string,
   data: UpdateResourceDto
 ): Promise<[null, Resource] | [DbError, null]> {
-  if (!id || id.trim() === "") {
+  if (!id?.trim()) {
     return [DbError.validation("Invalid id"), null];
   }
 
@@ -160,7 +160,7 @@ export async function updateResource(
 
 ```typescript
 export async function deleteResource(id: string): Promise<[null, void] | [DbError, null]> {
-  if (!id || id.trim() === "") {
+  if (!id?.trim()) {
     return [DbError.validation("Invalid id"), null];
   }
 

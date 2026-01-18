@@ -1,6 +1,7 @@
 ---
 name: storybook-testing
 version: 3.0.0
+lastUpdated: 2026-01-18
 description: Create comprehensive Storybook stories with interactive tests for React components using CSF Next format and play functions. Use when writing component tests, interaction tests, or documenting component behavior.
 tags: [testing, storybook, react, component-testing, integration-testing, play-function, csf-next]
 author: Szum Tech Team
@@ -18,9 +19,12 @@ examples:
 Generate comprehensive Storybook stories with interactive tests using CSF Next format and `play` functions for React components.
 
 > **Reference Files:**
-> - `patterns.md` - Testing patterns and examples
-> - `api-reference.md` - Queries, assertions, interactions API
-> - `best-practices.md` - Best practices and pitfalls
+> - [patterns.md](./patterns.md) - Testing patterns and examples
+> - [best-practices.md](./best-practices.md) - Best practices and common pitfalls
+> - [examples.md](./examples.md) - Practical code examples
+> - [templates.md](./templates.md) - Component test templates
+> - [design-system.md](./design-system.md) - Testing @szum-tech/design-system components
+> - [api-reference.md](./api-reference.md) - Complete API documentation
 
 ## Context
 

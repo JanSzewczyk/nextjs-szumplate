@@ -192,20 +192,59 @@ export const MyStory = meta.story({
 });
 ```
 
-## canvas vs canvasElement vs screen
+## canvas vs screen
 
 ```typescript
-import { screen, within } from "storybook/test";
+import { screen } from "storybook/test";
 
-// canvas - Testing Library queries scoped to story root (default, preferred)
+// 1. canvas - Testing Library queries scoped to story root (PREFERRED)
+//    Use for all elements within the story canvas
 const button = canvas.getByRole("button");
+const input = canvas.getByLabelText(/email/i);
 
-// canvasElement - Raw DOM element, useful for portal queries
-const portal = within(canvasElement.parentElement as HTMLElement);
-const tooltip = await portal.findByRole("tooltip");
+// 2. screen - Queries entire document (USE for portals)
+//    Use for modals, dropdowns, tooltips that render outside story root
+const dialog = screen.getByRole("dialog");
+const tooltip = await screen.findByRole("tooltip");
+const option = screen.getByRole("option", { name: /option 1/i });
 
-// screen - Queries entire document (use sparingly for portals)
-const modal = screen.getByRole("dialog");
+// 3. canvasElement - Raw DOM element (rarely needed)
+//    Use when you need direct DOM access
+const element = canvasElement.querySelector(".some-class");
+```
+
+### When to use each:
+
+| Query Method | Use When | Example |
+|--------------|----------|---------|
+| `canvas.getByRole()` | Element is inside story canvas | Buttons, inputs, text in component |
+| `screen.getByRole()` | Element is in portal (outside canvas) | Modals, tooltips, dropdown options |
+| `canvasElement.querySelector()` | Need raw DOM access | Direct DOM manipulation (rare) |
+
+### Why `screen` for portals?
+
+**Advantages:**
+- ✅ Simpler API - `screen.getByRole()` vs `within(canvasElement.parentElement).getByRole()`
+- ✅ More readable code
+- ✅ Standard Testing Library pattern
+- ✅ Works with document.body portals (common pattern)
+
+**Example:**
+```typescript
+// Portal content (modal, tooltip, dropdown)
+export const ModalTest = meta.story({
+  play: async ({ canvas, userEvent }) => {
+    // Trigger inside canvas
+    await userEvent.click(canvas.getByRole("button", { name: /open/i }));
+
+    // Modal renders to document.body - use screen
+    const dialog = await screen.findByRole("dialog");
+    await expect(dialog).toBeInTheDocument();
+
+    // Close button inside portal - still use screen
+    await userEvent.click(screen.getByRole("button", { name: /close/i }));
+  }
+});
 ```
 
 ## Step Function
@@ -249,7 +288,7 @@ export const DocsStory = meta.story({
 
 ```typescript
 // From storybook/test (most common)
-import { expect, fn, waitFor, within, screen, userEvent } from "storybook/test";
+import { expect, fn, waitFor, within, userEvent } from "storybook/test";
 
 // Preview import
 import preview from "~/.storybook/preview";

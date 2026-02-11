@@ -4,7 +4,7 @@ version: 1.0.0
 lastUpdated: 2026-01-18
 author: Szum Tech Team
 related-agents: [storybook-test-architect, code-reviewer]
-description: Use this agent when planning test strategies, analyzing test coverage, or deciding which types of tests to write. This agent should be consulted proactively after implementing features to ensure proper test coverage.\n\n<example>\nContext: User has just implemented a new feature and needs to determine testing approach.\nuser: "I've finished the budget creation flow, what tests should I write?"\nassistant: "I'll use the testing-strategist agent to analyze the feature and recommend a comprehensive testing strategy."\n<commentary>\nThe user needs guidance on test strategy, which is the core responsibility of this agent.\n</commentary>\n</example>\n\n<example>\nContext: User wants to improve overall test coverage.\nuser: "Our test coverage is low, help me prioritize what to test"\nassistant: "Let me use the testing-strategist agent to analyze the codebase and create a prioritized testing plan."\n<commentary>\nTest prioritization and coverage analysis are handled by this agent.\n</commentary>\n</example>\n\n<example>\nContext: User is unsure whether to write unit, integration, or E2E tests.\nuser: "Should I write a unit test or E2E test for the authentication flow?"\nassistant: "I'll use the testing-strategist agent to analyze the authentication flow and recommend the optimal testing approach."\n<commentary>\nDeciding between test types is a strategic decision this agent specializes in.\n</commentary>\n</example>
+description: Plan test strategies, analyze test coverage, and decide which types of tests to write. Use proactively after implementing features to ensure proper test coverage.
 tools: Glob, Grep, Read, Write, Edit, WebFetch, TodoWrite, WebSearch, Bash, mcp__context7__resolve-library-id, mcp__context7__get-library-docs
 model: sonnet
 color: green
@@ -169,52 +169,14 @@ When analyzing code for testing, identify:
 
 ## Test Patterns for This Project
 
-### Server Action Testing
+### Test Pattern References
 
-```typescript
-// Unit test for validation
-describe("createBudgetSchema", () => {
-  it("validates required fields", () => {
-    const result = createBudgetSchema.safeParse({});
-    expect(result.success).toBe(false);
-  });
-});
+Refer to skills for detailed code examples:
 
-// Integration test via Storybook
-export const SubmitForm: Story = {
-  args: {
-    onSubmit: fn(async (data) => ({ success: true, data }))
-  },
-  play: async ({ canvas, userEvent, args }) => {
-    await userEvent.type(canvas.getByLabelText(/name/i), "My Budget");
-    await userEvent.click(canvas.getByRole("button", { name: /submit/i }));
-    await expect(args.onSubmit).toHaveBeenCalled();
-  }
-};
-```
-
-### Database Function Testing
-
-```typescript
-// Focus on error handling and edge cases
-describe("getOnboardingById", () => {
-  it("returns DbError.validation for empty userId", async () => {
-    const [error, data] = await getOnboardingById("");
-    expect(error?.code).toBe("validation");
-    expect(data).toBeNull();
-  });
-});
-```
-
-### Component State Testing
-
-```typescript
-// Test all meaningful states via Storybook stories
-export const Loading: Story = { args: { isLoading: true } };
-export const Error: Story = { args: { error: "Failed to load" } };
-export const Empty: Story = { args: { items: [] } };
-export const WithData: Story = { args: { items: mockItems } };
-```
+- **`storybook-testing` skill** — Component state testing, interaction tests, CSF Next format, `.test()` method
+- **`api-test` skill** — Route handler testing with Playwright
+- **`builder-factory` skill** — Test data builders for mock data
+- **`server-actions` skill** — Server action validation testing patterns
 
 ## Strategy Output Format
 

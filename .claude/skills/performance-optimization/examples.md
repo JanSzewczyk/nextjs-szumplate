@@ -150,7 +150,7 @@ function ExpenseList({ expenses }: { expenses: Expense[] }) {
 
 ```typescript
 // Heavy imports
-import _ from "lodash";
+import _ from "heavy-utils";
 import moment from "moment";
 import { Chart } from "chart.js/auto";
 
@@ -168,8 +168,7 @@ export function AnalyticsDashboard({ data }) {
 ### After (Optimized)
 
 ```typescript
-// Tree-shakeable and lighter imports
-import { sortBy } from "lodash-es";
+// Native and lighter imports
 import { format } from "date-fns";
 import dynamic from "next/dynamic";
 

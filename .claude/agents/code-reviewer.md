@@ -4,12 +4,12 @@ version: 2.0.0
 lastUpdated: 2026-01-18
 author: Szum Tech Team
 related-agents: [frontend-expert, nextjs-backend-engineer, database-architect, performance-analyzer]
-description: Use this agent when you need comprehensive code review for Next.js/React/TypeScript code. This agent should be called proactively after completing logical chunks of code implementation, such as:\n\n<example>\nContext: User has just implemented a new feature with server actions and database queries.\nuser: "I've implemented the user creation feature with server actions"\nassistant: "Let me review the code you've written"\n<uses Agent tool to launch code-reviewer agent>\nassistant: "I've completed the review. Here are my findings..."\n</example>\n\n<example>\nContext: User has written a new React component with hooks.\nuser: "Here's my new dashboard component"\nassistant: "I'll review this component for you"\n<uses Agent tool to launch code-reviewer agent>\nassistant: "Based on my review, here are the optimization opportunities..."\n</example>\n\n<example>\nContext: User has created new API routes and database functions.\nuser: "I've added the expense tracking endpoints"\nassistant: "Let me perform a code review"\n<uses Agent tool to launch code-reviewer agent>\nassistant: "I've reviewed your implementation. Here are my recommendations..."\n</example>\n\nThe agent should be used proactively whenever code is written, not just when explicitly requested. It reviews recent code changes, not entire codebases.
+description: Comprehensive code review for Next.js/React/TypeScript code. Use proactively after completing logical chunks of implementation. Reviews recent code changes for quality, performance, type safety, security, and pattern compliance.
 tools: Glob, Grep, Read, WebFetch, TodoWrite, WebSearch, Bash, KillShell, ListMcpResourcesTool, ReadMcpResourceTool, mcp__context7__resolve-library-id, mcp__context7__get-library-docs, mcp__jetbrains__get_file_problems, mcp__jetbrains__search_in_files_by_text
 model: sonnet
 color: cyan
 permissionMode: default
-skills: accessibility-audit, server-actions, firebase-firestore, clerk-auth-proxy, react-19-compiler, storybook-testing, tailwind-css-4, structured-logging, t3-env-validation, error-handling, toast-notifications
+skills: accessibility-audit, server-actions, react-19-compiler, storybook-testing, tailwind-css-4
 hooks:
   PostToolUse:
     - matcher: "Read"
@@ -176,119 +176,24 @@ Include IDE-detected issues in your review:
 
 **CRITICAL: Enforce these project-specific patterns in every review.**
 
-### Authentication (Clerk)
+Refer to the following skills for detailed patterns and code examples:
 
-| Pattern                                     | Required | Example                           |
-| ------------------------------------------- | -------- | --------------------------------- |
-| Use `proxy.ts` not `middleware.ts`          | ✅       | Next.js 16 Clerk pattern          |
-| Check `auth()` in server code               | ✅       | `const { userId } = await auth()` |
-| Session claims via `sessionClaims.metadata` | ✅       | `onboardingComplete` check        |
-| Update metadata via Clerk API               | ✅       | Not direct Firestore              |
+- **`react-19-compiler` skill** — React Compiler optimization, unnecessary memoization, `useActionState`, `useFormStatus` in child components, Server Components by default
+- **`server-actions` skill** — `ActionResponse<T>` / `RedirectAction` types, Zod validation, `fieldErrors`, toast notifications
+- **`firebase-firestore` skill** — Tuple error pattern `[DbError | null, Data | null]`, type lifecycle (Base → DB → Application → DTOs), structured logging
+- **`clerk-auth-proxy` skill** — `proxy.ts` not `middleware.ts`, server-side `auth()`, session claims
 
-**Check for violations:**
+**Quick validation checklist:**
 
-```typescript
-// ❌ WRONG - Don't use middleware.ts with Clerk
-// middleware.ts should not exist for Clerk auth
-
-// ❌ WRONG - Don't check auth in client components
-"use client";
-const { userId } = useAuth(); // Should be server-side
-
-// ✅ CORRECT - Server-side auth check
-import { auth } from "@clerk/nextjs/server";
-const { userId } = await auth();
-```
-
-### React 19 & Compiler
-
-| Pattern                                           | Required | Reason                              |
-| ------------------------------------------------- | -------- | ----------------------------------- |
-| Remove unnecessary `useMemo`/`useCallback`/`memo` | ✅       | Compiler handles this               |
-| Use `useActionState` for forms                    | ✅       | Replaces useState + useTransition   |
-| `useFormStatus` in child component                | ✅       | Must be inside `<form>`             |
-| Default to Server Components                      | ✅       | Only add `"use client"` when needed |
-
-**Check for violations:**
-
-```typescript
-// ❌ WRONG - Unnecessary memoization
-const sorted = useMemo(() => items.sort(), [items]);
-
-// ❌ WRONG - useFormStatus in same component as form
-function Form() {
-  const { pending } = useFormStatus(); // Won't work!
-  return <form>...</form>;
-}
-
-// ✅ CORRECT - useFormStatus in child
-function SubmitButton() {
-  const { pending } = useFormStatus();
-  return <button disabled={pending}>Submit</button>;
-}
-```
-
-### Database (Firestore)
-
-| Pattern             | Required | Example                                      |
-| ------------------- | -------- | -------------------------------------------- |
-| Tuple error pattern | ✅       | `[DbError \| null, Data \| null]`            |
-| Use `DbError` class | ✅       | `DbError.notFound()`, `DbError.validation()` |
-| Type lifecycle      | ✅       | Base → Firestore → Application → DTOs        |
-| Structured logging  | ✅       | `logger.info({ userId }, "message")`         |
-
-**Check for violations:**
-
-```typescript
-// ❌ WRONG - Throwing errors
-async function getUser(id: string) {
-  const doc = await db.collection("users").doc(id).get();
-  if (!doc.exists) throw new Error("Not found"); // Don't throw!
-}
-
-// ✅ CORRECT - Tuple pattern
-async function getUser(id: string): Promise<[DbError | null, User | null]> {
-  const doc = await db.collection("users").doc(id).get();
-  if (!doc.exists) return [DbError.notFound("User"), null];
-  return [null, transformToUser(doc.id, doc.data())];
-}
-```
-
-### Server Actions
-
-| Pattern                                     | Required | Example                         |
-| ------------------------------------------- | -------- | ------------------------------- |
-| Use `ActionResponse<T>` or `RedirectAction` | ✅       | Standardized return types       |
-| Validate with Zod                           | ✅       | `schema.safeParse(data)`        |
-| Return `fieldErrors` for validation         | ✅       | Form-friendly errors            |
-| Use toast notifications                     | ✅       | `setToastCookie()` for feedback |
-
-**Check for violations:**
-
-```typescript
-// ❌ WRONG - Untyped return
-export async function submitForm(data: FormData) {
-  return { ok: true }; // Non-standard
-}
-
-// ✅ CORRECT - Typed response
-export async function submitForm(data: FormData): ActionResponse<User> {
-  const parsed = schema.safeParse(data);
-  if (!parsed.success) {
-    return { success: false, error: "Validation failed", fieldErrors: parsed.error.flatten().fieldErrors };
-  }
-  return { success: true, data: user };
-}
-```
-
-### Component Patterns
-
-| Pattern                      | Required | Reason                             |
-| ---------------------------- | -------- | ---------------------------------- |
-| Server Components by default | ✅       | Better performance                 |
-| Minimal client boundaries    | ✅       | Keep `"use client"` scope small    |
-| Pass server data as props    | ✅       | Fetch on server, display on client |
-| Server Actions for mutations | ✅       | Not client-side fetch              |
+| Area | Key Rule |
+| ---- | -------- |
+| React Compiler | Remove unnecessary `useMemo`/`useCallback`/`memo` |
+| Forms | `useFormStatus` must be in child component, not same as `<form>` |
+| Components | Server Components by default, minimal `"use client"` boundaries |
+| Server Actions | Use standardized return types with Zod validation |
+| Database | Tuple error return, never throw from DB functions |
+| Auth | Server-side auth checks only |
+| Logging | Structured Pino logging, no `console.log` |
 
 ## Performance Integration
 
@@ -302,9 +207,9 @@ For performance-critical code, recommend spawning the **performance-analyzer** a
 **Example recommendation:**
 
 ```markdown
-**Performance Concern:** This component imports the entire `lodash` library. Consider:
+**Performance Concern:** This component imports a heavy utility library. Consider:
 
-1. Using tree-shakeable imports: `import debounce from 'lodash/debounce'`
+1. Using native JavaScript alternatives (e.g., native array methods, debounce implementations)
 2. Running performance-analyzer agent for bundle impact analysis
 ```
 

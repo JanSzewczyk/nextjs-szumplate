@@ -2,7 +2,6 @@
   "enableAllProjectMcpServers": true,
   "enabledMcpjsonServers": [
     "next-devtools",
-    "context7",
     "jetbrains"
   ],
   "hooks": {

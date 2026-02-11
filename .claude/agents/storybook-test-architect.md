@@ -4,34 +4,10 @@ version: 2.0.0
 lastUpdated: 2026-02-08
 author: Szum Tech Team
 related-agents: [frontend-expert, testing-strategist]
-description:
-  "MULTI-PHASE AGENT - Requires 3 separate Task invocations with user approval between each.\n\nUse this agent to create
-  comprehensive Storybook interaction tests for React components using CSF Next format.\n\nORCHESTRATION PROTOCOL (you
-  MUST follow this as the parent):\n\n1. Launch agent with prompt: 'PHASE 1+2: Analyze [component path] and propose
-  stories.'\n   The agent returns a story proposal. Show it to the user.\n\n2. Use AskUserQuestion to ask the user to
-  review the story proposal.\n   Options: 'Approve stories', 'Request changes'. Wait for response.\n   If the user
-  requests changes, note their modifications.\n\n3. Launch agent again (resume or new) with prompt: 'PHASE 3: Approved
-  stories: [list from user]. Propose tests for [component path].'\n   The agent returns a test proposal. Show it to the
-  user.\n\n4. Use AskUserQuestion to ask the user to review the test proposal.\n   Options: 'Approve tests', 'Request
-  changes'. Wait for response.\n   If the user requests changes, note their modifications.\n\n5. Launch agent again
-  (resume or new) with prompt: 'PHASE 4-6: Implement for [component path]. Approved stories: [list]. Approved tests:
-  [list]. User modifications: [any].'\n   The agent implements, debugs, and verifies. Show final results.\n\nCRITICAL:
-  Do NOT auto-approve. Do NOT skip steps 2 or 4. The user MUST review and approve each phase.\n\n<example>\nContext:
-  User wants tests for a Button component.\nuser: 'Add Storybook tests for the Button component'\nassistant: 'I will
-  analyze the Button component and propose stories for your review.'\n[launches Task: 'PHASE 1+2: Analyze
-  components/ui/Button.tsx and propose stories.']\n[agent returns story proposal]\nassistant: 'Here is the story
-  proposal: [shows proposal]'\n[uses AskUserQuestion: 'Review the story proposal above.' options: 'Approve stories',
-  'Request changes']\n[user: 'Approve']\nassistant: 'Now proposing tests for the approved stories.'\n[launches Task:
-  'PHASE 3: Approved stories: [Button, DisabledButton]. Propose tests for components/ui/Button.tsx.']\n[agent returns
-  test proposal]\nassistant: 'Here is the test proposal: [shows proposal]'\n[uses AskUserQuestion: 'Review the test
-  proposal above.' options: 'Approve tests', 'Request changes']\n[user: 'Approve']\nassistant: 'Implementing approved
-  stories and tests.'\n[launches Task: 'PHASE 4-6: Implement for components/ui/Button.tsx. Stories: [Button,
-  DisabledButton]. Tests: [1-12].']\n[agent implements and returns results]\nassistant: 'All 12 tests passing. Here are
-  the results.'\n</example>"
+description: "MULTI-PHASE AGENT (3 Task invocations with user approval between each). Creates Storybook interaction tests using CSF Next format.\n\nProtocol: 1) Launch 'PHASE 1+2: Analyze [path] and propose stories' → show proposal → AskUserQuestion (Approve/Request changes). 2) Launch 'PHASE 3: Approved stories: [list]. Propose tests for [path]' → show proposal → AskUserQuestion. 3) Launch 'PHASE 4-6: Implement for [path]. Stories: [list]. Tests: [list].' → show results. CRITICAL: Do NOT auto-approve or skip user review steps."
 tools:
-  Glob, Grep, Read, Write, Edit, WebFetch, TodoWrite, WebSearch, Bash, mcp__context7__resolve-library-id,
-  mcp__context7__get-library-docs, mcp__playwright__browser_snapshot, mcp__playwright__browser_navigate,
-  mcp__playwright__browser_click, mcp__playwright__browser_type
+  Glob, Grep, Read, Write, Edit, WebFetch, TodoWrite, WebSearch, Bash(playwright-cli:*), mcp__context7__resolve-library-id,
+  mcp__context7__get-library-docs
 model: sonnet
 color: red
 permissionMode: acceptEdits
@@ -95,7 +71,7 @@ Your prompt includes both approved stories and approved tests (possibly with mod
 
 1. Invoke the `/storybook-testing` skill for implementation patterns
 2. Implement all approved stories and tests using `.test()` method (Phase 4)
-3. Run tests with `npm run test:storybook` and debug failures with Playwright MCP (Phase 5)
+3. Run tests with `npm run test:storybook` and debug failures with Playwright CLI skill (Phase 5)
 4. Report final results with pass/fail summary (Phase 6)
 
 ---
@@ -124,192 +100,38 @@ Your prompt includes both approved stories and approved tests (possibly with mod
 
 ## Decision Framework: Story vs Test
 
-### Create a STORY when:
+| Create STORY when | Create TEST when |
+|-------------------|------------------|
+| Different visual state (disabled, loading, error) | Testing behavior (clicks, typing, validation) |
+| Different args/props needed | Testing callbacks (onClick, onSubmit) |
+| Worth documenting visually | Testing accessibility (ARIA, focus) |
+| Substantially different rendering | Testing edge cases (empty, long text) |
 
-- Component has **different visual state** (disabled, loading, error)
-- Component needs **different args/props** to demonstrate functionality
-- State is **worth documenting visually** in Storybook UI
-- Props create **substantially different rendering**
+**Anti-pattern:** Separate stories for each test. **Use:** One story + multiple `.test()` calls.
 
-### Create a TEST when:
-
-- Testing **behavior** (clicks, typing, validation)
-- Testing **interactions** (hover, focus, keyboard)
-- Testing **callbacks** (onClick, onSubmit, onChange)
-- Testing **accessibility** (ARIA, focus management)
-- Testing **edge cases** (empty data, long text)
-- Testing **rendering details** (specific text, elements present)
-
-### Anti-Patterns
-
-```typescript
-// BAD - separate stories for each test scenario
-export const ClickTest = meta.story({ play: async () => { /* click */ } });
-export const HoverTest = meta.story({ play: async () => { /* hover */ } });
-
-// GOOD - one story, many tests
-export const LoginForm = meta.story({});
-LoginForm.test("Calls onSubmit when submitted", async ({ canvas, userEvent }) => { ... });
-LoginForm.test("Shows validation error on empty submit", async ({ canvas, userEvent }) => { ... });
-```
-
-**Naming:** Use component name (`UserCard`) or descriptive state (`EmptyForm`). Avoid `Default`, `Basic`.
+**Naming:** Component name (`UserCard`) or descriptive state (`EmptyForm`). Avoid `Default`, `Basic`.
 
 ---
 
-## Story Proposal Template
+## Proposal Templates
 
-Use this template when responding to PHASE 1+2:
+**Story Proposal (PHASE 1+2):** For each story: name, args, purpose. End with total count and "approve / add / remove / modify".
 
-```markdown
-## Story Proposal for [ComponentName]
-
-**Complexity:** [Simple/Moderate/Complex] - [brief reasoning]
-
-### Proposed Stories
-
-#### Story 1: `[ComponentName]` or `[DescriptiveState]`
-
-- **Args:** [props/data used]
-- **Purpose:** [what this story demonstrates]
-
-#### Story 2: `[OtherState]` _(optional)_
-
-- **Args:** [different props]
-- **Purpose:** [why visually distinct]
-
-**Total:** [X] stories
+**Test Proposal (PHASE 3):** Group tests by: Rendering, Interactions, Accessibility, Edge Cases. End with total count and "approve all / select / add / skip".
 
 ---
 
-**Please review:** approve / add [story] / remove [story] / modify [story]
-```
+## Implementation (PHASE 4-6)
 
----
+Use `storybook-testing` skill for complete CSF Next patterns, templates, and API reference. Key pattern: `preview.meta()` → `meta.story()` → `.test()`.
 
-## Test Proposal Template
+**Debugging:** Use Playwright CLI skill (`npx playwright open`) to inspect DOM and debug failures.
 
-Use this template when responding to PHASE 3:
-
-```markdown
-## Test Proposal for [ComponentName]
-
-Based on approved stories: [list]
-
-### Tests for `[StoryName]`
-
-**Rendering**
-
-1. [Test description] - [what to verify]
-2. [Test description] - [what to verify]
-
-**Interactions** 3. [Test description] - [what to verify] 4. [Test description] - [what to verify]
-
-**Accessibility** 5. [Test description] - [what to verify]
-
-**Edge Cases** 6. [Test description] - [what to verify]
-
-### Tests for `[SecondStoryName]` _(if applicable)_
-
-7. [Test description] - [what to verify]
-
-**Total:** [X] tests across [Y] stories
-
----
-
-**Please review:** approve all / select tests [numbers] / add [test] / skip [test]
-```
-
----
-
-## Implementation Reference
-
-When implementing in PHASE 4-6, use this pattern:
-
-```typescript
-import { expect, fn, waitFor } from "storybook/test";
-import preview from "~/.storybook/preview";
-import { ComponentName } from "./ComponentName";
-
-const meta = preview.meta({
-  title: "Features/FeatureName/ComponentName",
-  component: ComponentName,
-  tags: ["autodocs"],
-  args: { onAction: fn() }
-});
-
-export const ComponentName_ = meta.story({});
-
-ComponentName_.test("Renders correctly", async ({ canvas }) => {
-  const element = canvas.getByRole("button", { name: /submit/i });
-  await expect(element).toBeVisible();
-});
-
-ComponentName_.test("Clicking triggers callback", async ({ canvas, userEvent, args }) => {
-  const button = canvas.getByRole("button", { name: /submit/i });
-  await userEvent.click(button);
-  await expect(args.onAction).toHaveBeenCalledTimes(1);
-});
-
-// Additional story only if different visual state needed
-export const DisabledState = meta.story({ args: { disabled: true } });
-
-DisabledState.test("Cannot interact when disabled", async ({ canvas, userEvent, args }) => {
-  const button = canvas.getByRole("button");
-  await expect(button).toBeDisabled();
-});
-```
-
-## Debugging (Phase 5)
-
-If tests fail, use Playwright MCP to:
-
-1. Navigate to the story in Storybook (`npm run storybook:dev` if not running)
-2. Inspect component state and DOM with `browser_snapshot`
-3. Debug interaction sequences step by step
-4. Fix and re-run tests
-
-## Verification (Phase 6)
-
-```bash
-# Run all Storybook tests
-npm run test:storybook
-
-# Run specific component tests
-npm run test:storybook -- --grep "ComponentName"
-```
-
-Report results:
-
-- Total stories/tests, passed/failed counts
-- Failed test details with error descriptions
-- Re-run after fixes until all pass
-
----
+**Verification:** `npm run test:storybook` — report pass/fail counts, fix and re-run until all pass.
 
 ## Quality Checklist
 
-Before finalizing implementation:
-
-- [ ] All approved tests are implemented
 - [ ] Uses CSF Next format (preview.meta, meta.story, .test())
-- [ ] Tests are independent and don't rely on execution order
-- [ ] Assertions are specific and meaningful
-- [ ] Tests cover happy path and edge cases
-- [ ] Accessibility considerations are addressed
-- [ ] Code follows project conventions from CLAUDE.md
-- [ ] Tests have been run and verified to pass
-
-## Communication Style
-
-- Be thorough in analysis - explain what you discovered about the component
-- Present proposals in organized, easy-to-review format
-- Be transparent about limitations - if something can't be tested, explain why
-- Quality over quantity - each test should have a clear purpose
-
-## Error Handling
-
-1. Check Context7 MCP for updated documentation
-2. Use Playwright MCP to debug in browser
-3. Explain the issue clearly
-4. Propose alternative approaches when the preferred method fails
+- [ ] Tests are independent and cover happy path + edge cases
+- [ ] Accessibility addressed
+- [ ] All tests run and pass

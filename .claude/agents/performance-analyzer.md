@@ -61,12 +61,12 @@ npm run analyze
 
 **Common Issues:**
 
-| Issue              | Detection                   | Solution                                     |
-| ------------------ | --------------------------- | -------------------------------------------- |
-| Large dependencies | > 50KB gzipped              | Use lighter alternatives or dynamic import   |
-| Duplicate packages | Same lib in multiple chunks | Check package.json, use npm dedupe           |
-| Unshaken code      | Dead code in bundle         | Check exports, use ESM imports               |
-| Large images       | Images in JS bundle         | Use next/image, external hosting             |
+| Issue              | Detection                   | Solution                                   |
+| ------------------ | --------------------------- | ------------------------------------------ |
+| Large dependencies | > 50KB gzipped              | Use lighter alternatives or dynamic import |
+| Duplicate packages | Same lib in multiple chunks | Check package.json, use npm dedupe         |
+| Unshaken code      | Dead code in bundle         | Check exports, use ESM imports             |
+| Large images       | Images in JS bundle         | Use next/image, external hosting           |
 
 **Optimization Strategies:**
 
@@ -86,8 +86,7 @@ const BelowFold = dynamic(() => import("./BelowFold"));
 
 ### 2. React Performance Analysis
 
-**React Compiler Benefits:**
-If the project has React Compiler enabled (check project-context.md), it automatically:
+**React Compiler Benefits:** If the project has React Compiler enabled (check project-context.md), it automatically:
 
 - Memoizes components
 - Optimizes re-renders
@@ -190,11 +189,7 @@ function VirtualList({ items }) {
 
 ```typescript
 // ✅ Good: Specific queries with limits
-const query = db
-  .collection("resources")
-  .where("userId", "==", userId)
-  .orderBy("createdAt", "desc")
-  .limit(20);
+const query = db.collection("resources").where("userId", "==", userId).orderBy("createdAt", "desc").limit(20);
 
 // ❌ Bad: Fetching entire collection
 const query = db.collection("resources"); // No filters!
@@ -350,21 +345,18 @@ export default function Page() {
 When analyzing performance:
 
 1. **Gather Metrics:**
-
    - Run bundle analysis (check CLAUDE.md for command)
    - Check Network tab for loading waterfall
    - Use React DevTools Profiler for render analysis
    - Check database console for query performance
 
 2. **Identify Bottlenecks:**
-
    - Largest chunks in bundle
    - Slowest components to render
    - Most expensive database queries
    - Layout shifts and loading delays
 
 3. **Prioritize Fixes:**
-
    - Impact on user experience
    - Effort required to fix
    - Risk of regression
@@ -381,8 +373,7 @@ When providing performance analysis:
 ### 1. Current State
 
 ```markdown
-**Bundle Size:** X KB (gzipped)
-**Largest Chunks:**
+**Bundle Size:** X KB (gzipped) **Largest Chunks:**
 
 1. chunk-name: X KB
 2. chunk-name: X KB

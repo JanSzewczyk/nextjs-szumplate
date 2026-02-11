@@ -15,8 +15,12 @@ import { definePreview } from "@storybook/nextjs-vite";
 import addonA11y from "@storybook/addon-a11y";
 
 export default definePreview({
-  parameters: { /* global parameters */ },
-  decorators: [ /* global decorators */ ],
+  parameters: {
+    /* global parameters */
+  },
+  decorators: [
+    /* global decorators */
+  ],
   addons: [addonA11y()]
 });
 ```
@@ -30,22 +34,153 @@ import { ComponentName } from "./component-name";
 const meta = preview.meta({
   title: "Features/MyFeature/ComponentName",
   component: ComponentName,
-  args: { /* default args */ },
-  parameters: { /* story-level parameters */ }
+  args: {
+    /* default args */
+  },
+  parameters: {
+    /* story-level parameters */
+  }
 });
 ```
 
 ### meta.story (individual stories)
 
 ```typescript
-export const Default = meta.story({
-  name: "Custom Name",       // Optional display name
-  args: { /* story args */ },
-  parameters: { /* story parameters */ },
-  tags: ["test-only"],       // Optional tags
-  play: async (context) => { /* test function */ }
+export const StoryName = meta.story({
+  name: "Custom Display Name", // Optional display name
+  args: {
+    /* story args */
+  },
+  parameters: {
+    /* story parameters */
+  },
+  tags: ["test-only"], // Optional tags
+  play: async (context) => {
+    /* optional: for complex multi-step flows */
+  }
 });
 ```
+
+**Story Naming Convention:**
+
+- Single story: Use component name (`UserCard`, `SearchInput`)
+- Multiple stories: Use descriptive states (`EmptyForm`, `FilledForm`)
+- Avoid generic names: ~~`Default`~~, ~~`Basic`~~, ~~`Example`~~
+
+## Story.test() Method ⭐
+
+**RECOMMENDED:** Attach multiple independent tests to a single story.
+
+### Syntax
+
+```typescript
+StoryName.test(testName: string, testFunction: TestFunction): void
+```
+
+### Example
+
+```typescript
+// ONE story for component
+export const LoginForm = meta.story({});
+
+// MULTIPLE tests using .test() method
+LoginForm.test("Shows validation error on empty submit", async ({ canvas, userEvent }) => {
+  await userEvent.click(canvas.getByRole("button", { name: /submit/i }));
+  await expect(canvas.getByText(/email is required/i)).toBeVisible();
+});
+
+LoginForm.test("Submits form with valid data", async ({ canvas, userEvent, args }) => {
+  await userEvent.type(canvas.getByLabelText(/email/i), "user@example.com");
+  await userEvent.type(canvas.getByLabelText(/password/i), "password123");
+  await userEvent.click(canvas.getByRole("button", { name: /submit/i }));
+  await expect(args.onSubmit).toHaveBeenCalled();
+});
+
+LoginForm.test("Keyboard navigation works correctly", async ({ canvas, userEvent }) => {
+  const emailInput = canvas.getByLabelText(/email/i);
+  emailInput.focus();
+  await userEvent.tab();
+  await expect(canvas.getByLabelText(/password/i)).toHaveFocus();
+});
+```
+
+### Parameters
+
+- **testName** (string): Descriptive test name in sentence case
+  - ✅ Good: `"Shows validation error on empty submit"`
+  - ❌ Bad: `"Test 1"`, `"Validation"`, `"Works"`
+
+- **testFunction** (TestFunction): Async function with same context as `play` function
+
+### Context Object
+
+Same context as `play` function:
+
+```typescript
+interface TestContext {
+  canvas: Canvas; // Testing Library queries scoped to component
+  canvasElement: HTMLElement; // Raw DOM element for portal queries
+  userEvent: UserEvent; // Pre-configured user interaction methods
+  args: StoryArgs; // Story arguments (including mock functions)
+  step?: StepFunction; // Optional: group assertions (rarely needed with .test())
+}
+```
+
+### When to Use `.test()` vs `play`
+
+| Use `.test()` Method ✅    | Use `play` Function ⚠️       |
+| -------------------------- | ---------------------------- |
+| Multiple independent tests | Complex multi-step user flow |
+| Testing specific behaviors | Integration test scenarios   |
+| Granular test reporting    | Demos for Storybook UI       |
+| **Most common scenarios**  | Rare, specific use cases     |
+
+**Example Comparison:**
+
+```typescript
+// ✅ Use .test() for independent tests
+export const Button = meta.story({});
+
+Button.test("Calls onClick when clicked", async ({ canvas, userEvent, args }) => {
+  await userEvent.click(canvas.getByRole("button"));
+  await expect(args.onClick).toHaveBeenCalled();
+});
+
+Button.test("Shows loading state when isLoading=true", async ({ canvas }) => {
+  await expect(canvas.getByRole("progressbar")).toBeVisible();
+});
+
+Button.test("Keyboard activation with Enter works", async ({ canvas, userEvent, args }) => {
+  canvas.getByRole("button").focus();
+  await userEvent.keyboard("{Enter}");
+  await expect(args.onClick).toHaveBeenCalled();
+});
+
+// ✅ Use play for complete user journey
+export const CheckoutFlow = meta.story({
+  name: "Complete Checkout Journey",
+  tags: ["test-only"],
+  play: async ({ canvas, step, userEvent }) => {
+    await step("Add items to cart", async () => {
+      /* ... */
+    });
+    await step("Fill shipping address", async () => {
+      /* ... */
+    });
+    await step("Complete payment", async () => {
+      /* ... */
+    });
+  }
+});
+```
+
+### Benefits of `.test()` Method
+
+- **80% fewer stories** - One story with 10 tests vs 10 separate test stories
+- **Better isolation** - Each test is independent
+- **Clearer intent** - Test names describe specific behaviors
+- **Better reporting** - Individual test results in Storybook UI
+- **Less boilerplate** - No repeated `meta.story()` calls
 
 ## Query Methods
 
@@ -167,7 +302,9 @@ const meta = preview.meta({
     onSubmit: fn(() => ({ success: true }) as unknown as RedirectAction),
 
     // Mock that throws
-    onError: fn(() => { throw new Error("Test error"); })
+    onError: fn(() => {
+      throw new Error("Test error");
+    })
   }
 });
 ```
@@ -177,11 +314,11 @@ const meta = preview.meta({
 ```typescript
 export const MyStory = meta.story({
   play: async ({
-    canvas,        // Testing Library queries scoped to story
+    canvas, // Testing Library queries scoped to story
     canvasElement, // Raw DOM element (HTMLElement)
-    userEvent,     // Pre-configured user event instance
-    args,          // Story args (component props)
-    step,          // Function to group assertions
+    userEvent, // Pre-configured user event instance
+    args, // Story args (component props)
+    step // Function to group assertions
     // Additional context properties:
     // - globals
     // - parameters
@@ -215,21 +352,23 @@ const element = canvasElement.querySelector(".some-class");
 
 ### When to use each:
 
-| Query Method | Use When | Example |
-|--------------|----------|---------|
-| `canvas.getByRole()` | Element is inside story canvas | Buttons, inputs, text in component |
-| `screen.getByRole()` | Element is in portal (outside canvas) | Modals, tooltips, dropdown options |
-| `canvasElement.querySelector()` | Need raw DOM access | Direct DOM manipulation (rare) |
+| Query Method                    | Use When                              | Example                            |
+| ------------------------------- | ------------------------------------- | ---------------------------------- |
+| `canvas.getByRole()`            | Element is inside story canvas        | Buttons, inputs, text in component |
+| `screen.getByRole()`            | Element is in portal (outside canvas) | Modals, tooltips, dropdown options |
+| `canvasElement.querySelector()` | Need raw DOM access                   | Direct DOM manipulation (rare)     |
 
 ### Why `screen` for portals?
 
 **Advantages:**
+
 - ✅ Simpler API - `screen.getByRole()` vs `within(canvasElement.parentElement).getByRole()`
 - ✅ More readable code
 - ✅ Standard Testing Library pattern
 - ✅ Works with document.body portals (common pattern)
 
 **Example:**
+
 ```typescript
 // Portal content (modal, tooltip, dropdown)
 export const ModalTest = meta.story({
@@ -273,14 +412,14 @@ Control story visibility and behavior:
 
 ```typescript
 export const TestOnlyStory = meta.story({
-  tags: ["test-only"],  // Hidden from Storybook sidebar, runs in tests
+  tags: ["test-only"], // Hidden from Storybook sidebar, runs in tests
   play: async ({ canvas }) => {
     // Test assertions
   }
 });
 
 export const DocsStory = meta.story({
-  tags: ["autodocs"],  // Include in auto-generated docs
+  tags: ["autodocs"] // Include in auto-generated docs
 });
 ```
 

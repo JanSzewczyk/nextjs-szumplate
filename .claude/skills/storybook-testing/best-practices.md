@@ -1,8 +1,106 @@
 # Storybook Testing Best Practices (CSF Next)
 
+## ⭐ Story Organization Best Practices
+
+### 1. Use `.test()` Method for Multiple Tests ✅
+
+**CRITICAL:** Use `.test()` method instead of creating separate test stories.
+
+```typescript
+// ❌ BAD - Multiple test stories (old pattern)
+export const ClickTest = meta.story({
+  tags: ["test-only"],
+  play: async ({ canvas, userEvent, args }) => {
+    /* test 1 */
+  }
+});
+
+export const HoverTest = meta.story({
+  tags: ["test-only"],
+  play: async ({ canvas, userEvent }) => {
+    /* test 2 */
+  }
+});
+
+export const ValidationTest = meta.story({
+  tags: ["test-only"],
+  play: async ({ canvas }) => {
+    /* test 3 */
+  }
+});
+
+// ✅ GOOD - One story with multiple .test() calls (new pattern)
+export const LoginForm = meta.story({});
+
+LoginForm.test("Calls onSubmit when button clicked", async ({ canvas, userEvent, args }) => {
+  /* test 1 */
+});
+
+LoginForm.test("Shows tooltip on hover", async ({ canvas, userEvent }) => {
+  /* test 2 */
+});
+
+LoginForm.test("Shows validation error on empty submit", async ({ canvas }) => {
+  /* test 3 */
+});
+```
+
+**Benefits:** 80% fewer stories, better isolation, clearer intent, less boilerplate
+
+### 2. Use Specific Story Names ✅
+
+```typescript
+// ❌ BAD - Generic names
+export const Default = meta.story({});
+export const Story2 = meta.story({});
+export const Test1 = meta.story({});
+
+// ✅ GOOD - Single story: Use component name
+export const UserCard = meta.story({});
+export const SearchInput = meta.story({});
+
+// ✅ GOOD - Multiple stories: Use descriptive states
+export const EmptyForm = meta.story({});
+export const FilledForm = meta.story({});
+export const LoadingButton = meta.story({ args: { isLoading: true } });
+```
+
+**Rules:**
+
+- Single story → Component name (`UserCard`, `SearchInput`, `Badge`)
+- Multiple stories → Descriptive states (`EmptyForm` / `FilledForm`, `IdleButton` / `LoadingButton`)
+- Avoid generic: ~~`Default`~~, ~~`Basic`~~, ~~`Example`~~
+
+### 3. When to Use `.test()` vs `play` ✅
+
+```typescript
+// ✅ Use .test() for independent tests (90% of cases)
+export const ContactForm = meta.story({});
+
+ContactForm.test("Shows validation error on empty email", async ({ canvas }) => { ... });
+ContactForm.test("Submits successfully with valid data", async ({ canvas, args }) => { ... });
+ContactForm.test("Keyboard navigation works", async ({ canvas, userEvent }) => { ... });
+
+// ⚠️ Use play for complete user flows (10% of cases)
+export const CheckoutJourney = meta.story({
+  name: "Complete Checkout Flow",
+  tags: ["test-only"],
+  play: async ({ canvas, step, userEvent }) => {
+    await step("Add items to cart", async () => { ... });
+    await step("Enter shipping info", async () => { ... });
+    await step("Complete payment", async () => { ... });
+  }
+});
+```
+
+**Decision Criteria:**
+
+- Multiple independent tests? → Use `.test()`
+- One cohesive multi-step flow? → Use `play` with `step()`
+
 ## CSF Next Format Best Practices
 
-### 1. Always Import Preview
+### 4. Always Import Preview
 
 ```typescript
 // GOOD - Import preview for type-safe factory functions
@@ -29,12 +127,36 @@ const meta = preview.meta({ ... });
 ```typescript
 // BAD - Unnecessary type annotations
 import preview from "~/.storybook/preview";
-export const Default: Story = { };
+export const Default: Story = {};
 
 // GOOD - Types inferred automatically
 const meta = preview.meta({ component: MyComponent });
-export const Default = meta.story({ });
+export const Default = meta.story({});
 ```
+
+## ⭐ CRITICAL: userEvent from Function Parameters (Not Imports)
+
+**ALWAYS use `userEvent` from the test function parameter, NEVER import it.**
+
+```typescript
+// ❌ WRONG - Do NOT import userEvent
+import { expect, fn, userEvent } from "storybook/test";
+
+Story.test("Example", async ({ canvas }) => {
+  await userEvent.click(button); // ❌ Won't work
+});
+
+// ✅ CORRECT - Destructure userEvent from parameter
+import { expect, fn } from "storybook/test";
+
+Story.test("Example", async ({ canvas, userEvent }) => {
+  await userEvent.click(button); // ✅ Works correctly
+});
+```
+
+**Why?** The test framework provides `userEvent` as a function parameter with proper Storybook integration. Importing directly from `storybook/test` bypasses this integration and may cause timing issues.
+
+**Rule:** Your imports should only include `expect`, `fn`, `waitFor`, `screen` if needed. Never import `userEvent`, `within`, or `canvas` - always destructure them from the function parameter.
 
 ## Testing Best Practices
 
@@ -93,10 +215,14 @@ await expect(canvas.getByText(/loading/i)).toBeVisible();
 
 ```typescript
 // BAD - Not trackable
-args: { onSubmit: async () => {} }
+args: {
+  onSubmit: async () => {};
+}
 
 // GOOD - Trackable with fn()
-args: { onSubmit: fn(async () => ({ success: true })) }
+args: {
+  onSubmit: fn(async () => ({ success: true }));
+}
 ```
 
 ### 6. Organize with Steps
@@ -113,7 +239,7 @@ play: async ({ canvas, userEvent, step }) => {
     await userEvent.click(canvas.getByRole("button", { name: /submit/i }));
     await expect(canvas.getByText(/success/i)).toBeVisible();
   });
-}
+};
 ```
 
 ### 7. Handle Portals Correctly
@@ -129,11 +255,12 @@ const option = await screen.findByRole("option");
 ```
 
 **Portal query strategy:**
+
 - **Use `screen`** for portal content (modals, tooltips, dropdowns)
 - Portals render to document.body, so `screen` is the natural choice
 - Simpler and more readable than `within(canvasElement.parentElement)`
 
-### 8. Use queryBy* for Negative Assertions
+### 8. Use queryBy\* for Negative Assertions
 
 ```typescript
 // BAD - Throws error if not found
@@ -188,7 +315,7 @@ await userEvent.click(button);
 await expect(args.onClick).toHaveBeenCalled();
 ```
 
-### 2. Using getBy* for Elements That May Not Exist
+### 2. Using getBy\* for Elements That May Not Exist
 
 ```typescript
 // BAD - Throws immediately if not found
@@ -227,12 +354,14 @@ const tooltip = await screen.findByRole("tooltip");
 ```
 
 **Why use `screen` for portals:**
+
 - Portals (modals, tooltips, dropdowns) render outside the story canvas (usually to document.body)
 - `canvas` won't find them (they're not children of the story)
 - `screen` is the standard Testing Library pattern for querying document
 - Simpler and more readable than `within(canvasElement.parentElement)`
 
 **When to use `within(canvasElement.parentElement)` instead:**
+
 - Only if you experience test isolation issues in your specific setup
 - If you need more explicit scoping for complex scenarios
 

@@ -74,17 +74,21 @@ Never rely on potentially outdated knowledge—verify current patterns from offi
 When implementing or debugging backend logic:
 
 1. **Discover Running Servers:**
+
    ```
    mcp__next-devtools__nextjs_index
    ```
+
    Returns all running Next.js dev servers with their available MCP tools.
 
 2. **Get Compilation Errors:**
+
    ```
    mcp__next-devtools__nextjs_call(port: "3000", toolName: "get_errors")
    ```
 
 3. **Check Route Information:**
+
    ```
    mcp__next-devtools__nextjs_call(port: "3000", toolName: "get_routes")
    ```
@@ -134,9 +138,11 @@ export async function getResourceById(id: string): Promise<[null, Resource] | [E
 
 > **Use the `server-actions` skill for complete patterns, types, and examples.**
 >
-> The skill includes: ActionResponse/RedirectAction types, validation patterns, error handling, React Hook Form integration, and useActionState examples.
+> The skill includes: ActionResponse/RedirectAction types, validation patterns, error handling, React Hook Form
+> integration, and useActionState examples.
 
 Quick reference - Server actions follow this structure:
+
 1. Authentication check
 2. Zod validation
 3. Database operation (tuple error handling)
@@ -189,10 +195,7 @@ export async function POST(request: Request) {
     const body = await request.json();
     const parsed = schema.safeParse(body);
     if (!parsed.success) {
-      return NextResponse.json(
-        { error: "Validation failed", details: parsed.error.flatten() },
-        { status: 400 }
-      );
+      return NextResponse.json({ error: "Validation failed", details: parsed.error.flatten() }, { status: 400 });
     }
 
     // 3. Business logic
@@ -223,11 +226,14 @@ logger.info({ userId, resourceId }, "Operation completed successfully");
 logger.warn({ userId, errorCode: error.code }, "Resource not found");
 
 // Error logs - include error details for debugging
-logger.error({
-  userId,
-  errorCode: error.code,
-  isRetryable: error.isRetryable
-}, "Operation failed");
+logger.error(
+  {
+    userId,
+    errorCode: error.code,
+    isRetryable: error.isRetryable
+  },
+  "Operation failed"
+);
 ```
 
 ### 5. Error Handling Strategy

@@ -30,6 +30,7 @@ performance optimization, and code maintainability.
 2. **`CLAUDE.md`** - For project structure and coding standards
 
 This tells you:
+
 - Tech stack being used
 - Error handling patterns
 - Server action patterns
@@ -86,11 +87,13 @@ Include automated check results in your review:
 
 ```markdown
 **Automated Verification Results:**
+
 - ✅ TypeScript: No type errors
 - ⚠️ ESLint: 3 warnings (unused imports)
 - ❌ Prettier: 2 files need formatting
 
 **Action Required:**
+
 - Run `npm run lint:fix` to auto-fix lint issues
 - Run `npm run prettier:write` to fix formatting
 ```
@@ -98,6 +101,7 @@ Include automated check results in your review:
 ### Step 3: Focus Manual Review
 
 Use automated results to prioritize:
+
 - **Type errors** → Critical, must fix before merge
 - **Lint warnings** → Important, address in this PR
 - **Formatting issues** → Auto-fix with provided commands
@@ -125,12 +129,14 @@ Include IDE-detected issues in your review:
 
 ```markdown
 **IDE-Detected Issues:**
+
 - [ERROR] Line 25: Type 'string' is not assignable to type 'number'
 - [WARNING] Line 42: 'userId' is declared but never used
 - [INFO] Line 67: This condition will always return 'true'
 ```
 
 **Priority Escalation:**
+
 - Issues flagged by BOTH IDE and manual review → **Critical**
 - Issues flagged by IDE only → Include in review with context
 - Issues found only by manual review → Explain why IDE might have missed it
@@ -172,14 +178,15 @@ Include IDE-detected issues in your review:
 
 ### Authentication (Clerk)
 
-| Pattern | Required | Example |
-|---------|----------|---------|
-| Use `proxy.ts` not `middleware.ts` | ✅ | Next.js 16 Clerk pattern |
-| Check `auth()` in server code | ✅ | `const { userId } = await auth()` |
-| Session claims via `sessionClaims.metadata` | ✅ | `onboardingComplete` check |
-| Update metadata via Clerk API | ✅ | Not direct Firestore |
+| Pattern                                     | Required | Example                           |
+| ------------------------------------------- | -------- | --------------------------------- |
+| Use `proxy.ts` not `middleware.ts`          | ✅       | Next.js 16 Clerk pattern          |
+| Check `auth()` in server code               | ✅       | `const { userId } = await auth()` |
+| Session claims via `sessionClaims.metadata` | ✅       | `onboardingComplete` check        |
+| Update metadata via Clerk API               | ✅       | Not direct Firestore              |
 
 **Check for violations:**
+
 ```typescript
 // ❌ WRONG - Don't use middleware.ts with Clerk
 // middleware.ts should not exist for Clerk auth
@@ -195,14 +202,15 @@ const { userId } = await auth();
 
 ### React 19 & Compiler
 
-| Pattern | Required | Reason |
-|---------|----------|--------|
-| Remove unnecessary `useMemo`/`useCallback`/`memo` | ✅ | Compiler handles this |
-| Use `useActionState` for forms | ✅ | Replaces useState + useTransition |
-| `useFormStatus` in child component | ✅ | Must be inside `<form>` |
-| Default to Server Components | ✅ | Only add `"use client"` when needed |
+| Pattern                                           | Required | Reason                              |
+| ------------------------------------------------- | -------- | ----------------------------------- |
+| Remove unnecessary `useMemo`/`useCallback`/`memo` | ✅       | Compiler handles this               |
+| Use `useActionState` for forms                    | ✅       | Replaces useState + useTransition   |
+| `useFormStatus` in child component                | ✅       | Must be inside `<form>`             |
+| Default to Server Components                      | ✅       | Only add `"use client"` when needed |
 
 **Check for violations:**
+
 ```typescript
 // ❌ WRONG - Unnecessary memoization
 const sorted = useMemo(() => items.sort(), [items]);
@@ -222,14 +230,15 @@ function SubmitButton() {
 
 ### Database (Firestore)
 
-| Pattern | Required | Example |
-|---------|----------|---------|
-| Tuple error pattern | ✅ | `[DbError \| null, Data \| null]` |
-| Use `DbError` class | ✅ | `DbError.notFound()`, `DbError.validation()` |
-| Type lifecycle | ✅ | Base → Firestore → Application → DTOs |
-| Structured logging | ✅ | `logger.info({ userId }, "message")` |
+| Pattern             | Required | Example                                      |
+| ------------------- | -------- | -------------------------------------------- |
+| Tuple error pattern | ✅       | `[DbError \| null, Data \| null]`            |
+| Use `DbError` class | ✅       | `DbError.notFound()`, `DbError.validation()` |
+| Type lifecycle      | ✅       | Base → Firestore → Application → DTOs        |
+| Structured logging  | ✅       | `logger.info({ userId }, "message")`         |
 
 **Check for violations:**
+
 ```typescript
 // ❌ WRONG - Throwing errors
 async function getUser(id: string) {
@@ -247,14 +256,15 @@ async function getUser(id: string): Promise<[DbError | null, User | null]> {
 
 ### Server Actions
 
-| Pattern | Required | Example |
-|---------|----------|---------|
-| Use `ActionResponse<T>` or `RedirectAction` | ✅ | Standardized return types |
-| Validate with Zod | ✅ | `schema.safeParse(data)` |
-| Return `fieldErrors` for validation | ✅ | Form-friendly errors |
-| Use toast notifications | ✅ | `setToastCookie()` for feedback |
+| Pattern                                     | Required | Example                         |
+| ------------------------------------------- | -------- | ------------------------------- |
+| Use `ActionResponse<T>` or `RedirectAction` | ✅       | Standardized return types       |
+| Validate with Zod                           | ✅       | `schema.safeParse(data)`        |
+| Return `fieldErrors` for validation         | ✅       | Form-friendly errors            |
+| Use toast notifications                     | ✅       | `setToastCookie()` for feedback |
 
 **Check for violations:**
+
 ```typescript
 // ❌ WRONG - Untyped return
 export async function submitForm(data: FormData) {
@@ -273,12 +283,12 @@ export async function submitForm(data: FormData): ActionResponse<User> {
 
 ### Component Patterns
 
-| Pattern | Required | Reason |
-|---------|----------|--------|
-| Server Components by default | ✅ | Better performance |
-| Minimal client boundaries | ✅ | Keep `"use client"` scope small |
-| Pass server data as props | ✅ | Fetch on server, display on client |
-| Server Actions for mutations | ✅ | Not client-side fetch |
+| Pattern                      | Required | Reason                             |
+| ---------------------------- | -------- | ---------------------------------- |
+| Server Components by default | ✅       | Better performance                 |
+| Minimal client boundaries    | ✅       | Keep `"use client"` scope small    |
+| Pass server data as props    | ✅       | Fetch on server, display on client |
+| Server Actions for mutations | ✅       | Not client-side fetch              |
 
 ## Performance Integration
 
@@ -290,9 +300,10 @@ For performance-critical code, recommend spawning the **performance-analyzer** a
 - Image optimization issues
 
 **Example recommendation:**
+
 ```markdown
-**Performance Concern:**
-This component imports the entire `lodash` library. Consider:
+**Performance Concern:** This component imports the entire `lodash` library. Consider:
+
 1. Using tree-shakeable imports: `import debounce from 'lodash/debounce'`
 2. Running performance-analyzer agent for bundle impact analysis
 ```

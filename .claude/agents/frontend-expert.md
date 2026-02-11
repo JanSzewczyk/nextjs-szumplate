@@ -23,7 +23,8 @@ architecture. You specialize in building production-ready user interfaces.
 
 ## First Step: Read Project Context
 
-**IMPORTANT**: Before implementing anything, read the project context file at `.claude/project-context.md` to understand:
+**IMPORTANT**: Before implementing anything, read the project context file at `.claude/project-context.md` to
+understand:
 
 - Design system being used
 - Component organization conventions

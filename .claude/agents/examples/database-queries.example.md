@@ -41,11 +41,14 @@ export async function getResourceById(id: string): Promise<[null, Resource] | [D
     return [null, transformFirestoreToResource(doc.id, data)];
   } catch (error) {
     const dbError = categorizeDbError(error, RESOURCE_NAME);
-    logger.error({
-      id,
-      errorCode: dbError.code,
-      isRetryable: dbError.isRetryable
-    }, "Database error");
+    logger.error(
+      {
+        id,
+        errorCode: dbError.code,
+        isRetryable: dbError.isRetryable
+      },
+      "Database error"
+    );
     return [dbError, null];
   }
 }
@@ -63,10 +66,7 @@ export async function getResourcesByUser(
   }
 
   try {
-    let query = db
-      .collection(COLLECTION_NAME)
-      .where("userId", "==", userId)
-      .orderBy("createdAt", "desc");
+    let query = db.collection(COLLECTION_NAME).where("userId", "==", userId).orderBy("createdAt", "desc");
 
     if (options.status) {
       query = query.where("status", "==", options.status);
@@ -77,9 +77,7 @@ export async function getResourcesByUser(
     }
 
     const snapshot = await query.get();
-    const resources = snapshot.docs.map((doc) =>
-      transformFirestoreToResource(doc.id, doc.data())
-    );
+    const resources = snapshot.docs.map((doc) => transformFirestoreToResource(doc.id, doc.data()));
 
     logger.info({ userId, count: resources.length }, "Resources fetched");
     return [null, resources];
@@ -94,9 +92,7 @@ export async function getResourcesByUser(
 ## Create Operation
 
 ```typescript
-export async function createResource(
-  data: CreateResourceDto
-): Promise<[null, Resource] | [DbError, null]> {
+export async function createResource(data: CreateResourceDto): Promise<[null, Resource] | [DbError, null]> {
   try {
     const docRef = await db.collection(COLLECTION_NAME).add(data);
     const doc = await docRef.get();
@@ -119,10 +115,7 @@ export async function createResource(
 ## Update Operation
 
 ```typescript
-export async function updateResource(
-  id: string,
-  data: UpdateResourceDto
-): Promise<[null, Resource] | [DbError, null]> {
+export async function updateResource(id: string, data: UpdateResourceDto): Promise<[null, Resource] | [DbError, null]> {
   if (!id?.trim()) {
     return [DbError.validation("Invalid id"), null];
   }
@@ -186,10 +179,7 @@ export async function deleteResource(id: string): Promise<[null, void] | [DbErro
 ## Transform Helper
 
 ```typescript
-function transformFirestoreToResource(
-  docId: string,
-  data: FirebaseFirestore.DocumentData
-): Resource {
+function transformFirestoreToResource(docId: string, data: FirebaseFirestore.DocumentData): Resource {
   return {
     id: docId,
     ...data,
@@ -205,10 +195,7 @@ function transformFirestoreToResource(
 ## Batch Operations
 
 ```typescript
-export async function batchUpdateStatus(
-  ids: string[],
-  status: string
-): Promise<[null, number] | [DbError, null]> {
+export async function batchUpdateStatus(ids: string[], status: string): Promise<[null, number] | [DbError, null]> {
   if (ids.length === 0) {
     return [null, 0];
   }

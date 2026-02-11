@@ -43,24 +43,21 @@ export function ThemeToggle() {
 
   const currentTheme: Theme = (theme as Theme) ?? "system";
 
-  const cycleTheme = React.useCallback(() => {
+  const cycleTheme = () => {
     const currentIndex = THEME_CYCLE.indexOf(currentTheme);
     const nextIndex = (currentIndex + 1) % THEME_CYCLE.length;
     const nextTheme = THEME_CYCLE[nextIndex];
     if (nextTheme) {
       setTheme(nextTheme);
     }
-  }, [currentTheme, setTheme]);
+  };
 
-  const handleKeyDown = React.useCallback(
-    (event: React.KeyboardEvent) => {
-      if (event.key === "Enter" || event.key === " ") {
-        event.preventDefault();
-        cycleTheme();
-      }
-    },
-    [cycleTheme]
-  );
+  const handleKeyDown = (event: React.KeyboardEvent) => {
+    if (event.key === "Enter" || event.key === " ") {
+      event.preventDefault();
+      cycleTheme();
+    }
+  };
 
   // Render placeholder during SSR to prevent hydration mismatch
   if (!mounted) {

@@ -1,9 +1,19 @@
-import { expect, test } from "vitest";
+import { describe, expect, test } from "vitest";
 
-export function sum(a: number, b: number) {
+function sum(a: number, b: number): number {
   return a + b;
 }
 
-test("adds 1 + 2 to equal 3", () => {
-  expect(sum(1, 2)).toBe(3);
+describe("sum", () => {
+  test("adds two positive numbers", () => {
+    expect(sum(1, 2)).toBe(3);
+  });
+
+  test("adds negative numbers", () => {
+    expect(sum(-1, -2)).toBe(-3);
+  });
+
+  test("adds zero", () => {
+    expect(sum(0, 5)).toBe(5);
+  });
 });

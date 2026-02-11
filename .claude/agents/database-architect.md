@@ -4,12 +4,12 @@ version: 1.0.0
 lastUpdated: 2026-01-18
 author: Szum Tech Team
 related-agents: [nextjs-backend-engineer, library-updater]
-description: Use this agent when designing data models, optimizing database queries, planning data migrations, or working with database type patterns. This agent should be consulted proactively when:\n\n<example>\nContext: User is starting to implement a new feature that requires data storage.\nuser: "I need to store user preferences and their categories"\nassistant: "I'll use the database-architect agent to design the schema with proper type patterns and relationships."\n<commentary>\nThe user needs data modeling, so the database-architect should design the schema following project conventions.\n</commentary>\n</example>\n\n<example>\nContext: User is experiencing slow queries or data inconsistencies.\nuser: "The dashboard page is loading slowly, I think it's the database queries"\nassistant: "Let me use the database-architect agent to analyze the queries and propose optimizations."\n<commentary>\nPerformance issues related to database queries are core responsibility of this agent.\n</commentary>\n</example>\n\n<example>\nContext: User needs to add new fields to existing documents.\nuser: "We need to add a 'tags' field to all entries"\nassistant: "I'll use the database-architect agent to plan the migration strategy and update the type definitions."\n<commentary>\nData migrations and schema evolution are handled by this agent.\n</commentary>\n</example>
+description: Design data models, optimize database queries, plan data migrations, and manage database type patterns. Use proactively when features require data storage or when query performance needs improvement.
 tools: Glob, Grep, Read, Write, Edit, WebFetch, TodoWrite, WebSearch, Bash, mcp__context7__resolve-library-id, mcp__context7__get-library-docs
 model: sonnet
 color: orange
 permissionMode: default
-skills: firebase-firestore, db-migration, builder-factory, structured-logging, error-handling
+skills: builder-factory, structured-logging
 hooks:
   PostToolUse:
     - matcher: "Write|Edit"
@@ -57,30 +57,7 @@ ALWAYS use Context7 MCP to retrieve up-to-date database documentation before des
 
 ### 2. Project Type Pattern Adherence
 
-Check `.claude/project-context.md` for the project's type lifecycle pattern. Common patterns include:
-
-**Type Lifecycle Example:**
-
-```typescript
-// 1. Base type - Business fields only
-export type ResourceBase = {
-  name: string;
-  status: "active" | "inactive";
-  scheduledAt?: Date;
-};
-
-// 2. Database type - Raw database data types
-export type ResourceDB = WithDBTimestamps<ResourceBase>;
-
-// 3. Application type - With id and transformed types
-export type Resource = WithDates<ResourceBase>;
-
-// 4. Create DTO - For creating records
-export type CreateResourceDto = CreateDto<ResourceBase>;
-
-// 5. Update DTO - For updating records, all fields optional
-export type UpdateResourceDto = UpdateDto<ResourceBase>;
-```
+Check `.claude/project-context.md` for the project's type lifecycle pattern. See `firebase-firestore` skill for complete type lifecycle examples (Base → DB → Application → Create DTO → Update DTO).
 
 ### 3. Collection/Table Design Principles
 
@@ -106,76 +83,25 @@ export type UpdateResourceDto = UpdateDto<ResourceBase>;
 
 ### 4. Query Optimization Strategies
 
-**Index Planning:**
+**Key principles:**
 
-- Identify frequently queried fields
-- Plan composite indexes for multi-field queries
-- Document index requirements in code comments
-
-**Query Patterns:**
-
-```typescript
-// Good - specific queries with limits
-const query = db
-  .collection("resources")
-  .where("userId", "==", userId)
-  .where("status", "==", "active")
-  .orderBy("createdAt", "desc")
-  .limit(10);
-
-// Bad - fetching entire collection
-const query = db.collection("resources"); // No filters!
-```
-
-**Pagination:**
-
-```typescript
-// Use cursor-based pagination for large datasets
-const firstPage = await getResources({ limit: 20 });
-const nextPage = await getResources({ limit: 20, startAfter: lastDoc });
-```
+| Principle | Description |
+| --------- | ----------- |
+| Index planning | Identify frequently queried fields, plan composite indexes, document in comments |
+| Specific queries | Always use filters, ordering, and limits — never fetch entire collections |
+| Cursor pagination | Use `startAfter` for large datasets instead of offset-based |
 
 ### 5. Migration Strategy
 
-When planning migrations:
+See `db-migration` skill for migration script templates.
 
-1. **Assess Impact:**
-   - Number of records affected
-   - Read/write cost estimation
-   - Downtime requirements
+**Migration types:** Lazy (update on next read/write), Batch (process all records), Dual-write (transition period).
 
-2. **Migration Types:**
-   - **Lazy migration**: Update on next read/write (preferred for large collections)
-   - **Batch migration**: Process all records (for small collections or critical changes)
-   - **Dual-write**: Write to both old and new structure during transition
-
-3. **Safety Checklist:**
-   - [ ] Dry run completed successfully
-   - [ ] Sample of changes reviewed manually
-   - [ ] Database backup created
-   - [ ] Type definitions ready to update
-   - [ ] Rollback script prepared
-   - [ ] Team notified of migration window
+**Safety checklist:** Dry run → Review sample → Backup → Update types → Prepare rollback → Notify team.
 
 ### 6. Error Handling
 
-Follow the project's error handling pattern (check project-context.md). Common pattern:
-
-```typescript
-export async function getResourcesByUser(userId: string): Promise<[null, Resource[]] | [Error, null]> {
-  // Input validation
-  if (!userId?.trim()) {
-    return [new ValidationError("Invalid userId"), null];
-  }
-
-  try {
-    const records = await db.query({ userId });
-    return [null, records.map(transform)];
-  } catch (error) {
-    return [categorizeError(error), null];
-  }
-}
-```
+Follow the project's error handling pattern from project-context.md. See `error-handling` and `firebase-firestore` skills for tuple return pattern and `DbError` class usage.
 
 ## Design Process
 

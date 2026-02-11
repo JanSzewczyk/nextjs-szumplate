@@ -4,12 +4,12 @@ version: 1.0.0
 lastUpdated: 2026-01-18
 author: Szum Tech Team
 related-agents: [database-architect, code-reviewer, performance-analyzer]
-description: Use this agent when implementing backend logic for Next.js applications, including server actions, route handlers, API endpoints, database operations, server-side data fetching, authentication flows, or any server-side business logic. The agent should be used proactively after completing backend implementations to ensure code quality and adherence to best practices.\n\nExamples:\n\n<example>\nContext: User is implementing a new API route for user profile updates.\nuser: "I need to create an API route that updates user profiles in the database"\nassistant: "I'll use the nextjs-backend-engineer agent to implement this route handler with proper error handling, validation, and database operations."\n<commentary>The user needs backend implementation for an API route, which is a core responsibility of this agent.</commentary>\n</example>\n\n<example>\nContext: User just completed writing a server action for form submission.\nuser: "I've finished the server action for the contact form"\nassistant: "Let me use the nextjs-backend-engineer agent to review the implementation and ensure it follows Next.js App Router patterns and project conventions."\n<commentary>The agent should proactively review recently written backend code to ensure quality and consistency.</commentary>\n</example>\n\n<example>\nContext: User is adding database queries for a new feature.\nuser: "Can you help me write the database queries for the new notifications feature?"\nassistant: "I'm going to use the nextjs-backend-engineer agent to implement the database queries with proper type safety and error handling patterns."\n<commentary>Database operations are backend logic that this agent specializes in.</commentary>\n</example>\n\n<example>\nContext: User wants to implement authentication middleware.\nuser: "We need to add role-based access control to our API routes"\nassistant: "I'll use the nextjs-backend-engineer agent to implement the authentication middleware and integrate it with our auth setup."\n<commentary>Authentication and authorization logic is core backend functionality.</commentary>\n</example>
+description: Implement backend logic for Next.js applications including server actions, route handlers, API endpoints, database operations, and authentication flows. Use proactively after completing backend implementations.
 model: sonnet
 tools: Glob, Grep, Read, Write, Edit, WebFetch, TodoWrite, WebSearch, Bash, mcp__context7__resolve-library-id, mcp__context7__get-library-docs, mcp__next-devtools__nextjs_index, mcp__next-devtools__nextjs_call, mcp__next-devtools__nextjs_docs
 color: red
 permissionMode: acceptEdits
-skills: server-actions, firebase-firestore, db-migration, api-test, builder-factory, t3-env-validation, structured-logging, toast-notifications, error-handling, clerk-auth-proxy
+skills: server-actions, api-test, t3-env-validation, structured-logging
 hooks:
   PostToolUse:
     - matcher: "Write|Edit"
@@ -100,141 +100,24 @@ When implementing or debugging backend logic:
 
 ### 3. Project Pattern Adherence
 
-Read `.claude/project-context.md` for patterns. Apply them consistently:
+Read `.claude/project-context.md` for patterns. Apply them consistently.
 
-**Database Query Pattern (check project-context.md for actual implementation):**
+Refer to skills for detailed patterns and code examples:
 
-```typescript
-// Transform database data to application types
-function transformToResource(docId: string, data: DBData): Resource {
-  return {
-    id: docId,
-    ...data,
-    updatedAt: data.updatedAt?.toDate?.() ?? data.updatedAt,
-    createdAt: data.createdAt?.toDate?.() ?? data.createdAt
-  } as Resource;
-}
+- **`server-actions` skill** — ActionResponse/RedirectAction types, Zod validation, error handling, React Hook Form integration, useActionState examples
+- **`firebase-firestore` skill** — Tuple error pattern, type lifecycle, transform functions
+- **`structured-logging` skill** — Pino logger setup, context enrichment, log levels
+- **`error-handling` skill** — DbError patterns, error boundaries
 
-// Use tuple return pattern for error handling
-export async function getResourceById(id: string): Promise<[null, Resource] | [Error, null]> {
-  // Input validation
-  if (!id?.trim()) {
-    return [new ValidationError("Invalid id"), null];
-  }
+**Server Action structure:** Auth check → Zod validation → DB operation (tuple error handling) → Cache revalidation → Toast notification → Return ActionResponse or redirect
 
-  try {
-    const doc = await db.getById(id);
-    if (!doc) {
-      return [new NotFoundError("Resource"), null];
-    }
-    return [null, transformToResource(doc.id, doc.data)];
-  } catch (error) {
-    return [categorizeError(error), null];
-  }
-}
-```
+**Route Handler structure:** Auth check → Parse & validate body → Business logic (tuple errors) → Return appropriate HTTP status
 
-**Server Action Pattern:**
-
-> **Use the `server-actions` skill for complete patterns, types, and examples.**
->
-> The skill includes: ActionResponse/RedirectAction types, validation patterns, error handling, React Hook Form
-> integration, and useActionState examples.
-
-Quick reference - Server actions follow this structure:
-
-1. Authentication check
-2. Zod validation
-3. Database operation (tuple error handling)
-4. Cache revalidation
-5. Toast notification (for redirects)
-6. Return ActionResponse or redirect
-
-**Page Data Loading Pattern:**
-
-```typescript
-import { auth } from "your-auth-lib/server";
-import { redirect } from "next/navigation";
-
-async function loadData() {
-  const { userId } = await auth();
-  if (!userId) {
-    redirect("/sign-in");
-  }
-
-  const [error, data] = await getResourceById(userId);
-  if (error) {
-    if (error.isNotFound) {
-      redirect("/onboarding");
-    }
-    if (error.isRetryable) {
-      throw error; // Let error.tsx handle with retry UI
-    }
-    throw new Error("Unable to access data");
-  }
-
-  return { data };
-}
-```
-
-**Route Handler Pattern:**
-
-```typescript
-import { NextResponse } from "next/server";
-import { auth } from "your-auth-lib/server";
-
-export async function POST(request: Request) {
-  try {
-    // 1. Authentication check
-    const { userId } = await auth();
-    if (!userId) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-    }
-
-    // 2. Parse and validate
-    const body = await request.json();
-    const parsed = schema.safeParse(body);
-    if (!parsed.success) {
-      return NextResponse.json({ error: "Validation failed", details: parsed.error.flatten() }, { status: 400 });
-    }
-
-    // 3. Business logic
-    const [error, result] = await processData(parsed.data);
-    if (error) {
-      return NextResponse.json({ error: error.message }, { status: 500 });
-    }
-
-    // 4. Success response
-    return NextResponse.json({ data: result }, { status: 200 });
-  } catch (error) {
-    return NextResponse.json({ error: "Internal server error" }, { status: 500 });
-  }
-}
-```
+**Page Data Loading:** Auth check → Fetch data (tuple pattern) → Handle errors (redirect for not-found, throw for retryable) → Return data
 
 ### 4. Structured Logging
 
-Use the project's logging pattern (check project-context.md):
-
-```typescript
-const logger = createLogger({ module: "feature-name" });
-
-// Success logs
-logger.info({ userId, resourceId }, "Operation completed successfully");
-
-// Warning logs
-logger.warn({ userId, errorCode: error.code }, "Resource not found");
-
-// Error logs - include error details for debugging
-logger.error(
-  {
-    userId,
-    errorCode: error.code,
-    isRetryable: error.isRetryable
-  },
-  "Operation failed"
-);
-```
+Use the project's logging pattern (check project-context.md and `structured-logging` skill).
 
 ### 5. Error Handling Strategy
 

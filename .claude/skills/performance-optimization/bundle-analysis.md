@@ -59,21 +59,18 @@ const ExportButton = dynamic(
 );
 ```
 
-### 2. Tree Shaking
+### 2. Tree Shaking and Native Alternatives
 
 ```typescript
-// ❌ Bad: Imports entire library
-import _ from "lodash";
+// ❌ Bad: Imports entire heavy library
+import _ from "heavy-utils";
 const result = _.debounce(fn, 300);
 
 // ✅ Good: Tree-shakeable import
-import debounce from "lodash/debounce";
+import debounce from "heavy-utils/debounce";
 const result = debounce(fn, 300);
 
-// ✅ Better: Use lodash-es
-import { debounce } from "lodash-es";
-
-// ✅ Best: Native alternative
+// ✅ Best: Native implementation (zero bundle cost)
 const debounce = (fn: Function, ms: number) => {
   let timeout: NodeJS.Timeout;
   return (...args: unknown[]) => {
@@ -88,9 +85,9 @@ const debounce = (fn: Function, ms: number) => {
 | Heavy Library | Size | Lighter Alternative | Size |
 |---------------|------|---------------------|------|
 | moment | 67KB | date-fns | 13KB |
-| lodash | 71KB | lodash-es (tree-shakeable) | ~5KB used |
+| moment | 67KB | Intl.DateTimeFormat (native) | 0KB |
 | axios | 13KB | fetch (native) | 0KB |
-| uuid | 8KB | crypto.randomUUID() | 0KB |
+| uuid | 8KB | crypto.randomUUID() (native) | 0KB |
 | classnames | 1KB | clsx | 0.5KB |
 
 ### 4. Analyze Duplicates

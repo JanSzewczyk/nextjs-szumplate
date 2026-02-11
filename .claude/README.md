@@ -271,7 +271,7 @@ When updating:
 **Current Setup:**
 - **8 agents** (specialized AI assistants)
 - **15 skills** (10 active + 5 optional)
-- **4 MCP servers** (next-devtools, playwright, context7, jetbrains)
+- **3 MCP servers** (next-devtools, context7, jetbrains)
 
 ---
 

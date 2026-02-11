@@ -53,9 +53,14 @@ npm run analyze
 // Dynamic imports for heavy components
 const Chart = dynamic(() => import("./Chart"), { ssr: false });
 
-// Tree-shakeable imports
-import { debounce } from "lodash-es";  // ✅
-import _ from "lodash";                 // ❌
+// Prefer native implementations
+const debounce = (fn: Function, ms: number) => {  // ✅ Native
+  let timeout: NodeJS.Timeout;
+  return (...args: unknown[]) => {
+    clearTimeout(timeout);
+    timeout = setTimeout(() => fn(...args), ms);
+  };
+};
 ```
 
 ### React Rendering

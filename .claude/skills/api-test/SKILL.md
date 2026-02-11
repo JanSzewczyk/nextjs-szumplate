@@ -5,7 +5,7 @@ lastUpdated: 2026-01-18
 description: Test Next.js Route Handlers and API endpoints using Playwright for real HTTP requests. Use when testing API endpoints, route handlers, or backend integrations.
 tags: [testing, api, route-handlers, playwright, e2e]
 author: Szum Tech Team
-allowed-tools: Read, Write, Edit, Glob, Grep, Bash, mcp__playwright__browser_navigate, mcp__playwright__browser_snapshot, mcp__playwright__browser_network_requests, mcp__context7__resolve-library-id, mcp__context7__get-library-docs
+allowed-tools: Read, Write, Edit, Glob, Grep, Bash(playwright-cli:*), mcp__context7__resolve-library-id, mcp__context7__get-library-docs
 context: fork
 agent: general-purpose
 user-invocable: true

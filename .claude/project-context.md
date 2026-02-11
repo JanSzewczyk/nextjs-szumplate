@@ -85,287 +85,36 @@ features/
         └── db/           # Database queries (when DB added)
 ```
 
-## Logging Pattern
+## Logging
 
-```typescript
-import logger, { createLogger } from "~/lib/logger";
+Use Pino via `createLogger({ module: "feature-name" })`. See `structured-logging` skill for full patterns.
 
-// Create feature-specific logger
-const featureLogger = createLogger({ module: "feature-name" });
+## React 19 & Compiler
 
-// Success
-featureLogger.info({ userId, resourceId }, "Operation completed");
+React Compiler enabled in `next.config.ts` — removes need for manual memoization. Keep `useMemo`/`useCallback` only for: external library callbacks, complex context values, >100ms computations. Server Components by default; add `"use client"` only when interactivity is needed. See `react-19-compiler` skill for complete patterns (useActionState, useFormStatus, etc.).
 
-// Warning
-featureLogger.warn({ userId }, "Resource not found");
+## Forms
 
-// Error
-featureLogger.error({ userId, error: err.message }, "Operation failed");
-```
+- Complex forms: React Hook Form + Zod
+- Simple forms: `useActionState` (from `react-19-compiler` skill)
+- Server Actions: See `server-actions` skill for types, validation, error handling
 
-## React 19 Patterns
-
-> **Full documentation**: See `.claude/skills/react-19-compiler/` skill for complete patterns.
-
-### React Compiler
-
-The project has React Compiler enabled in `next.config.ts`:
-- **Remove unnecessary memoization** - Compiler handles `useMemo`, `useCallback`, `React.memo`
-- **Keep memoization only for** - External library callbacks, complex context values, >100ms computations
-
-### Server Components (Default)
-
-```typescript
-// ✅ Server Component by default - no directive needed
-export function UserProfile({ user }: { user: User }) {
-  return <div>{user.name}</div>;
-}
-```
-
-### Client Components (When Needed)
-
-```typescript
-"use client";
-
-import { useState } from "react";
-
-export function Counter() {
-  const [count, setCount] = useState(0);
-  return <button onClick={() => setCount(c => c + 1)}>{count}</button>;
-}
-```
-
-### Form Handling with useActionState
-
-```typescript
-"use client";
-import { useActionState } from "react";
-
-function ContactForm() {
-  const [state, formAction, isPending] = useActionState(submitForm, null);
-
-  return (
-    <form action={formAction}>
-      <input name="email" type="email" />
-      <SubmitButton />
-      {state?.error && <p>{state.error}</p>}
-    </form>
-  );
-}
-
-// useFormStatus MUST be in child component
-function SubmitButton() {
-  const { pending } = useFormStatus();
-  return <button disabled={pending}>{pending ? "Sending..." : "Send"}</button>;
-}
-```
-
-**Related Skills:**
-- `react-19-compiler` - Complete React 19 patterns, hooks, Server/Client Components
-
-## Form Pattern
-
-- Use React Hook Form for complex forms, useActionState for simple forms
-- Use Zod schemas for validation
-- See `server-actions` skill for Server Actions patterns
-
-## Server Action Pattern (Template)
-
-> **Full documentation**: See `.claude/skills/server-actions/` skill.
-
-**File Location:** `features/[feature]/server/actions/[action-name].ts`
-
-```typescript
-"use server";
-
-import { revalidatePath } from "next/cache";
-import { createLogger } from "~/lib/logger";
-
-const logger = createLogger({ module: "feature-actions" });
-
-// Simple action returning success/error
-export async function createResource(formData: FormData) {
-  const name = formData.get("name") as string;
-
-  if (!name?.trim()) {
-    return { success: false, error: "Name is required" };
-  }
-
-  try {
-    // Your logic here
-    logger.info({ name }, "Resource created");
-    revalidatePath("/resources");
-    return { success: true };
-  } catch (error) {
-    logger.error({ error }, "Failed to create resource");
-    return { success: false, error: "Failed to create resource" };
-  }
-}
-```
+**Server Action location:** `features/[feature]/server/actions/[action-name].ts`
 
 ## Common Pitfalls
 
-These are frequent mistakes to avoid when working with this stack:
+| Area | Don't | Do |
+|------|-------|----|
+| Components | Add `'use client'` unnecessarily | Default to Server Components |
+| Memoization | Use `useMemo`/`useCallback`/`memo` with React Compiler | Let compiler optimize automatically |
+| Imports | Use relative paths (`../../../lib/utils`) | Use path aliases (`~/lib/utils`) |
+| Logging | Use `console.log` in production code | Use structured Pino logging (`logger.info(...)`) |
+| `useFormStatus` | Use in same component as `<form>` | Use in a child component inside the form |
+| Server Actions | Return untyped objects | Use standardized response types with Zod validation |
 
-### React Components
-
-❌ **Don't:** Add 'use client' unnecessarily
-```typescript
-// ❌ WRONG - No interactivity needed
-'use client'
-export function UserProfile({ user }) {
-  return <div>{user.name}</div>;
-}
-```
-
-✅ **Do:** Default to Server Components
-```typescript
-// ✅ CORRECT - Server Component by default
-export function UserProfile({ user }) {
-  return <div>{user.name}</div>;
-}
-```
-
-### Memoization
-
-❌ **Don't:** Use unnecessary memoization with React Compiler
-```typescript
-// ❌ WRONG - Compiler handles this automatically
-const sorted = useMemo(() => items.sort(), [items]);
-```
-
-✅ **Do:** Let compiler optimize
-```typescript
-// ✅ CORRECT - Compiler handles memoization
-const sorted = [...items].sort((a, b) => a.name.localeCompare(b.name));
-```
-
-### Imports
-
-❌ **Don't:** Use relative imports for project files
-```typescript
-// ❌ WRONG
-import { something } from "../../../lib/utils";
-```
-
-✅ **Do:** Use path aliases
-```typescript
-// ✅ CORRECT
-import { something } from "~/lib/utils";
-```
-
-### Logging
-
-❌ **Don't:** Use console.log in production code
-```typescript
-// ❌ WRONG
-console.log("User created:", userId);
-```
-
-✅ **Do:** Use structured logging with Pino
-```typescript
-// ✅ CORRECT
-logger.info({ userId, operation: "create" }, "User created");
-```
-
-### useFormStatus
-
-❌ **Don't:** Use useFormStatus in the same component as form
-```typescript
-// ❌ WRONG - useFormStatus won't work
-function Form() {
-  const { pending } = useFormStatus();
-  return <form>...</form>;
-}
-```
-
-✅ **Do:** Use useFormStatus in a child component
-```typescript
-// ✅ CORRECT
-function SubmitButton() {
-  const { pending } = useFormStatus();
-  return <button disabled={pending}>Submit</button>;
-}
-```
-
-<!--
-## Database Patterns (Firebase)
-
-> Uncomment this section when Firebase is installed.
-> See `.claude/skills/firebase-firestore/` skill for complete patterns.
-
-### Type Lifecycle
-
-```typescript
-// 1. Base type - Business fields only
-export type ResourceBase = {
-  name: string;
-  status: "active" | "inactive";
-};
-
-// 2. Firestore type - With Timestamp objects
-export type ResourceFirestore = WithFirestoreTimestamps<ResourceBase>;
-
-// 3. Application type - With id and Date objects
-export type Resource = WithDates<ResourceBase>;
-
-// 4. Create DTO - For creating documents
-export type CreateResourceDto = CreateDto<ResourceBase>;
-
-// 5. Update DTO - For updating documents
-export type UpdateResourceDto = UpdateDto<ResourceBase>;
-```
-
-### Error Handling Pattern (DbError)
-
-```typescript
-import { categorizeDbError, DbError } from "~/lib/firebase/errors";
-
-export async function getResourceById(id: string): Promise<[null, Resource] | [DbError, null]> {
-  if (!id?.trim()) {
-    return [DbError.validation("Invalid id provided"), null];
-  }
-
-  try {
-    const doc = await db.collection(COLLECTION_NAME).doc(id).get();
-    if (!doc.exists) {
-      return [DbError.notFound(RESOURCE_NAME), null];
-    }
-    return [null, transformFirestoreToResource(doc.id, doc.data()!)];
-  } catch (error) {
-    return [categorizeDbError(error, RESOURCE_NAME), null];
-  }
-}
-```
--->
-
-<!--
-## Authentication (Clerk)
-
-> Uncomment this section when Clerk is installed.
-> See `.claude/skills/clerk-auth-proxy/` skill for complete patterns.
-
-**Important:** Use `proxy.ts` not `middleware.ts` for Clerk in Next.js 16.
-
-```typescript
-// proxy.ts
-import { clerkProxy } from "@clerk/nextjs/server";
-export default clerkProxy();
-```
-
-**Server-side auth check:**
-```typescript
-import { auth } from "@clerk/nextjs/server";
-
-export async function protectedAction() {
-  const { userId } = await auth();
-  if (!userId) {
-    return { success: false, error: "Unauthorized" };
-  }
-  // ... rest of logic
-}
-```
--->
+<!-- Database (Firebase) and Authentication (Clerk) patterns are in their respective skills:
+     firebase-firestore, db-migration, error-handling, clerk-auth-proxy.
+     Uncomment and add sections here when these integrations are installed. -->
 
 ## Available Skills
 

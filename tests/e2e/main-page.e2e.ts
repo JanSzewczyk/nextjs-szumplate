@@ -160,12 +160,14 @@ test("tech stack links open in new tab", async ({ page, context }) => {
 
   // Click on first tech link (from constants)
   const firstTech = TECH_STACK_ITEMS[0];
-  const escapedName = firstTech?.name.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  // eslint-disable-next-line playwright/no-conditional-in-test -- type narrowing guard, not conditional test logic
+  if (!firstTech) throw new Error("TECH_STACK_ITEMS is empty, expected at least one item");
+  const escapedName = firstTech.name.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 
   const pagePromise = context.waitForEvent("page");
   await techStackSection.getByRole("link", { name: new RegExp(`Learn more about ${escapedName}`, "i") }).click();
   const newPage = await pagePromise;
   await newPage.waitForLoadState();
 
-  expect(newPage.url()).toMatch(new RegExp(`^${firstTech?.href.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}`));
+  expect(newPage.url()).toMatch(new RegExp(`^${firstTech.href.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}`));
 });

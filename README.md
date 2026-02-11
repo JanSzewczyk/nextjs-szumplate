@@ -429,7 +429,7 @@ LOG_LEVEL=debug
 #### Basic Logging
 
 ```typescript
-import logger from "@/lib/logger";
+import logger from "~/lib/logger";
 
 // Info level
 logger.info("User logged in successfully");
@@ -449,7 +449,7 @@ logger.debug({ query: params }, "Database query executed");
 Create child loggers with persistent context:
 
 ```typescript
-import { createLogger } from "@/lib/logger";
+import { createLogger } from "~/lib/logger";
 
 // Create a logger with specific context
 const apiLogger = createLogger({
@@ -464,7 +464,7 @@ apiLogger.info("Processing request"); // Will include module and service in ever
 
 ```typescript
 import { NextResponse } from "next/server";
-import logger from "@/lib/logger";
+import logger from "~/lib/logger";
 
 export async function GET(request: Request) {
   logger.info("Fetching users list");
@@ -485,7 +485,7 @@ export async function GET(request: Request) {
 ```typescript
 "use server";
 
-import { createLogger } from "@/lib/logger";
+import { createLogger } from "~/lib/logger";
 
 const actionLogger = createLogger({ context: "server-action" });
 
@@ -742,27 +742,28 @@ export async function getData() {
 
 ```
 nextjs-szumplate/
+├── .claude/              # Claude Code configuration (agents, skills, hooks)
 ├── .github/
 │   └── workflows/        # GitHub Actions workflows (CI/CD)
 ├── .storybook/           # Storybook configuration
 ├── app/                  # Next.js App Router (pages, layouts, API routes)
-├── components/           # Reusable React components
-├── data/                 # Static data and constants
-├── features/             # Feature-based modules and logic
-├── lib/                  # Utility functions and helpers
+├── components/           # Reusable React components (stories co-located)
+├── constants/            # Static data and configuration constants
+├── data/
+│   └── env/              # T3 Env type-safe environment variables
+├── features/             # Feature-based modules (components, schemas, server)
+├── lib/                  # Utility functions and configurations (logger)
 ├── public/               # Static assets (images, fonts, icons)
-├── stories/              # Storybook stories
 ├── tests/                # Test files
 │   ├── e2e/              # Playwright end-to-end tests
+│   ├── integration/      # Storybook integration test setup
 │   └── unit/             # Vitest unit tests
-├── types/                # TypeScript type definitions
-├── utils/                # Utility functions
 ├── .env.example          # Example environment variables template
 ├── eslint.config.mjs     # ESLint configuration
 ├── next.config.ts        # Next.js configuration
 ├── playwright.config.ts  # Playwright E2E test configuration
-├── postcss.config.js     # PostCSS configuration
 ├── prettier.config.js    # Prettier configuration
+├── proxy.ts              # Request logging middleware
 ├── release.config.js     # Semantic Release configuration
 ├── tsconfig.json         # TypeScript configuration
 ├── vitest.config.ts      # Vitest test configuration
@@ -771,19 +772,18 @@ nextjs-szumplate/
 
 ### Key Directories
 
+- **`.claude/`** - Claude Code configuration (agents, skills, hooks, project context)
 - **`.github/workflows/`** - CI/CD automation (code review, PR checks, releases)
 - **`.storybook/`** - Storybook setup for component development and documentation
-- **`app/`** - Next.js 15 App Router with server/client components, layouts, and API routes
-- **`components/`** - Shared, reusable UI components used across the application
-- **`data/`** - Static data, constants, and configuration files
+- **`app/`** - Next.js 16 App Router with server/client components, layouts, and API routes
+- **`components/`** - Shared, reusable UI components with co-located stories
+- **`constants/`** - Static data and configuration constants
+- **`data/env/`** - T3 Env type-safe environment variable definitions
 - **`features/`** - Feature-based modules with related components and logic (modular architecture)
 - **`lib/`** - Utility functions, helpers, and third-party library configurations
 - **`public/`** - Static files served directly (images, fonts, favicon, etc.)
-- **`stories/`** - Storybook stories for component documentation and testing
 - **`tests/e2e/`** - End-to-end tests using Playwright for full user flow testing
-- **`tests/unit/`** - Unit tests using Vitest and React Testing Library
-- **`types/`** - Global TypeScript type definitions and interfaces
-- **`utils/`** - General utility functions and helpers
+- **`tests/unit/`** - Unit tests using Vitest
 
 ### Important Configuration Files
 

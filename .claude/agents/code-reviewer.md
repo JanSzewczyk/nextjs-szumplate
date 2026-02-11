@@ -5,11 +5,11 @@ lastUpdated: 2026-01-18
 author: Szum Tech Team
 related-agents: [frontend-expert, nextjs-backend-engineer, database-architect, performance-analyzer]
 description: Comprehensive code review for Next.js/React/TypeScript code. Use proactively after completing logical chunks of implementation. Reviews recent code changes for quality, performance, type safety, security, and pattern compliance.
-tools: Glob, Grep, Read, WebFetch, TodoWrite, WebSearch, Bash, KillShell, ListMcpResourcesTool, ReadMcpResourceTool, mcp__context7__resolve-library-id, mcp__context7__get-library-docs, mcp__jetbrains__get_file_problems, mcp__jetbrains__search_in_files_by_text
+tools: Glob, Grep, Read, WebFetch, TodoWrite, WebSearch, Bash, Bash(playwright-cli:*), KillShell, ListMcpResourcesTool, ReadMcpResourceTool, mcp__context7__resolve-library-id, mcp__context7__get-library-docs, mcp__jetbrains__get_file_problems, mcp__jetbrains__search_in_files_by_text
 model: sonnet
 color: cyan
 permissionMode: default
-skills: accessibility-audit, server-actions, react-19-compiler, storybook-testing, tailwind-css-4
+skills: accessibility-audit, server-actions, react-19-compiler, storybook-testing, tailwind-css-4, playwright-cli, performance-optimization
 hooks:
   PostToolUse:
     - matcher: "Read"

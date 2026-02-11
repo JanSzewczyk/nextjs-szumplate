@@ -9,7 +9,7 @@ tools: Glob, Grep, Read, Write, Edit, WebFetch, TodoWrite, WebSearch, Bash(playw
 model: sonnet
 color: blue
 permissionMode: default
-skills: performance-optimization
+skills: performance-optimization, playwright-cli
 hooks:
   PreToolUse:
     - matcher: "Bash"

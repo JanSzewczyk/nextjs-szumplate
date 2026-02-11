@@ -9,7 +9,7 @@ tools: Glob, Grep, Read, Write, Edit, WebFetch, TodoWrite, WebSearch, Bash(playw
 model: sonnet
 color: purple
 permissionMode: acceptEdits
-skills: storybook-testing, builder-factory, accessibility-audit, tailwind-css-4, react-19-compiler
+skills: storybook-testing, builder-factory, accessibility-audit, tailwind-css-4, react-19-compiler, playwright-cli
 hooks:
   PostToolUse:
     - matcher: "Write|Edit"

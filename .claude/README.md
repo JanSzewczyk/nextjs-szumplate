@@ -69,6 +69,7 @@ Skills are reusable knowledge modules that provide detailed patterns and example
 | **api-test** | `/api-test` | Testing Next.js Route Handlers with Playwright |
 | **accessibility-audit** | `/accessibility-audit` | WCAG accessibility audits for React components |
 | **performance-optimization** | `/performance-optimization` | Bundle analysis, React rendering optimization |
+| **playwright-cli** | `/playwright-cli` | Browser automation, web testing, screenshots, form filling |
 
 ### Optional Skills (Require Additional Installation)
 
@@ -270,7 +271,7 @@ When updating:
 
 **Current Setup:**
 - **8 agents** (specialized AI assistants)
-- **15 skills** (10 active + 5 optional)
+- **16 skills** (11 active + 5 optional)
 - **3 MCP servers** (next-devtools, context7, jetbrains)
 
 ---

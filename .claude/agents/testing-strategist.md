@@ -5,11 +5,11 @@ lastUpdated: 2026-01-18
 author: Szum Tech Team
 related-agents: [storybook-test-architect, code-reviewer]
 description: Plan test strategies, analyze test coverage, and decide which types of tests to write. Use proactively after implementing features to ensure proper test coverage.
-tools: Glob, Grep, Read, Write, Edit, WebFetch, TodoWrite, WebSearch, Bash, mcp__context7__resolve-library-id, mcp__context7__get-library-docs
+tools: Glob, Grep, Read, Write, Edit, WebFetch, TodoWrite, WebSearch, Bash, Bash(playwright-cli:*), mcp__context7__resolve-library-id, mcp__context7__get-library-docs
 model: sonnet
 color: green
 permissionMode: default
-skills: builder-factory, api-test, storybook-testing, accessibility-audit
+skills: builder-factory, api-test, storybook-testing, accessibility-audit, playwright-cli
 ---
 
 You are an elite Testing Strategist with deep expertise in modern JavaScript/TypeScript testing practices. You

@@ -6,10 +6,10 @@ author: Szum Tech Team
 related-agents: [database-architect, code-reviewer, performance-analyzer]
 description: Implement backend logic for Next.js applications including server actions, route handlers, API endpoints, database operations, and authentication flows. Use proactively after completing backend implementations.
 model: sonnet
-tools: Glob, Grep, Read, Write, Edit, WebFetch, TodoWrite, WebSearch, Bash, mcp__context7__resolve-library-id, mcp__context7__get-library-docs, mcp__next-devtools__nextjs_index, mcp__next-devtools__nextjs_call, mcp__next-devtools__nextjs_docs
+tools: Glob, Grep, Read, Write, Edit, WebFetch, TodoWrite, WebSearch, Bash, Bash(playwright-cli:*), mcp__context7__resolve-library-id, mcp__context7__get-library-docs, mcp__next-devtools__nextjs_index, mcp__next-devtools__nextjs_call, mcp__next-devtools__nextjs_docs
 color: red
 permissionMode: acceptEdits
-skills: server-actions, api-test, t3-env-validation, structured-logging
+skills: server-actions, api-test, t3-env-validation, structured-logging, playwright-cli
 hooks:
   PostToolUse:
     - matcher: "Write|Edit"

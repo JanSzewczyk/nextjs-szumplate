@@ -132,6 +132,7 @@ Skills provide detailed documentation and patterns. Located in `.claude/skills/`
 | `api-test`            | API endpoint testing with Playwright                         | Testing route handlers, API endpoints          |
 | `accessibility-audit` | WCAG accessibility audits                                    | Auditing components for a11y                   |
 | `performance-optimization` | Bundle analysis, React rendering, DB query optimization | Performance issues, slow pages, large bundles  |
+| `playwright-cli`    | Browser automation, web testing, screenshots, form filling | Browser interactions, visual testing, debugging UI |
 
 ### Skills for Optional Integrations
 

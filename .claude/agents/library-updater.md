@@ -5,11 +5,11 @@ lastUpdated: 2026-01-18
 author: Szum Tech Team
 related-agents: [database-architect, code-reviewer]
 description: Update npm packages, investigate breaking changes, execute migrations, and verify code quality after dependency updates. Use when updating libraries or fixing post-update issues.
-tools: Glob, Grep, Read, Write, Edit, WebFetch, TodoWrite, WebSearch, Bash, mcp__context7__resolve-library-id, mcp__context7__get-library-docs, mcp__next-devtools__nextjs_docs
+tools: Glob, Grep, Read, Write, Edit, WebFetch, TodoWrite, WebSearch, Bash, Bash(playwright-cli:*), mcp__context7__resolve-library-id, mcp__context7__get-library-docs, mcp__next-devtools__nextjs_docs
 model: sonnet
 color: yellow
 permissionMode: acceptEdits
-skills: t3-env-validation
+skills: t3-env-validation, storybook-testing, playwright-cli
 hooks:
   PostToolUse:
     - matcher: "Bash"

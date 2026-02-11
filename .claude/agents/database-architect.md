@@ -9,7 +9,7 @@ tools: Glob, Grep, Read, Write, Edit, WebFetch, TodoWrite, WebSearch, Bash, mcp_
 model: sonnet
 color: orange
 permissionMode: default
-skills: builder-factory, structured-logging
+skills: builder-factory, structured-logging, t3-env-validation
 hooks:
   PostToolUse:
     - matcher: "Write|Edit"

@@ -11,7 +11,7 @@ tools:
 model: sonnet
 color: red
 permissionMode: acceptEdits
-skills: storybook-testing, builder-factory, accessibility-audit
+skills: storybook-testing, builder-factory, accessibility-audit, playwright-cli
 hooks:
   PostToolUse:
     - matcher: "Write|Edit"

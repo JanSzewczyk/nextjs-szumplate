@@ -1,5 +1,3 @@
-import { describe, expect, test } from "vitest";
-
 import logger, { createLogger } from "~/lib/logger";
 
 describe("logger", () => {

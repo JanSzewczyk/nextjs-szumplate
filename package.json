@@ -26,7 +26,7 @@
     "test:ui": "vitest --ui",
     "test:unit": "vitest --project=unit --coverage --passWithNoTests",
     "test:watch": "vitest watch --passWithNoTests",
-    "type-check": "tsc --noEmit"
+    "type-check": "next typegen && tsc --noEmit"
   },
   "dependencies": {
     "@next/bundle-analyzer": "^16.1.4",

@@ -66,6 +66,14 @@ const SZUM_TECH_ICONS: Record<SzumTechIconName, LucideIcon> = {
 export default function Home() {
   return (
     <div className="flex min-h-screen flex-col">
+      {/* Skip to main content link for keyboard users */}
+      <a
+        href="#main-content"
+        className="focus:bg-primary focus:text-primary-foreground sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:rounded focus:px-4 focus:py-2 focus:shadow-lg"
+      >
+        Skip to main content
+      </a>
+
       {/* Header */}
       <Header>
         <div className="flex w-full items-center justify-between">
@@ -80,7 +88,7 @@ export default function Home() {
                 target="_blank"
                 href="https://github.com/JanSzewczyk/nextjs-szumplate"
                 rel="noreferrer"
-                aria-label="View GitHub repository"
+                aria-label="View GitHub repository (opens in new tab)"
               >
                 GitHub
               </a>
@@ -89,7 +97,7 @@ export default function Home() {
         </div>
       </Header>
 
-      <main className="flex-1">
+      <main id="main-content" className="flex-1">
         {/* Hero Section */}
         <section id="hero" className="container py-16 md:py-24 lg:py-32">
           <div className="mx-auto flex max-w-4xl flex-col items-center text-center">
@@ -105,12 +113,22 @@ export default function Home() {
             </p>
             <div className="flex flex-col gap-4 sm:flex-row">
               <Button asChild size="lg" startIcon={<RocketIcon />}>
-                <a href="https://github.com/JanSzewczyk/nextjs-szumplate/generate" target="_blank" rel="noreferrer">
+                <a
+                  href="https://github.com/JanSzewczyk/nextjs-szumplate/generate"
+                  target="_blank"
+                  rel="noreferrer"
+                  aria-label="Use this template (opens in new tab)"
+                >
                   Use This Template
                 </a>
               </Button>
               <Button asChild variant="outline" size="lg" endIcon={<GithubIcon />}>
-                <a href="https://github.com/JanSzewczyk/nextjs-szumplate" target="_blank" rel="noreferrer">
+                <a
+                  href="https://github.com/JanSzewczyk/nextjs-szumplate"
+                  target="_blank"
+                  rel="noreferrer"
+                  aria-label="View on GitHub (opens in new tab)"
+                >
                   View on GitHub
                 </a>
               </Button>
@@ -171,7 +189,7 @@ export default function Home() {
                 const Icon = SZUM_TECH_ICONS[pkg.iconName];
                 return (
                   <Card key={pkg.packageName} className="group relative overflow-hidden transition-all hover:shadow">
-                    <div className="from-primary/5 via-primary/2 absolute inset-0 bg-gradient-to-br to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
+                    <div className="from-primary/5 via-primary/2 absolute inset-0 bg-linear-to-br to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
                     <CardHeader className="relative">
                       <div className="mb-4 flex items-start justify-between">
                         <div className="bg-primary/10 flex size-12 items-center justify-center rounded-xl">
@@ -186,9 +204,9 @@ export default function Home() {
                                     href={pkg.docsUrl}
                                     target="_blank"
                                     rel="noreferrer"
-                                    aria-label={`View documentation for ${pkg.name}`}
+                                    aria-label={`View documentation for ${pkg.name} (opens in new tab)`}
                                   >
-                                    <ExternalLinkIcon className="size-4" />
+                                    <ExternalLinkIcon className="size-4" aria-hidden="true" />
                                   </a>
                                 </Button>
                               </TooltipTrigger>
@@ -202,7 +220,7 @@ export default function Home() {
                                   href={pkg.githubUrl}
                                   target="_blank"
                                   rel="noreferrer"
-                                  aria-label={`View ${pkg.name} on GitHub`}
+                                  aria-label={`View ${pkg.name} on GitHub (opens in new tab)`}
                                 >
                                   <GithubIcon className="size-4" />
                                 </a>
@@ -235,7 +253,12 @@ export default function Home() {
                 All packages are maintained by Szum-Tech and follow semantic versioning.
               </p>
               <Button asChild variant="outline" size="sm" endIcon={<GithubIcon className="size-4" />}>
-                <a href="https://github.com/JanSzewczyk" target="_blank" rel="noreferrer">
+                <a
+                  href="https://github.com/JanSzewczyk"
+                  target="_blank"
+                  rel="noreferrer"
+                  aria-label="Explore all packages (opens in new tab)"
+                >
                   Explore All Packages
                 </a>
               </Button>
@@ -272,14 +295,14 @@ export default function Home() {
                               target="_blank"
                               rel="noreferrer"
                               className="bg-card hover:border-primary/50 hover:bg-accent flex h-20 w-36 items-center justify-center rounded border transition-all hover:shadow-md focus:ring focus:outline-none"
-                              aria-label={`Learn more about ${tech.name}`}
+                              aria-label={`Learn more about ${tech.name} (opens in new tab)`}
                             >
                               <Image
                                 className="p-3 grayscale transition-all hover:grayscale-0"
                                 width={120}
                                 height={60}
                                 src={tech.src}
-                                alt={tech.name}
+                                alt={`${tech.name} logo`}
                               />
                             </a>
                           </TooltipTrigger>
@@ -380,12 +403,22 @@ export default function Home() {
               </p>
               <div className="flex flex-col gap-4 sm:flex-row">
                 <Button asChild size="lg" startIcon={<RocketIcon className="size-4" />}>
-                  <a href="https://github.com/JanSzewczyk/nextjs-szumplate/generate" target="_blank" rel="noreferrer">
+                  <a
+                    href="https://github.com/JanSzewczyk/nextjs-szumplate/generate"
+                    target="_blank"
+                    rel="noreferrer"
+                    aria-label="Use this template (opens in new tab)"
+                  >
                     Use This Template
                   </a>
                 </Button>
                 <Button asChild variant="outline" size="lg" startIcon={<CodeIcon className="size-4" />}>
-                  <a href="https://github.com/JanSzewczyk/nextjs-szumplate" target="_blank" rel="noreferrer">
+                  <a
+                    href="https://github.com/JanSzewczyk/nextjs-szumplate"
+                    target="_blank"
+                    rel="noreferrer"
+                    aria-label="Explore the code (opens in new tab)"
+                  >
                     Explore the Code
                   </a>
                 </Button>
@@ -410,6 +443,7 @@ export default function Home() {
               target="_blank"
               rel="noreferrer"
               className="text-muted-foreground hover:text-primary transition-colors"
+              aria-label="Visit Jan Szewczyk's GitHub profile (opens in new tab)"
             >
               Jan Szewczyk
             </a>
@@ -419,6 +453,7 @@ export default function Home() {
               target="_blank"
               rel="noreferrer"
               className="text-muted-foreground hover:text-primary flex items-center gap-1 transition-colors"
+              aria-label="View source code on GitHub (opens in new tab)"
             >
               <GithubIcon className="size-3.5" />
               <span>Source</span>

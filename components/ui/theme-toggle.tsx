@@ -71,13 +71,13 @@ export function ThemeToggle() {
   const renderIcon = () => {
     // When theme is "system", show icon based on resolved theme
     if (currentTheme === "system") {
-      return <MonitorIcon className="size-4" />;
+      return <MonitorIcon className="size-4" aria-hidden="true" />;
     }
     // For explicit light/dark, show the corresponding icon
     if (currentTheme === "light") {
-      return <SunIcon className="size-4" />;
+      return <SunIcon className="size-4" aria-hidden="true" />;
     }
-    return <MoonIcon className="size-4" />;
+    return <MoonIcon className="size-4" aria-hidden="true" />;
   };
 
   const getNextThemeLabel = (): string => {

@@ -11,7 +11,7 @@ export const metadata: Metadata = {
   description: "Template for Next App by Szum-Tech"
 };
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html lang="en" suppressHydrationWarning>
       <body>

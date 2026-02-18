@@ -5,6 +5,7 @@ on:
 
 env:
   NODE_VERSION: 24.x
+  SKIP_ENV_VALIDATION: true
 
 permissions:
   pull-requests: write

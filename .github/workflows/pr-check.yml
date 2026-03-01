@@ -155,7 +155,7 @@ jobs:
         run: npx playwright install --with-deps
       - name: Playwright tests check 🎭
         run: npm run test:e2e:ci
-      - uses: actions/upload-artifact@v6
+      - uses: actions/upload-artifact@v7
         if: always()
         with:
           name: playwright-report

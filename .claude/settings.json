@@ -1,8 +1,7 @@
 {
   "enableAllProjectMcpServers": true,
   "enabledMcpjsonServers": [
-    "next-devtools",
-    "jetbrains"
+    "next-devtools"
   ],
   "hooks": {
     "SessionStart": [

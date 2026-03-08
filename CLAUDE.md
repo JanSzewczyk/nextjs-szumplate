@@ -4,8 +4,8 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-Next.js Szumplate is an enterprise-ready Next.js 16 template with TypeScript, Tailwind CSS, React Compiler, and
-comprehensive testing infrastructure.
+Next.js Szumplate is an enterprise-ready Next.js 16.1.4 template with React 19.2.0, TypeScript, Tailwind CSS 4.1.11,
+React Compiler, and comprehensive testing infrastructure (Vitest 4.0, Playwright 1.56).
 
 ## Commands
 
@@ -59,6 +59,20 @@ npm run analyze               # Bundle analyzer
 ```
 
 ## Architecture
+
+### Tech Stack
+
+- **Next.js**: 16.1.4 (App Router, Turbopack, React Compiler)
+- **React**: 19.2.0 with React Compiler enabled
+- **TypeScript**: 5.9.3 (strict mode)
+- **Tailwind CSS**: 4.1.11 (CSS-first config)
+- **@szum-tech/design-system**: 3.11.1
+- **Vitest**: 4.0.16 (unit & integration tests)
+- **Playwright**: 1.56 (E2E tests)
+- **Storybook**: 10.1.11 (component development)
+- **Zod**: 4.3.6 (validation)
+- **Pino**: 10.3.0 (logging)
+- **next-themes**: 0.4.6 (theming)
 
 ### Path Aliases
 
@@ -114,7 +128,7 @@ Request logging is handled automatically via `proxy.ts` with request ID tracking
 
 ### Testing Configuration
 
-Vitest is configured with two project modes:
+Vitest 4.0 is configured with two project modes:
 
 - **unit**: Node environment for unit tests (`*.test.ts` files)
 - **storybook**: Browser environment (Playwright) for Storybook component tests
@@ -127,12 +141,25 @@ Use `test-only` tag for stories that should be excluded from docs but run in tes
 Uses `@szum-tech/design-system` package. Import components directly:
 
 ```typescript
-import { Button } from "@szum-tech/design-system";
+import { Button, Card, Tooltip } from "@szum-tech/design-system";
+```
+
+Icons are re-exported via the design system:
+
+```typescript
+import { GithubIcon, SparklesIcon } from "lucide-react";
 ```
 
 ### Health Checks
 
 Built-in health endpoint at `/api/health` with multiple URL aliases: `/healthz`, `/api/healthz`, `/health`, `/ping`
+
+### Theme Support
+
+The app uses `next-themes` for dark/light/system theme switching:
+- `ThemeProvider` wraps the app in `app/layout.tsx`
+- `ThemeToggle` component for user switching
+- Theme is persisted in localStorage
 
 ### Next.js Configuration
 
@@ -146,3 +173,14 @@ Built-in health endpoint at `/api/health` with multiple URL aliases: `/healthz`,
 - ESLint: Uses `@szum-tech/eslint-config`
 - Prettier: Uses `@szum-tech/prettier-config`
 - Semantic Release: Uses `@szum-tech/semantic-release-config`
+
+## Common Pitfalls
+
+| Area | Don't | Do |
+|------|-------|----|
+| Components | Add `'use client'` unnecessarily | Default to Server Components |
+| Memoization | Use `useMemo`/`useCallback`/`memo` with React Compiler | Let compiler optimize automatically |
+| Imports | Use relative paths (`../../../lib/utils`) | Use path aliases (`~/lib/utils`) |
+| Logging | Use `console.log` in production code | Use structured Pino logging (`logger.info(...)`) |
+| `useFormStatus` | Use in same component as `<form>` | Use in a child component inside the form |
+| Server Actions | Return untyped objects | Use standardized response types with Zod validation |

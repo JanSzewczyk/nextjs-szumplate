@@ -7,15 +7,16 @@ When using this configuration in other projects, update this file with your proj
 
 | Category | Technology | Version | Status |
 |----------|------------|---------|--------|
-| Framework | Next.js | 16.1 (App Router, Turbopack) | ✅ Installed |
-| UI Library | React | 19.2 (with React Compiler) | ✅ Installed |
-| Styling | Tailwind CSS | 4.1 | ✅ Installed |
-| Design System | @szum-tech/design-system | 3.9 (shadcn/ui based) | ✅ Installed |
-| Type Safety | TypeScript | 5.9 (strict mode) | ✅ Installed |
-| Env Validation | T3 Env | @t3-oss/env-nextjs 0.13 | ✅ Installed |
-| Logging | Pino | 10.1 (pretty-printing in dev) | ✅ Installed |
-| Forms | React Hook Form | 7.71 | ✅ Installed |
-| Validation | Zod | 4.3 | ✅ Installed |
+| Framework | Next.js | 16.1.4 (App Router, Turbopack) | ✅ Installed |
+| UI Library | React | 19.2.0 (with React Compiler) | ✅ Installed |
+| Styling | Tailwind CSS | 4.1.11 (CSS-first config) | ✅ Installed |
+| Design System | @szum-tech/design-system | 3.11.1 (shadcn/ui based) | ✅ Installed |
+| Type Safety | TypeScript | 5.9.3 (strict mode) | ✅ Installed |
+| Env Validation | T3 Env | @t3-oss/env-nextjs 0.13.8 | ✅ Installed |
+| Logging | Pino | 10.3.0 (pretty-printing in dev) | ✅ Installed |
+| Forms | React Hook Form | 7.71.1 | ✅ Installed |
+| Validation | Zod | 4.3.6 | ✅ Installed |
+| Theme | next-themes | 0.4.6 | ✅ Installed |
 
 ### Optional Integrations (Not Yet Installed)
 
@@ -33,9 +34,9 @@ These are recommended patterns documented in skills but require installation:
 
 | Type | Tool | Location | Command |
 |------|------|----------|---------|
-| Unit | Vitest | `tests/unit/`, `*.test.ts` | `npm run test:unit` |
+| Unit | Vitest 4.0 | `tests/unit/`, `*.test.ts` | `npm run test:unit` |
 | Component | Storybook 10 + Vitest | `*.stories.tsx` | `npm run test:storybook` |
-| E2E | Playwright | `tests/e2e/` | `npm run test:e2e` |
+| E2E | Playwright 1.56 | `tests/e2e/` | `npm run test:e2e` |
 | All | Vitest | - | `npm run test` |
 
 ## Key Files
@@ -61,6 +62,9 @@ import { env } from "~/data/env/server";
 // Design system
 import { Button, Card } from "@szum-tech/design-system";
 
+// Icons (lucide-react, re-exported via design system)
+import { GithubIcon, SparklesIcon } from "lucide-react";
+
 // Server-only code
 import "server-only";
 ```
@@ -68,6 +72,8 @@ import "server-only";
 ## Component Location
 
 - **Shared components**: `components/`
+  - `components/providers/` - Context providers (e.g., ThemeProvider)
+  - `components/ui/` - Reusable UI components (e.g., ThemeToggle, icons)
 - **Feature components**: `features/[feature]/components/`
 - **Stories**: Same directory as component (`component.stories.tsx`)
 
@@ -82,12 +88,15 @@ features/
     ├── schemas/          # Zod validation schemas
     └── server/
         ├── actions/      # Server Actions
+        ├── permissions/  # Permission checks
         └── db/           # Database queries (when DB added)
 ```
 
 ## Logging
 
 Use Pino via `createLogger({ module: "feature-name" })`. See `structured-logging` skill for full patterns.
+
+Request logging is handled automatically via `proxy.ts` with request ID tracking.
 
 ## React 19 & Compiler
 
@@ -101,6 +110,13 @@ React Compiler enabled in `next.config.ts` — removes need for manual memoizati
 
 **Server Action location:** `features/[feature]/server/actions/[action-name].ts`
 
+## Theme Support
+
+The app uses `next-themes` for dark/light/system theme switching:
+- `ThemeProvider` wraps the app in `app/layout.tsx`
+- `ThemeToggle` component for user switching
+- Theme is persisted in localStorage
+
 ## Common Pitfalls
 
 | Area | Don't | Do |
@@ -111,6 +127,7 @@ React Compiler enabled in `next.config.ts` — removes need for manual memoizati
 | Logging | Use `console.log` in production code | Use structured Pino logging (`logger.info(...)`) |
 | `useFormStatus` | Use in same component as `<form>` | Use in a child component inside the form |
 | Server Actions | Return untyped objects | Use standardized response types with Zod validation |
+| Icons | Import from lucide-react directly | It's re-exported via design-system |
 
 <!-- Database (Firebase) and Authentication (Clerk) patterns are in their respective skills:
      firebase-firestore, db-migration, error-handling, clerk-auth-proxy.

@@ -120,3 +120,6 @@ src/styles
 
 # Ignore Next files
 .next
+
+# Claude
+/.claude/*.local.json

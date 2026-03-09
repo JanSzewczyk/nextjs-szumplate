@@ -5,7 +5,7 @@ on:
     branches: [main]
 
 env:
-  NODE_VERSION: 24.x
+  BUN_VERSION: "1.1.38"
 
 jobs:
   publish:
@@ -14,17 +14,15 @@ jobs:
     steps:
       - name: Checkout code 📚
         uses: actions/checkout@v6
-      - name: Set up Node 🟢
-        uses: actions/setup-node@v6
+      - name: Set up Bun 🟢
+        uses: oven-sh/setup-bun@v2
         with:
-          node-version: ${{ env.NODE_VERSION }}
-          cache: "npm"
+          bun-version: ${{ env.BUN_VERSION }}
       - name: Install packages ⚙️
-        run: npm ci
+        run: bun install --frozen-lockfile
 #        HERE 👇👇👇
 #        Expose block of code below
 #      - name: Publish package 📦🚀
-#        run: npx semantic-release
-#        run: yarn semantic-release
+#        run: bun run semantic-release
 #        env:
 #          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

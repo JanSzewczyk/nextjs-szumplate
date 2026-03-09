@@ -1,6 +1,6 @@
 # Project Context
 
-This file contains project-specific configuration that agents and skills reference.
+This file contains project-specific configuration for Claude Code.
 When using this configuration in other projects, update this file with your project's specifics.
 
 ## Tech Stack
@@ -17,18 +17,6 @@ When using this configuration in other projects, update this file with your proj
 | Forms | React Hook Form | 7.71.1 | ✅ Installed |
 | Validation | Zod | 4.3.6 | ✅ Installed |
 | Theme | next-themes | 0.4.6 | ✅ Installed |
-
-### Optional Integrations (Not Yet Installed)
-
-These are recommended patterns documented in skills but require installation:
-
-| Category | Technology | Skill Documentation |
-|----------|------------|---------------------|
-| Authentication | Clerk | `clerk-auth-proxy` skill |
-| Database | Firebase Firestore | `firebase-firestore` skill |
-| Toast System | Cookie-based toasts | `toast-notifications` skill |
-
-> **Note:** When you add these integrations, update this table and uncomment relevant sections below.
 
 ## Testing Stack
 
@@ -86,27 +74,26 @@ features/
 └── [feature-name]/
     ├── components/       # Feature-specific components
     ├── schemas/          # Zod validation schemas
-    └── server/
+    └── server/           # Server-side logic
         ├── actions/      # Server Actions
-        ├── permissions/  # Permission checks
         └── db/           # Database queries (when DB added)
 ```
 
 ## Logging
 
-Use Pino via `createLogger({ module: "feature-name" })`. See `structured-logging` skill for full patterns.
+Use Pino via `createLogger({ module: "feature-name" })`.
 
 Request logging is handled automatically via `proxy.ts` with request ID tracking.
 
 ## React 19 & Compiler
 
-React Compiler enabled in `next.config.ts` — removes need for manual memoization. Keep `useMemo`/`useCallback` only for: external library callbacks, complex context values, >100ms computations. Server Components by default; add `"use client"` only when interactivity is needed. See `react-19-compiler` skill for complete patterns (useActionState, useFormStatus, etc.).
+React Compiler enabled in `next.config.ts` — removes need for manual memoization. Keep `useMemo`/`useCallback` only for: external library callbacks, complex context values, >100ms computations. Server Components by default; add `"use client"` only when interactivity is needed.
 
 ## Forms
 
 - Complex forms: React Hook Form + Zod
-- Simple forms: `useActionState` (from `react-19-compiler` skill)
-- Server Actions: See `server-actions` skill for types, validation, error handling
+- Simple forms: `useActionState` from React 19
+- Server Actions: Use standardized response types with Zod validation
 
 **Server Action location:** `features/[feature]/server/actions/[action-name].ts`
 
@@ -128,41 +115,3 @@ The app uses `next-themes` for dark/light/system theme switching:
 | `useFormStatus` | Use in same component as `<form>` | Use in a child component inside the form |
 | Server Actions | Return untyped objects | Use standardized response types with Zod validation |
 | Icons | Import from lucide-react directly | It's re-exported via design-system |
-
-<!-- Database (Firebase) and Authentication (Clerk) patterns are in their respective skills:
-     firebase-firestore, db-migration, error-handling, clerk-auth-proxy.
-     Uncomment and add sections here when these integrations are installed. -->
-
-## Available Skills
-
-Skills provide detailed documentation and patterns. Located in `.claude/skills/`.
-
-| Skill                 | Description                                                  | Use When                                       |
-|-----------------------|--------------------------------------------------------------|------------------------------------------------|
-| `react-19-compiler`   | React 19 hooks, React Compiler optimization guidance         | Forms with useActionState, memoization decisions |
-| `server-actions`      | Server Actions patterns, types, validation, React integration | Creating/updating server actions, form handling |
-| `storybook-testing`   | Component testing with Storybook play functions (CSF Next)   | Writing component interaction tests            |
-| `tailwind-css-4`      | Tailwind v4 CSS-first config, design system integration      | Styling components, responsive design, theming |
-| `t3-env-validation`   | Type-safe env vars with @t3-oss/env-nextjs and Zod           | Environment configuration, validation          |
-| `structured-logging`  | Pino logging with context enrichment and log levels          | Server-side logging, debugging, monitoring     |
-| `builder-factory`     | Test data builders with test-data-bot                        | Creating mock data for tests/stories           |
-| `api-test`            | API endpoint testing with Playwright                         | Testing route handlers, API endpoints          |
-| `accessibility-audit` | WCAG accessibility audits                                    | Auditing components for a11y                   |
-| `performance-optimization` | Bundle analysis, React rendering, DB query optimization | Performance issues, slow pages, large bundles  |
-| `playwright-cli`    | Browser automation, web testing, screenshots, form filling | Browser interactions, visual testing, debugging UI |
-
-### Skills for Optional Integrations
-
-These skills document patterns for technologies not yet installed:
-
-| Skill                 | Technology Required | Description                                    |
-|-----------------------|---------------------|------------------------------------------------|
-| `clerk-auth-proxy`    | @clerk/nextjs       | Clerk auth with Next.js 16 proxy pattern       |
-| `firebase-firestore`  | firebase-admin      | Firebase queries, types, error handling        |
-| `db-migration`        | firebase-admin      | Database migration scripts                     |
-| `toast-notifications` | Custom setup        | Cookie-based toast system                      |
-| `error-handling`      | Custom setup        | DbError patterns, error boundaries             |
-
-**Invoking Skills:**
-- User: `/skill-name` (e.g., `/server-actions`)
-- Agent: Listed in agent's `skills` array in frontmatter

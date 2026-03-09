@@ -74,7 +74,6 @@ This project is configured to run with Bun runtime:
 - Bun's package manager is npm-compatible and uses node_modules
 - Environment variables work via `process.env` and Bun.env automatically
 - Pino logging is externalized via `serverExternalPackages` configuration
-- See `bunfig.toml` for Bun configuration settings
 
 ### Alternative: Node.js/npm
 

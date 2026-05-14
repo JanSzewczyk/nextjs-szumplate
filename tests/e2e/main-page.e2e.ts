@@ -29,8 +29,8 @@ test("has hero section content", async ({ page }) => {
   await expect(page.getByText(/Enterprise-ready Next\.js starter template/i)).toBeVisible();
 
   // CTA buttons - Button asChild renders as role="button" with href
-  await expect(page.getByRole("button", { name: /Use This Template/i }).first()).toBeVisible();
-  await expect(page.getByRole("button", { name: /View on GitHub/i }).first()).toBeVisible();
+  await expect(page.getByRole("link", { name: /Use This Template/i }).first()).toBeVisible();
+  await expect(page.getByRole("link", { name: /View on GitHub/i }).first()).toBeVisible();
 });
 
 test("has features section", async ({ page }) => {
@@ -71,11 +71,11 @@ test("has szum-tech ecosystem section", async ({ page }) => {
   }
 
   // Verify the correct number of GitHub buttons (one per package)
-  const githubButtons = ecosystemSection.getByRole("button", { name: /view .* on github/i });
+  const githubButtons = ecosystemSection.getByRole("link", { name: /view .* on github/i });
   await expect(githubButtons).toHaveCount(SZUM_TECH_PACKAGE_COUNT);
 
   // Verify Explore All Packages button
-  await expect(ecosystemSection.getByRole("button", { name: /Explore All Packages/i })).toBeVisible();
+  await expect(ecosystemSection.getByRole("link", { name: /Explore All Packages/i })).toBeVisible();
 });
 
 test("has tech stack section", async ({ page }) => {

@@ -27,6 +27,7 @@
     ],
     "incremental": true,
     "types": ["vitest/globals", "@vitest/browser-playwright"],
+    "ignoreDeprecations": "6.0",
     /* Path Aliases */
     "baseUrl": ".",
     "paths": {

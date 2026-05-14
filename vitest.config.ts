@@ -1,5 +1,3 @@
-import tsconfigPaths from "vite-tsconfig-paths";
-
 import { storybookTest } from "@storybook/addon-vitest/vitest-plugin";
 import { playwright } from "@vitest/browser-playwright";
 import { defineConfig } from "vitest/config";
@@ -46,7 +44,9 @@ export default defineConfig({
     projects: [
       // Unit tests project - runs in Node environment
       {
-        plugins: [tsconfigPaths()],
+        resolve: {
+          tsconfigPaths: true
+        },
         test: {
           name: "unit",
           globals: true,
@@ -58,6 +58,9 @@ export default defineConfig({
       // Storybook tests project - runs in browser with Playwright
       {
         plugins: [storybookTest()],
+        resolve: {
+          tsconfigPaths: true
+        },
         test: {
           name: "storybook",
           exclude: ["**/node_modules/**", "**/dist/**", "**/.next/**"],

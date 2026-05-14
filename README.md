@@ -29,6 +29,7 @@ back, relax, and get ready to conquer the whole world with your new awesome app!
 - **💅 [Tailwind CSS](https://tailwindcss.com/)** - A utility-first CSS framework
 - **🛠️ Extremely strict [TypeScript](https://www.typescriptlang.org/)** - With `ts-reset` library for ultimate type
   safety
+- **⚛️ [React Compiler](https://react.dev/learn/react-compiler)** - Automatic memoization without manual optimization
 - **🎯 [Absolute imports](https://nextjs.org/docs/advanced-features/module-path-aliases)** - No more spaghetti imports
 
 ### 🧪 Testing & Quality
@@ -45,7 +46,6 @@ back, relax, and get ready to conquer the whole world with your new awesome app!
 - **🚢 [Semantic Release](https://github.com/semantic-release/semantic-release)** - Automated versioning and changelog
   generation
 - **🤖 [Dependabot](https://github.com/dependabot)** - Automated dependency updates
-- **🧠 [ChatGPT Code Reviews](https://openai.com/chatgpt)** - AI-powered code reviews
 
 ### 🔧 Developer Experience
 
@@ -91,8 +91,8 @@ back, relax, and get ready to conquer the whole world with your new awesome app!
 
 Before you begin, ensure you have the following installed:
 
-- **Node.js** (version 18.x or higher recommended)
-- **npm**, **yarn**, or **pnpm** package manager
+- **Node.js** (version 24.x or higher)
+- **npm** package manager
 - **Git** for version control
 
 ### Installation
@@ -146,12 +146,6 @@ To use the fully configured [Semantic Release](https://github.com/semantic-relea
 3. Enjoy automated versioning and changelog generation
    ([more details](https://www.npmjs.com/package/@szum-tech/semantic-release-preset))
 
-#### ChatGPT Code Review Setup
-
-Add the `OPENAI_API_KEY` to your
-[GitHub Actions secrets](https://docs.github.com/en/actions/security-guides/encrypted-secrets) to enable AI-powered code
-reviews.
-
 ---
 
 ## 🚀 Deployment
@@ -184,33 +178,35 @@ The following scripts are available in the `package.json`:
 ### Code Quality
 
 - `npm run lint` - Lints the code using ESLint
-- `npm run lint:ci` - Lints the code for CI (treats warnings as errors)
+- `npm run lint:ci` - Lints the code for CI (uploads SARIF results to GitHub)
 - `npm run lint:fix` - Automatically fixes linting errors
 - `npm run prettier:check` - Checks the code for proper formatting
-- `npm run prettier:fix` - Automatically fixes formatting issues
+- `npm run prettier:write` - Automatically fixes formatting issues
 - `npm run type-check` - Runs TypeScript type checking
 
 ### Testing
 
-- `npm run test` - Runs unit and integration tests
-- `npm run test:ci` - Runs tests for CI environment
-- `npm run test:coverage` - Generates test coverage report
+- `npm run test` - Runs all Vitest tests
+- `npm run test:ci` - Runs all tests with coverage (CI mode)
+- `npm run test:coverage` - Generates full coverage report
 - `npm run test:unit` - Runs unit tests only
+- `npm run test:unit:coverage` - Runs unit tests with coverage report
 - `npm run test:watch` - Runs tests in watch mode
-- `npm run test:ui` - Runs tests with UI
+- `npm run test:ui` - Runs tests with Vitest UI dashboard
 
 ### E2E Testing
 
-- `npm run e2e` - Runs end-to-end tests
-- `npm run e2e:ci` - Runs E2E tests for CI
-- `npm run e2e:ui` - Runs E2E tests with Playwright UI
+- `npm run test:e2e` - Runs end-to-end tests
+- `npm run test:e2e:ci` - Runs E2E tests for CI
+- `npm run test:e2e:ui` - Runs E2E tests with Playwright UI
 
 ### Storybook
 
 - `npm run storybook:dev` - Starts Storybook in development mode
 - `npm run storybook:build` - Builds Storybook for production
 - `npm run storybook:serve` - Serves the built Storybook
-- `npm run test:storybook` - Runs Storybook tests
+- `npm run test:storybook` - Runs Storybook component tests with coverage
+- `npm run test:storybook:coverage` - Runs Storybook tests with separate coverage report
 
 ### Analysis
 
@@ -247,13 +243,13 @@ npm run test:coverage
 Run Playwright E2E tests:
 
 ```bash
-npm run e2e
+npm run test:e2e
 ```
 
 Run with UI for debugging:
 
 ```bash
-npm run e2e:ui
+npm run test:e2e:ui
 ```
 
 <img width="1665" alt="image" src="https://github.com/JanSzewczyk/nextjs-szumplate/assets/29024606/9c65cdd2-4e04-4687-81d6-8e7a32f12518">
@@ -660,20 +656,24 @@ repetitive tasks.
 
 ### Available Workflows
 
-#### 1. 🤖 ChatGPT Code Review (`code-review.yml`)
-
-Provides AI-powered code reviews on every pull request.
-
-#### 2. ✅ PR Check (`pr-check.yml`)
+#### 1. ✅ PR Check (`pr-check.yml`)
 
 Validates code on every pull request, checking:
 
 - 🏗️ **Build** - Ensures the project builds successfully
+- 📖 **Storybook Build** - Validates Storybook compilation
 - 🧹 **Prettier** - Code formatting validation
-- ⬣ **ESLint** - Code quality and linting
+- ⬣ **ESLint** - Code quality and linting (SARIF report uploaded to GitHub)
 - 🛠️ **TypeScript** - Type checking
-- 🧪 **Tests** - Unit and integration tests
+- 🧪 **Unit Tests** - Vitest unit tests with coverage
+- 📖 **Storybook Tests** - Component interaction tests with coverage
+- 📊 **Coverage Report** - Merged coverage comment on PR
 - 🎭 **Playwright** - E2E tests
+- 🔍 **Dependency Review** - Security audit of dependency changes
+
+#### 2. 🔒 CodeQL (`codeql.yml`)
+
+Automated security scanning powered by GitHub CodeQL.
 
 #### 3. 🚢 Publish (`publish.yml`)
 

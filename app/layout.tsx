@@ -2,6 +2,7 @@ import * as React from "react";
 
 import { type Metadata } from "next";
 
+import { Footer } from "~/components/layout/footer";
 import { ThemeProvider } from "~/components/providers/theme-provider";
 
 import "./globals.css";
@@ -17,6 +18,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       <body>
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
           {children}
+          <Footer />
         </ThemeProvider>
       </body>
     </html>

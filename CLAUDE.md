@@ -7,84 +7,56 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 Next.js Szumplate is an enterprise-ready Next.js 16.1.4 template with React 19.2.0, TypeScript, Tailwind CSS 4.1.11,
 React Compiler, and comprehensive testing infrastructure (Vitest 4.0, Playwright 1.56).
 
-## Commands (Bun)
+## Commands
 
 ### Development
 
 ```bash
-bun run dev          # Start dev server with Bun
-bun run build        # Production build with Bun
-bun run start        # Start production server with Bun
-```
-
-### Package Management
-
-```bash
-bun install          # Install dependencies
-bun add <package>    # Add dependency
-bun add -d <package> # Add dev dependency
-bun update           # Update dependencies
+npm run dev          # Start dev server
+npm run build        # Production build
+npm run start        # Start production server
 ```
 
 ### Code Quality
 
 ```bash
-bun run lint         # ESLint check
-bun run lint:fix     # ESLint with auto-fix
-bun run prettier:check   # Prettier check
-bun run prettier:write   # Prettier with auto-fix
-bun run type-check   # TypeScript type checking
+npm run lint         # ESLint check
+npm run lint:fix     # ESLint with auto-fix
+npm run prettier:check   # Prettier check
+npm run prettier:write   # Prettier with auto-fix
+npm run type-check   # TypeScript type checking
 ```
 
 ### Testing
 
 ```bash
-bun run test                  # Run all Vitest tests
-bun run test:unit             # Unit tests only (with coverage)
-bun run test:storybook        # Storybook component tests (with coverage)
-bun run test:watch            # Watch mode
-bun run test:ui               # Vitest UI
+npm run test                  # Run all Vitest tests
+npm run test:unit             # Unit tests only (with coverage)
+npm run test:storybook        # Storybook component tests (with coverage)
+npm run test:watch            # Watch mode
+npm run test:ui               # Vitest UI
 
 # Run a single test file
-bun run vitest run path/to/file.test.ts
-bun run vitest run --project=unit path/to/file.test.ts
+npx vitest run path/to/file.test.ts
+npx vitest run --project=unit path/to/file.test.ts
 
 # E2E tests (Playwright) - requires build first
-bun run build && bun run test:e2e
-bun run test:e2e:ui           # Playwright UI mode
+npm run build && npm run test:e2e
+npm run test:e2e:ui           # Playwright UI mode
 ```
 
 ### Storybook
 
 ```bash
-bun run storybook:dev         # Start Storybook (port 6006)
-bun run storybook:build       # Build static Storybook
+npm run storybook:dev         # Start Storybook (port 6006)
+npm run storybook:build       # Build static Storybook
 ```
 
 ### Analysis
 
 ```bash
-bun run analyze               # Bundle analyzer
+npm run analyze               # Bundle analyzer
 ```
-
-## Bun Runtime Notes
-
-This project is configured to run with Bun runtime:
-- Uses `bun --bun` flag for Next.js commands to force Bun runtime
-- Bun's package manager is npm-compatible and uses node_modules
-- Environment variables work via `process.env` and Bun.env automatically
-- Pino logging is externalized via `serverExternalPackages` configuration
-
-### Alternative: Node.js/npm
-
-This project still supports Node.js 24.x and npm if needed:
-
-```bash
-npm install
-npm run dev
-```
-
-Bun is recommended for improved performance (10-100x faster installs, 2-3x faster dev server startup).
 
 ## Architecture
 

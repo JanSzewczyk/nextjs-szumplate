@@ -92,7 +92,8 @@ back, relax, and get ready to conquer the whole world with your new awesome app!
 
 Before you begin, ensure you have the following installed:
 
-- **Bun** (version 1.1.x or higher recommended) - Primary runtime for optimal performance
+- **Node.js** (version 18.x or higher recommended)
+- **npm**, **yarn**, or **pnpm** package manager
 - **Git** for version control
 
 ### Installation
@@ -110,10 +111,10 @@ git clone https://github.com/<your_username>/nextjs-szumplate.git
 cd nextjs-szumplate
 ```
 
-#### 3. 📦 Install Dependencies with Bun
+#### 3. 📦 Install Dependencies
 
 ```bash
-bun install
+npm ci
 ```
 
 #### 4. ⚙️ Configure Environment Variables
@@ -125,31 +126,15 @@ Create a `.env.local` file in the root directory and add your environment variab
 # NEXT_PUBLIC_API_URL=your_api_url
 ```
 
-#### 5. 🚀 Start Development Server with Bun
+#### 5. 🚀 Start Development Server
 
 ```bash
-bun run dev
+npm run dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
 You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-### Alternative: Node.js/npm
-
-This project also supports Node.js 24.x and npm if needed:
-
-```bash
-npm install
-npm run dev
-```
-
-**Why use Bun?**
-
-- 🚀 10-100x faster package installation
-- ⚡ 2-3x faster dev server startup
-- 🎯 Native TypeScript support
-- 💎 Drop-in Node.js compatibility
 
 ### Optional Configuration
 

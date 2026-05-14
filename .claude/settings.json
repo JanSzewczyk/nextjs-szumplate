@@ -1,19 +1,10 @@
 {
   "enableAllProjectMcpServers": true,
   "enabledMcpjsonServers": [
-    "next-devtools"
+    "next-devtools",
+    "stitch"
   ],
   "hooks": {
-    "SessionStart": [
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "echo '🚀 Session started in: $CLAUDE_PROJECT_DIR' >&2"
-          }
-        ]
-      }
-    ],
     "PreToolUse": [
       {
         "matcher": "Bash",
@@ -40,17 +31,11 @@
       {
         "hooks": [
           {
-            "type": "prompt",
-            "prompt": "Before finishing, verify: 1) All requested changes are complete, 2) No TypeScript errors introduced, 3) Code follows project patterns from CLAUDE.md. If something is incomplete, list it.",
-            "timeout": 60
+            "type": "command",
+            "command": "cd \"$CLAUDE_PROJECT_DIR\" && output=$(npm run type-check 2>&1); code=$?; if [ $code -ne 0 ]; then echo \"$output\" | grep -E '(error TS|\\([0-9]+,[0-9]+\\))' | head -15 >&2; exit 2; fi"
           }
         ]
       }
     ]
-  },
-  "statusLine": {
-    "type": "command",
-    "command": ".claude/statusline.sh",
-    "padding": 0
   }
 }

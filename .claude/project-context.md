@@ -7,24 +7,24 @@ When using this configuration in other projects, update this file with your proj
 
 | Category | Technology | Version | Status |
 |----------|------------|---------|--------|
-| Framework | Next.js | 16.1.4 (App Router, Turbopack) | ✅ Installed |
-| UI Library | React | 19.2.0 (with React Compiler) | ✅ Installed |
-| Styling | Tailwind CSS | 4.1.11 (CSS-first config) | ✅ Installed |
-| Design System | @szum-tech/design-system | 3.11.1 (shadcn/ui based) | ✅ Installed |
+| Framework | Next.js | 16.2.6 (App Router, Turbopack) | ✅ Installed |
+| UI Library | React | 19.2.6 (with React Compiler) | ✅ Installed |
+| Styling | Tailwind CSS | 4.3.0 (CSS-first config) | ✅ Installed |
+| Design System | @szum-tech/design-system | 3.21.0 (shadcn/ui based) | ✅ Installed |
 | Type Safety | TypeScript | 5.9.3 (strict mode) | ✅ Installed |
-| Env Validation | T3 Env | @t3-oss/env-nextjs 0.13.8 | ✅ Installed |
-| Logging | Pino | 10.3.0 (pretty-printing in dev) | ✅ Installed |
-| Forms | React Hook Form | 7.71.1 | ✅ Installed |
-| Validation | Zod | 4.3.6 | ✅ Installed |
+| Env Validation | T3 Env | @t3-oss/env-nextjs 0.13.11 | ✅ Installed |
+| Logging | Pino | 10.3.1 (pretty-printing in dev) | ✅ Installed |
+| Forms | React Hook Form | 7.75.0 | ✅ Installed |
+| Validation | Zod | 4.4.3 | ✅ Installed |
 | Theme | next-themes | 0.4.6 | ✅ Installed |
 
 ## Testing Stack
 
 | Type | Tool | Location | Command |
 |------|------|----------|---------|
-| Unit | Vitest 4.0 | `tests/unit/`, `*.test.ts` | `npm run test:unit` |
-| Component | Storybook 10 + Vitest | `*.stories.tsx` | `npm run test:storybook` |
-| E2E | Playwright 1.56 | `tests/e2e/` | `npm run test:e2e` |
+| Unit | Vitest 4.1 | `tests/unit/`, `*.test.ts` | `npm run test:unit` |
+| Component | Storybook 10.4 + Vitest | `*.stories.tsx` | `npm run test:storybook` |
+| E2E | Playwright 1.60 | `tests/e2e/` | `npm run test:e2e` |
 | All | Vitest | - | `npm run test` |
 
 ## Key Files

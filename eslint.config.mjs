@@ -1,1 +1,8 @@
-export { default } from "@szum-tech/eslint-config";
+import szumConfig from "@szum-tech/eslint-config";
+
+export default [
+  {
+    ignores: ["coverage/**", "coverage-unit/**", "coverage-storybook/**"]
+  },
+  ...szumConfig
+];

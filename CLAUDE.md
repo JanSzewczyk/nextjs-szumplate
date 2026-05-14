@@ -4,8 +4,8 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-Next.js Szumplate is an enterprise-ready Next.js 16.1.4 template with React 19.2.0, TypeScript, Tailwind CSS 4.1.11,
-React Compiler, and comprehensive testing infrastructure (Vitest 4.0, Playwright 1.56).
+Next.js Szumplate is an enterprise-ready Next.js 16.2.6 template with React 19.2.6, TypeScript, Tailwind CSS 4.3.0,
+React Compiler, and comprehensive testing infrastructure (Vitest 4.1, Playwright 1.60).
 
 ## Commands
 
@@ -62,16 +62,16 @@ npm run analyze               # Bundle analyzer
 
 ### Tech Stack
 
-- **Next.js**: 16.1.4 (App Router, Turbopack, React Compiler)
-- **React**: 19.2.0 with React Compiler enabled
+- **Next.js**: 16.2.6 (App Router, Turbopack, React Compiler)
+- **React**: 19.2.6 with React Compiler enabled
 - **TypeScript**: 5.9.3 (strict mode)
-- **Tailwind CSS**: 4.1.11 (CSS-first config)
-- **@szum-tech/design-system**: 3.11.1
-- **Vitest**: 4.0.16 (unit & integration tests)
-- **Playwright**: 1.56 (E2E tests)
-- **Storybook**: 10.1.11 (component development)
-- **Zod**: 4.3.6 (validation)
-- **Pino**: 10.3.0 (logging)
+- **Tailwind CSS**: 4.3.0 (CSS-first config)
+- **@szum-tech/design-system**: 3.21.0
+- **Vitest**: 4.1.6 (unit & integration tests)
+- **Playwright**: 1.60.0 (E2E tests)
+- **Storybook**: 10.4.0 (component development)
+- **Zod**: 4.4.3 (validation)
+- **Pino**: 10.3.1 (logging)
 - **next-themes**: 0.4.6 (theming)
 
 ### Path Aliases
@@ -128,7 +128,7 @@ Request logging is handled automatically via `proxy.ts` with request ID tracking
 
 ### Testing Configuration
 
-Vitest 4.0 is configured with two project modes:
+Vitest 4.1 is configured with two project modes:
 
 - **unit**: Node environment for unit tests (`*.test.ts` files)
 - **storybook**: Browser environment (Playwright) for Storybook component tests

@@ -73,7 +73,6 @@ back, relax, and get ready to conquer the whole world with your new awesome app!
 - [📃 Scripts Overview](#-scripts-overview)
 - [🧪 Testing](#-testing)
 - [🎨 Styling and Design System](#-styling-and-design-system)
-- [🤖 ChatGPT Code Review](#-chatgpt-code-review)
 - [💻 Environment Variables Handling](#-environment-variables-handling)
 - [📝 Logging](#-logging)
 - [🚀 GitHub Actions](#-github-actions)
@@ -296,27 +295,6 @@ export default function MyComponent() {
   return <Button variant="primary">Click me!</Button>;
 }
 ```
-
----
-
-## 🤖 ChatGPT Code Review
-
-We've integrated the innovative [ChatGPT Code Review](https://github.com/anc95/ChatGPT-CodeReview) for AI-powered,
-automated code reviews. This feature provides real-time feedback on your code, helping improve code quality and catch
-potential issues.
-
-### Setup
-
-1. Generate an API key from [OpenAI Platform](https://platform.openai.com/)
-2. Add `OPENAI_API_KEY` as a secret in your GitHub repository settings
-3. The workflow will automatically run on every pull request
-
-For detailed setup instructions, refer to the
-[Using GitHub Actions](https://github.com/anc95/ChatGPT-CodeReview#using-github-actions) section in the documentation.
-
-![image](https://user-images.githubusercontent.com/28964599/233685071-e1371edf-6359-41c3-a989-335d6ee09cb7.png)
-
----
 
 ## 💻 Environment Variables Handling
 
@@ -775,7 +753,7 @@ nextjs-szumplate/
 - **`.claude/`** - Claude Code configuration (agents, skills, hooks, project context)
 - **`.github/workflows/`** - CI/CD automation (code review, PR checks, releases)
 - **`.storybook/`** - Storybook setup for component development and documentation
-- **`app/`** - Next.js 16 App Router with server/client components, layouts, and API routes
+- **`app/`** - Next.js 16.2 App Router with server/client components, layouts, and API routes
 - **`components/`** - Shared, reusable UI components with co-located stories
 - **`constants/`** - Static data and configuration constants
 - **`data/env/`** - T3 Env type-safe environment variable definitions

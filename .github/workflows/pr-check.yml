@@ -159,8 +159,7 @@ jobs:
         run: npx playwright install-deps chromium
       - name: Run Storybook Tests 📖🧪
         run:
-          npx vitest run --project=storybook --reporter=blob --coverage
-          --outputFile=.vitest-reports/blob-storybook.json
+          npx vitest run --project=storybook --reporter=blob --coverage --outputFile=.vitest-reports/blob-storybook.json
       - name: Upload blob report
         if: always()
         uses: actions/upload-artifact@v7

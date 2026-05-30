@@ -1,4 +1,5 @@
 import { expect, screen, waitFor } from "storybook/test";
+import preview from "~/.storybook/preview";
 import Page from "~/app/page";
 import {
   FEATURE_TITLES,
@@ -9,8 +10,6 @@ import {
   TECH_STACK_CATEGORIES,
   TECH_STACK_ITEMS
 } from "~/constants";
-
-import preview from "~/.storybook/preview";
 
 const meta = preview.meta({
   title: "App/Home Page",
@@ -34,7 +33,10 @@ HomePage.test("Hero section — badge, heading, description, and CTA links", asy
   });
 
   await step("Verify main heading", async () => {
-    const heading = canvas.getByRole("heading", { name: /szum-tech next\.js template/i, level: 1 });
+    const heading = canvas.getByRole("heading", {
+      name: /szum-tech next\.js template/i,
+      level: 1
+    });
     await expect(heading).toBeVisible();
   });
 
@@ -44,20 +46,27 @@ HomePage.test("Hero section — badge, heading, description, and CTA links", asy
   });
 
   await step("Verify CTA buttons link to correct URLs", async () => {
-    const useTemplateButtons = canvas.getAllByRole("link", { name: /use this template/i });
+    const useTemplateButtons = canvas.getAllByRole("link", {
+      name: /use this template/i
+    });
     await expect(useTemplateButtons.length).toBeGreaterThanOrEqual(1);
     for (const button of useTemplateButtons) {
       await expect(button).toHaveAttribute("href", "https://github.com/JanSzewczyk/nextjs-szumplate/generate");
     }
 
-    const viewOnGitHubButton = canvas.getByRole("link", { name: /view on github/i });
+    const viewOnGitHubButton = canvas.getByRole("link", {
+      name: /view on github/i
+    });
     await expect(viewOnGitHubButton).toHaveAttribute("href", "https://github.com/JanSzewczyk/nextjs-szumplate");
   });
 });
 
 HomePage.test(`Features section — heading and all ${FEATURE_TITLES.length} feature cards`, async ({ canvas, step }) => {
   await step("Verify features section heading", async () => {
-    const heading = canvas.getByRole("heading", { name: /why choose this template\?/i, level: 2 });
+    const heading = canvas.getByRole("heading", {
+      name: /why choose this template\?/i,
+      level: 2
+    });
     await expect(heading).toBeVisible();
   });
 
@@ -78,7 +87,10 @@ HomePage.test(
   `Szum-Tech Ecosystem section — heading and all ${SZUM_TECH_PACKAGE_COUNT} package cards`,
   async ({ canvas, step }) => {
     await step("Verify ecosystem section heading", async () => {
-      const heading = canvas.getByRole("heading", { name: /szum-tech ecosystem/i, level: 2 });
+      const heading = canvas.getByRole("heading", {
+        name: /szum-tech ecosystem/i,
+        level: 2
+      });
       await expect(heading).toBeVisible();
     });
 
@@ -107,7 +119,9 @@ HomePage.test(
 
     await step("Verify GitHub links for all packages", async () => {
       for (const pkg of SZUM_TECH_PACKAGES) {
-        const githubLink = canvas.getByRole("button", { name: new RegExp(`view ${pkg.name} on github`, "i") });
+        const githubLink = canvas.getByRole("button", {
+          name: new RegExp(`view ${pkg.name} on github`, "i")
+        });
         await expect(githubLink).toBeVisible();
         await expect(githubLink).toHaveAttribute("href", pkg.githubUrl);
       }
@@ -125,7 +139,9 @@ HomePage.test(
     });
 
     await step("Verify Explore All Packages button", async () => {
-      const exploreButton = canvas.getByRole("button", { name: /explore all packages/i });
+      const exploreButton = canvas.getByRole("button", {
+        name: /explore all packages/i
+      });
       await expect(exploreButton).toBeVisible();
       await expect(exploreButton).toHaveAttribute("href", "https://github.com/JanSzewczyk");
     });
@@ -136,7 +152,10 @@ HomePage.test(
   `Tech Stack section — heading and all ${TECH_STACK_ITEMS.length} technology links`,
   async ({ canvas, step }) => {
     await step("Verify tech stack section heading", async () => {
-      const heading = canvas.getByRole("heading", { name: /tech stack/i, level: 2 });
+      const heading = canvas.getByRole("heading", {
+        name: /tech stack/i,
+        level: 2
+      });
       await expect(heading).toBeVisible();
     });
 
@@ -155,7 +174,9 @@ HomePage.test(
     await step(`Verify all ${TECH_STACK_ITEMS.length} technology links are present`, async () => {
       for (const tech of TECH_STACK_ITEMS) {
         const escapedName = tech.name.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-        const link = canvas.getByRole("link", { name: new RegExp(`learn more about ${escapedName}`, "i") });
+        const link = canvas.getByRole("link", {
+          name: new RegExp(`learn more about ${escapedName}`, "i")
+        });
         await expect(link).toBeVisible();
         await expect(link).toHaveAttribute("href", tech.href);
       }
@@ -168,7 +189,9 @@ HomePage.test("Tech Stack tooltip — appears on hover and closes on unhover", a
   const escapedName = sampleTech.name.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 
   await step(`Hover over "${sampleTech.name}" to trigger tooltip`, async () => {
-    const techLink = canvas.getByRole("link", { name: new RegExp(`learn more about ${escapedName}`, "i") });
+    const techLink = canvas.getByRole("link", {
+      name: new RegExp(`learn more about ${escapedName}`, "i")
+    });
     await expect(techLink).toBeVisible();
     await userEvent.hover(techLink);
   });
@@ -182,7 +205,9 @@ HomePage.test("Tech Stack tooltip — appears on hover and closes on unhover", a
   });
 
   await step("Verify tooltip closes on unhover", async () => {
-    const techLink = canvas.getByRole("link", { name: new RegExp(`learn more about ${escapedName}`, "i") });
+    const techLink = canvas.getByRole("link", {
+      name: new RegExp(`learn more about ${escapedName}`, "i")
+    });
     await userEvent.unhover(techLink);
 
     await waitFor(async () => {
@@ -196,7 +221,10 @@ HomePage.test("Tech Stack tooltip — appears on hover and closes on unhover", a
 
 HomePage.test(`Quick Start section — heading and all ${QUICK_START_STEPS.length} steps`, async ({ canvas, step }) => {
   await step("Verify quick start section heading", async () => {
-    const heading = canvas.getByRole("heading", { name: /quick start/i, level: 2 });
+    const heading = canvas.getByRole("heading", {
+      name: /quick start/i,
+      level: 2
+    });
     await expect(heading).toBeVisible();
   });
 
@@ -219,7 +247,10 @@ HomePage.test(`Quick Start section — heading and all ${QUICK_START_STEPS.lengt
 
 HomePage.test(`Scripts section — heading and all ${SCRIPTS.length} npm scripts`, async ({ canvas, step }) => {
   await step("Verify scripts section heading", async () => {
-    const heading = canvas.getByRole("heading", { name: /built-in scripts/i, level: 2 });
+    const heading = canvas.getByRole("heading", {
+      name: /built-in scripts/i,
+      level: 2
+    });
     await expect(heading).toBeVisible();
   });
 
@@ -243,7 +274,10 @@ HomePage.test(`Scripts section — heading and all ${SCRIPTS.length} npm scripts
 
 HomePage.test("CTA section — heading and action buttons", async ({ canvas, step }) => {
   await step("Verify CTA section heading", async () => {
-    const heading = canvas.getByRole("heading", { name: /ready to build something amazing\?/i, level: 2 });
+    const heading = canvas.getByRole("heading", {
+      name: /ready to build something amazing\?/i,
+      level: 2
+    });
     await expect(heading).toBeVisible();
   });
 
@@ -253,10 +287,14 @@ HomePage.test("CTA section — heading and action buttons", async ({ canvas, ste
   });
 
   await step("Verify CTA buttons", async () => {
-    const useTemplateButtons = canvas.getAllByRole("link", { name: /use this template/i });
+    const useTemplateButtons = canvas.getAllByRole("link", {
+      name: /use this template/i
+    });
     await expect(useTemplateButtons.length).toBeGreaterThanOrEqual(2);
 
-    const exploreCodeButton = canvas.getByRole("link", { name: /explore the code/i });
+    const exploreCodeButton = canvas.getByRole("link", {
+      name: /explore the code/i
+    });
     await expect(exploreCodeButton).toBeVisible();
     await expect(exploreCodeButton).toHaveAttribute("href", "https://github.com/JanSzewczyk/nextjs-szumplate");
   });
@@ -305,7 +343,9 @@ HomePage.test("Page structure and accessibility", async ({ canvas, step }) => {
   });
 
   await step("Verify external links have proper security attributes", async () => {
-    const githubButton = canvas.getByRole("link", { name: /view github repository/i });
+    const githubButton = canvas.getByRole("link", {
+      name: /view github repository/i
+    });
     await expect(githubButton).toHaveAttribute("target", "_blank");
     await expect(githubButton).toHaveAttribute("rel", expect.stringContaining("noreferrer"));
 
@@ -315,7 +355,9 @@ HomePage.test("Page structure and accessibility", async ({ canvas, step }) => {
 
     const sampleTech = TECH_STACK_ITEMS[0]!;
     const escapedName = sampleTech.name.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-    const techLink = canvas.getByRole("link", { name: new RegExp(`learn more about ${escapedName}`, "i") });
+    const techLink = canvas.getByRole("link", {
+      name: new RegExp(`learn more about ${escapedName}`, "i")
+    });
     await expect(techLink).toHaveAttribute("target", "_blank");
     await expect(techLink).toHaveAttribute("rel", expect.stringContaining("noreferrer"));
   });

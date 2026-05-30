@@ -24,12 +24,19 @@ DB functions never call other DB functions. If two SQL operations must be atomic
 ```ts
 // DB layer
 import { db, type DbClient } from "~/lib/supabase/db";
-import { categorizeSupabaseError, SupabaseServiceError, type SupabaseServiceResult } from "~/lib/supabase/errors";
+import {
+  categorizeSupabaseError,
+  SupabaseServiceError,
+  type SupabaseServiceResult,
+} from "~/lib/supabase/errors";
 
 // Service layer (mutations)
 import { withTransaction } from "~/lib/supabase/db";
 import { categorizeSupabaseError } from "~/lib/supabase/errors";
-import { type BaseServiceError, type ServiceResult } from "~/lib/services/errors";
+import {
+  type BaseServiceError,
+  type ServiceResult,
+} from "~/lib/services/errors";
 
 // Service layer (reads)
 import { cache } from "react";
@@ -54,10 +61,14 @@ export const templates = pgTable("templates", {
   description: text("description"),
   steps: jsonb("steps").$type<Array<TemplateStep>>().notNull().default([]),
   createdAt: timestamp("created_at").defaultNow().notNull(),
-  updatedAt: timestamp("updated_at").defaultNow().notNull()
+  updatedAt: timestamp("updated_at").defaultNow().notNull(),
 });
 
-export type TemplateStep = { title: string; description: string | null; orderIndex: number };
+export type TemplateStep = {
+  title: string;
+  description: string | null;
+  orderIndex: number;
+};
 export type Template = typeof templates.$inferSelect;
 ```
 
@@ -69,12 +80,15 @@ Relations (for `with:` queries) go in a separate `relations()` call in the same 
 
 ```ts
 // features/contractor/server/db/contractor-profile/schema.ts:25–30
-export const contractorProfileRelations = relations(contractorProfile, ({ one }) => ({
-  address: one(addresses, {
-    fields: [contractorProfile.addressId],
-    references: [addresses.id]
-  })
-}));
+export const contractorProfileRelations = relations(
+  contractorProfile,
+  ({ one }) => ({
+    address: one(addresses, {
+      fields: [contractorProfile.addressId],
+      references: [addresses.id],
+    }),
+  }),
+);
 ```
 
 ---
@@ -87,17 +101,18 @@ Every function takes **one object argument** containing `dbClient?: DbClient = d
 export async function updateTemplate({
   id,
   updateInput,
-  dbClient = db
+  dbClient = db,
 }: {
   id: string;
   updateInput: Pick<Template, "name" | "description" | "steps">;
   dbClient?: DbClient;
-}): Promise<SupabaseServiceResult<Template>>
+}): Promise<SupabaseServiceResult<Template>>;
 ```
 
 Source: `features/templates/server/db/mutations.ts:47–55`
 
 Parameter types are **derived from the Drizzle type**, never hand-written:
+
 - `Pick<Table, "col1" | "col2">` for a subset
 - `Partial<Pick<Table, ...>>` for optional updates
 - `Pick<Table, "col">` alone when the embedded type is needed (e.g. `TemplateStep`)
@@ -114,18 +129,26 @@ Standard shape — every function logs at origin, returns `[error, null] | [null
 export async function createTemplate({
   contractorId,
   createTemplateData,
-  dbClient = db
+  dbClient = db,
 }: {
   contractorId: string;
   createTemplateData: Pick<Template, "name" | "description" | "steps">;
   dbClient?: DbClient;
 }): Promise<SupabaseServiceResult<Template>> {
   try {
-    const [row] = await dbClient.insert(templates).values({ contractorId, ...createTemplateData }).returning();
+    const [row] = await dbClient
+      .insert(templates)
+      .values({ contractorId, ...createTemplateData })
+      .returning();
 
     if (!row) {
-      const error = SupabaseServiceError.unknown("Failed to insert template — no row returned");
-      logger.error({ contractorId, errorCode: error.code }, "Insert returned no rows");
+      const error = SupabaseServiceError.unknown(
+        "Failed to insert template — no row returned",
+      );
+      logger.error(
+        { contractorId, errorCode: error.code },
+        "Insert returned no rows",
+      );
       return [error, null];
     }
 
@@ -133,7 +156,10 @@ export async function createTemplate({
     return [null, row];
   } catch (error) {
     const serviceError = categorizeSupabaseError(error, RESOURCE_NAME);
-    logger.error({ contractorId, errorCode: serviceError.code }, "Failed to create template");
+    logger.error(
+      { contractorId, errorCode: serviceError.code },
+      "Failed to create template",
+    );
     return [serviceError, null];
   }
 }
@@ -150,7 +176,10 @@ Always end with `RESOURCE_NAME` constant at the top of the file (`const RESOURCE
 await dbClient
   .insert(contractorProfile)
   .values({ id: contractorId, ...data, updatedAt: new Date() })
-  .onConflictDoUpdate({ target: contractorProfile.id, set: { ...data, updatedAt: new Date() } })
+  .onConflictDoUpdate({
+    target: contractorProfile.id,
+    set: { ...data, updatedAt: new Date() },
+  })
   .returning();
 ```
 
@@ -163,18 +192,24 @@ await dbClient
 ```ts
 export async function getTemplateById({
   templateId,
-  dbClient = db
+  dbClient = db,
 }: {
   templateId: string;
   dbClient?: DbClient;
 }): Promise<SupabaseServiceResult<Template>> {
   try {
-    const [template] = await dbClient.select().from(templates).where(eq(templates.id, templateId));
+    const [template] = await dbClient
+      .select()
+      .from(templates)
+      .where(eq(templates.id, templateId));
     if (!template) return [SupabaseServiceError.notFound("Template"), null];
     return [null, template];
   } catch (error) {
     const serviceError = categorizeSupabaseError(error, "Template");
-    logger.error({ templateId, errorCode: serviceError.code }, "Failed to get template");
+    logger.error(
+      { templateId, errorCode: serviceError.code },
+      "Failed to get template",
+    );
     return [serviceError, null];
   }
 }
@@ -190,7 +225,7 @@ Use `dbClient.query.<table>.findFirst()` when the schema has a `relations()` def
 // features/contractor/server/db/contractor-profile/queries.ts:25–28
 const row = await dbClient.query.contractorProfile.findFirst({
   where: eq(contractorProfile.id, contractorId),
-  with: { address: true }
+  with: { address: true },
 });
 ```
 
@@ -198,7 +233,11 @@ Return type via `BuildQueryResult`:
 
 ```ts
 // features/contractor/server/db/contractor-profile/queries.ts:15
-export type ContractorProfile = BuildQueryResult<TSchema, TSchema["contractorProfile"], { with: { address: true } }>;
+export type ContractorProfile = BuildQueryResult<
+  TSchema,
+  TSchema["contractorProfile"],
+  { with: { address: true } }
+>;
 ```
 
 Where `TSchema` comes from `~/lib/supabase/types`. Use this pattern when a query includes relations — do not manually compose the type.
@@ -241,30 +280,55 @@ Use `withTransaction` from `~/lib/supabase/db`. Pass `tx` as `dbClient` to each 
 try {
   await withTransaction(async (tx) => {
     if (address === null) {
-      const [profErr] = await updateContractorProfile({ contractorId, data: { ...fields, addressId: null }, dbClient: tx });
+      const [profErr] = await updateContractorProfile({
+        contractorId,
+        data: { ...fields, addressId: null },
+        dbClient: tx,
+      });
       if (profErr) throw profErr;
 
       if (existingAddressId) {
-        const [delErr] = await deleteAddress({ addressId: existingAddressId, dbClient: tx });
+        const [delErr] = await deleteAddress({
+          addressId: existingAddressId,
+          dbClient: tx,
+        });
         if (delErr) throw delErr;
       }
     } else if (!existingAddressId) {
-      const [addrErr, addr] = await insertAddress({ data: address, dbClient: tx });
+      const [addrErr, addr] = await insertAddress({
+        data: address,
+        dbClient: tx,
+      });
       if (addrErr) throw addrErr;
 
-      const [profErr] = await updateContractorProfile({ contractorId, data: { ...fields, addressId: addr.id }, dbClient: tx });
+      const [profErr] = await updateContractorProfile({
+        contractorId,
+        data: { ...fields, addressId: addr.id },
+        dbClient: tx,
+      });
       if (profErr) throw profErr;
     } else {
-      const [addrErr] = await updateAddress({ addressId: existingAddressId, data: address, dbClient: tx });
+      const [addrErr] = await updateAddress({
+        addressId: existingAddressId,
+        data: address,
+        dbClient: tx,
+      });
       if (addrErr) throw addrErr;
 
-      const [profErr] = await updateContractorProfile({ contractorId, data: fields, dbClient: tx });
+      const [profErr] = await updateContractorProfile({
+        contractorId,
+        data: fields,
+        dbClient: tx,
+      });
       if (profErr) throw profErr;
     }
   });
 } catch (error) {
   const serviceError = categorizeSupabaseError(error, "CompanyProfile");
-  logger.error({ userId, operation: "updateCompanyProfile", errorCode: serviceError.code }, "Transaction failed");
+  logger.error(
+    { userId, operation: "updateCompanyProfile", errorCode: serviceError.code },
+    "Transaction failed",
+  );
   return [serviceError, null];
 }
 ```
@@ -273,7 +337,9 @@ After a successful transaction, **re-fetch** to return fresh data (not the pre-t
 
 ```ts
 // features/contractor/server/services/company-profile.service.ts:132
-const [fetchErr, updated] = await getContractorProfile({ contractorId: userId });
+const [fetchErr, updated] = await getContractorProfile({
+  contractorId: userId,
+});
 ```
 
 ---
@@ -293,7 +359,11 @@ Imported in the service as:
 
 ```ts
 // features/contractor/server/services/company-profile.service.ts:12
-import { deleteAddress, insertAddress, updateAddress } from "~/features/shared/server/db/addresses";
+import {
+  deleteAddress,
+  insertAddress,
+  updateAddress,
+} from "~/features/shared/server/db/addresses";
 ```
 
 ---
@@ -310,8 +380,8 @@ const [createErr, template] = await createTemplateDb({
   createTemplateData: {
     name: `[Kopia] ${existing.name}`,
     description: existing.description,
-    steps: existing.steps         // jsonb copied as-is
-  }
+    steps: existing.steps, // jsonb copied as-is
+  },
 });
 ```
 
@@ -319,10 +389,10 @@ const [createErr, template] = await createTemplateDb({
 
 ## Return type summary
 
-| Layer | Return type | Import |
-|-------|------------|--------|
+| Layer                  | Return type                                                              | Import                  |
+| ---------------------- | ------------------------------------------------------------------------ | ----------------------- |
 | DB queries / mutations | `SupabaseServiceResult<T>` = `[SupabaseServiceError, null] \| [null, T]` | `~/lib/supabase/errors` |
-| Service reads | `SupabaseServiceResult<T>` wrapped in `cache()` | same |
-| Service mutations | `ServiceResult<BaseServiceError, T>` | `~/lib/services/errors` |
+| Service reads          | `SupabaseServiceResult<T>` wrapped in `cache()`                          | same                    |
+| Service mutations      | `ServiceResult<BaseServiceError, T>`                                     | `~/lib/services/errors` |
 
 `ServiceResult` is the same tuple shape. The distinction is that mutations use the wider `BaseServiceError` (service layer can surface non-DB errors like permission failures).

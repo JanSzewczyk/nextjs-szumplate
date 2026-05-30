@@ -1,11 +1,10 @@
 "use client";
 
-import * as React from "react";
+import { Button, Tooltip, TooltipContent, TooltipTrigger } from "@szum-tech/design-system";
 
 import { MonitorIcon, MoonIcon, SunIcon } from "lucide-react";
 import { useTheme } from "next-themes";
-
-import { Button, Tooltip, TooltipContent, TooltipTrigger } from "@szum-tech/design-system";
+import * as React from "react";
 
 type Theme = "system" | "light" | "dark";
 

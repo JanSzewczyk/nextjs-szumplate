@@ -1,9 +1,4 @@
 {
-  "enableAllProjectMcpServers": true,
-  "enabledMcpjsonServers": [
-    "next-devtools",
-    "stitch"
-  ],
   "hooks": {
     "PreToolUse": [
       {
@@ -22,7 +17,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "[[ \"$CLAUDE_FILE_PATH\" =~ (node_modules|\\.next|dist|out|\\.claude/) ]] && exit 0; npx --yes prettier --write --log-level=error \"$CLAUDE_FILE_PATH\" 2>/dev/null; [[ \"$CLAUDE_FILE_PATH\" =~ \\.(ts|tsx|js|jsx|mjs|cjs)$ ]] && npx --yes eslint --fix --quiet \"$CLAUDE_FILE_PATH\" 2>/dev/null || true"
+            "command": "[[ \"$CLAUDE_FILE_PATH\" =~ (node_modules|\\.next|dist|out|\\.claude/) ]] && exit 0; npx --yes @biomejs/biome check --write --no-errors-on-unmatched --files-ignore-unknown=true \"$CLAUDE_FILE_PATH\" 2>/dev/null || true"
           }
         ]
       }

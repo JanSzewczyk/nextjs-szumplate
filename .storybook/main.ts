@@ -1,5 +1,5 @@
 import { defineMain } from "@storybook/nextjs-vite/node";
-import { type PresetValue, type TagsOptions } from "storybook/internal/types";
+import type { PresetValue, TagsOptions } from "storybook/internal/types";
 
 process.env.STORYBOOK = "true";
 

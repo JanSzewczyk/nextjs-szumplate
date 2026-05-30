@@ -1,7 +1,6 @@
-import { type NextConfig } from "next";
-import withPlugins from "next-compose-plugins";
-
 import withBundleAnalyzer from "@next/bundle-analyzer";
+import type { NextConfig } from "next";
+import withPlugins from "next-compose-plugins";
 
 import { env } from "./data/env/server";
 

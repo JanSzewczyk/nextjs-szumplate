@@ -52,10 +52,8 @@ back, relax, and get ready to conquer the whole world with your new awesome app!
   — End-to-end tests with cross-browser support and Playwright UI
 - [![Storybook](https://img.shields.io/github/package-json/dependency-version/JanSzewczyk/nextjs-szumplate/dev/storybook?logo=storybook&logoColor=white&label=Storybook)](https://storybook.js.org/)
   — Component development, documentation, and interaction testing
-- [![ESLint](https://img.shields.io/github/package-json/dependency-version/JanSzewczyk/nextjs-szumplate/dev/eslint?logo=eslint&logoColor=white&label=ESLint)](https://eslint.org/)
-  — Code quality enforcement with Szum-Tech config
-- [![Prettier](https://img.shields.io/github/package-json/dependency-version/JanSzewczyk/nextjs-szumplate/dev/prettier?logo=prettier&logoColor=white&label=Prettier)](https://prettier.io/)
-  — Consistent code formatting with Szum-Tech config
+- [![Biome](https://img.shields.io/github/package-json/dependency-version/JanSzewczyk/nextjs-szumplate/dev/@biomejs/biome?logo=biome&logoColor=white&label=Biome)](https://biomejs.dev/)
+  — All-in-one linter and formatter replacing ESLint + Prettier
 
 ### 🤖 Automation & DevOps
 
@@ -160,7 +158,7 @@ the page auto-updates as you edit.
 
 To enable automated releases with [Semantic Release](https://github.com/semantic-release/semantic-release):
 
-1. Open `.github/workflows/publish.yml`
+1. Open `.github/workflows/release.yml`
 2. Uncomment lines 26–30
 3. Enjoy automated versioning and changelog generation
    ([more details](https://www.npmjs.com/package/@szum-tech/semantic-release-config))
@@ -195,14 +193,16 @@ Deploy your Next.js app instantly with **Vercel**:
 
 ### Code Quality
 
-| Script                   | Description                                       |
-| ------------------------ | ------------------------------------------------- |
-| `npm run lint`           | Run ESLint                                        |
-| `npm run lint:fix`       | Auto-fix ESLint errors                            |
-| `npm run lint:ci`        | Lint with SARIF output for GitHub Security upload |
-| `npm run prettier:check` | Check code formatting                             |
-| `npm run prettier:write` | Auto-fix formatting                               |
-| `npm run type-check`     | Run TypeScript type checking                      |
+| Script                      | Description                                    |
+| --------------------------- | ---------------------------------------------- |
+| `npm run biome:check`       | Run Biome check (lint + format)                |
+| `npm run biome:ci`          | Run Biome CI check with GitHub reporter        |
+| `npm run biome:fix`         | Auto-fix all lint and format issues            |
+| `npm run biome:lint`        | Run Biome linter only                          |
+| `npm run biome:lint:fix`    | Auto-fix lint issues                           |
+| `npm run biome:format`      | Check code formatting                          |
+| `npm run biome:format:fix`  | Auto-fix formatting                            |
+| `npm run type-check`        | Run TypeScript type checking                   |
 
 ### Testing
 
@@ -432,8 +432,7 @@ Runs on every pull request and validates:
 
 - Build — ensures the project compiles successfully
 - Storybook build — validates Storybook compilation
-- Prettier — code formatting
-- ESLint — code quality (SARIF report uploaded to GitHub Security)
+- Biome — linting and formatting check with GitHub inline annotations
 - TypeScript — type checking
 - Vitest unit tests with coverage
 - Storybook interaction tests with coverage
@@ -447,7 +446,7 @@ Runs on every pull request and validates:
 
 Automated security scanning powered by GitHub CodeQL, running on push and schedule.
 
-### 🚢 Publish (`publish.yml`)
+### 🚀 Release (`release.yml`)
 
 Triggers automatically when changes are merged to `main`:
 
@@ -504,18 +503,17 @@ nextjs-szumplate/
 ├── features/             # Feature-based modules (components, schemas, server)
 ├── lib/                  # Utility functions and configurations (logger)
 ├── public/               # Static assets (images, icons, SVGs)
+├── stories/              # Standalone Storybook stories
 ├── tests/
 │   ├── e2e/              # Playwright end-to-end tests
 │   ├── integration/      # Storybook integration test setup
 │   └── unit/             # Vitest unit tests
 ├── types/                # Global TypeScript type declarations
 ├── utils/                # Shared utility functions
-├── .env.example          # Example environment variables template
-├── eslint.config.mjs     # ESLint configuration
+├── biome.json            # Biome linter and formatter configuration
 ├── next.config.ts        # Next.js configuration
 ├── playwright.config.ts  # Playwright E2E test configuration
 ├── postcss.config.js     # PostCSS and Tailwind CSS configuration
-├── prettier.config.js    # Prettier formatting rules
 ├── proxy.ts              # Request logging middleware
 ├── release.config.js     # Semantic Release configuration
 ├── tsconfig.json         # TypeScript compiler options and path aliases
@@ -536,7 +534,7 @@ nextjs-szumplate/
 
 ### Important Configuration Files
 
-- **`eslint.config.mjs`** — ESLint rules using `@szum-tech/eslint-config`
+- **`biome.json`** — Biome linter and formatter rules (replaces ESLint + Prettier)
 - **`next.config.ts`** — Next.js config (React Compiler, bundle analyzer, health rewrites)
 - **`playwright.config.ts`** — Playwright E2E test configuration
 - **`postcss.config.js`** — PostCSS plugins and Tailwind CSS processing

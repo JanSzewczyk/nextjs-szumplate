@@ -1,4 +1,4 @@
-name: Publish 📦🚀
+name: Release 🚀
 
 on:
   push:
@@ -8,8 +8,8 @@ env:
   NODE_VERSION: "24"
 
 jobs:
-  publish:
-    name: Publish 📦🚀
+  release:
+    name: Release 🚀
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code 📚
@@ -23,7 +23,7 @@ jobs:
         run: npm ci
 #        HERE 👇👇👇
 #        Expose block of code below
-#      - name: Publish package 📦🚀
+#      - name: Create release 🚀
 #        run: npm run semantic-release
 #        env:
 #          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

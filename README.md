@@ -2,9 +2,10 @@
 
 # 🚀 Next.js Szumplate
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=github&utm_campaign=next-enterprise)
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new?utm_source=github&utm_campaign=nextjs-szumplate)
 [![GitHub stars](https://img.shields.io/github/stars/JanSzewczyk/nextjs-szumplate?style=social)](https://github.com/JanSzewczyk/nextjs-szumplate/stargazers)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![CI](https://github.com/JanSzewczyk/nextjs-szumplate/actions/workflows/pr-check.yml/badge.svg)](https://github.com/JanSzewczyk/nextjs-szumplate/actions/workflows/pr-check.yml)
 
 **An enterprise-ready Next.js template that accelerates your development workflow**
 
@@ -25,57 +26,77 @@ back, relax, and get ready to conquer the whole world with your new awesome app!
 
 ### 🏗️ Core Technologies
 
-- **⚡ [Next.js](https://nextjs.org/)** - Fast by default, with config optimized for performance
-- **💅 [Tailwind CSS](https://tailwindcss.com/)** - A utility-first CSS framework
-- **🛠️ Extremely strict [TypeScript](https://www.typescriptlang.org/)** - With `ts-reset` library for ultimate type
-  safety
-- **⚛️ [React Compiler](https://react.dev/learn/react-compiler)** - Automatic memoization without manual optimization
-- **🎯 [Absolute imports](https://nextjs.org/docs/advanced-features/module-path-aliases)** - No more spaghetti imports
+- [![Next.js](https://img.shields.io/github/package-json/dependency-version/JanSzewczyk/nextjs-szumplate/next?logo=nextdotjs&logoColor=white&label=Next.js)](https://nextjs.org/)
+  — App Router, Server Components, Server Actions, and Turbopack for fast builds
+- [![React](https://img.shields.io/github/package-json/dependency-version/JanSzewczyk/nextjs-szumplate/react?logo=react&logoColor=white&label=React)](https://react.dev/)
+  — React 19 with React Compiler for automatic memoization without manual optimization
+- [![TypeScript](https://img.shields.io/github/package-json/dependency-version/JanSzewczyk/nextjs-szumplate/dev/typescript?logo=typescript&logoColor=white&label=TypeScript)](https://www.typescriptlang.org/)
+  — Strict mode with `ts-reset` library for ultimate type safety
+- [![Tailwind CSS](https://img.shields.io/github/package-json/dependency-version/JanSzewczyk/nextjs-szumplate/dev/tailwindcss?logo=tailwindcss&logoColor=white&label=Tailwind%20CSS)](https://tailwindcss.com/)
+  — CSS-first configuration with design tokens and utility-first styling
+- [![Design System](https://img.shields.io/github/package-json/dependency-version/JanSzewczyk/nextjs-szumplate/@szum-tech/design-system?label=Design%20System)](https://szum-tech-design-system.vercel.app/)
+  — Pre-built accessible components and design tokens from Szum-Tech
+- [![Zod](https://img.shields.io/github/package-json/dependency-version/JanSzewczyk/nextjs-szumplate/zod?logo=zod&logoColor=white&label=Zod)](https://zod.dev/)
+  — TypeScript-first schema validation
+- [![React Hook Form](https://img.shields.io/github/package-json/dependency-version/JanSzewczyk/nextjs-szumplate/react-hook-form?label=React%20Hook%20Form)](https://react-hook-form.com/)
+  — Performant forms with easy validation
+- **🎯 Absolute imports** — `~/` path alias for clean, spaghetti-free imports
 
 ### 🧪 Testing & Quality
 
-- **🧪 [Vitest](https://vitest.dev/)** - Rock-solid and highly speed unit and integration tests
-- **🧬 [React Testing Library](https://testing-library.com/react)** - Component testing
-- **🎭 [Playwright](https://playwright.dev/)** - End-to-end tests with smoke testing and acceptance tests
-- **📚 [Storybook](https://storybook.js.org/)** - Create, test, and showcase your components
-- **✨ [ESLint](https://eslint.org/) & [Prettier](https://prettier.io/)** - Clean, consistent, and error-free code
+- [![Vitest](https://img.shields.io/github/package-json/dependency-version/JanSzewczyk/nextjs-szumplate/dev/vitest?logo=vitest&logoColor=white&label=Vitest)](https://vitest.dev/)
+  — Rock-solid, high-speed unit and integration tests with browser mode
+- [![React Testing Library](https://img.shields.io/github/package-json/dependency-version/JanSzewczyk/nextjs-szumplate/dev/@testing-library/react?label=React%20Testing%20Library)](https://testing-library.com/react)
+  — Component testing with accessibility-first queries
+- [![Playwright](https://img.shields.io/github/package-json/dependency-version/JanSzewczyk/nextjs-szumplate/dev/@playwright/test?logo=playwright&logoColor=white&label=Playwright)](https://playwright.dev/)
+  — End-to-end tests with cross-browser support and Playwright UI
+- [![Storybook](https://img.shields.io/github/package-json/dependency-version/JanSzewczyk/nextjs-szumplate/dev/storybook?logo=storybook&logoColor=white&label=Storybook)](https://storybook.js.org/)
+  — Component development, documentation, and interaction testing
+- [![ESLint](https://img.shields.io/github/package-json/dependency-version/JanSzewczyk/nextjs-szumplate/dev/eslint?logo=eslint&logoColor=white&label=ESLint)](https://eslint.org/)
+  — Code quality enforcement with Szum-Tech config
+- [![Prettier](https://img.shields.io/github/package-json/dependency-version/JanSzewczyk/nextjs-szumplate/dev/prettier?logo=prettier&logoColor=white&label=Prettier)](https://prettier.io/)
+  — Consistent code formatting with Szum-Tech config
 
 ### 🤖 Automation & DevOps
 
-- **🚀 [GitHub Actions](https://github.com/features/actions)** - Pre-configured workflows for CI/CD
-- **🚢 [Semantic Release](https://github.com/semantic-release/semantic-release)** - Automated versioning and changelog
-  generation
-- **🤖 [Dependabot](https://github.com/dependabot)** - Automated dependency updates
+- [![GitHub Actions](https://img.shields.io/badge/GitHub_Actions-2088FF?logo=github-actions&logoColor=white)](https://github.com/features/actions)
+  — Pre-configured CI/CD workflows (PR checks, CodeQL, semantic releases)
+- [![Semantic Release](https://img.shields.io/github/package-json/dependency-version/JanSzewczyk/nextjs-szumplate/dev/semantic-release?label=Semantic%20Release)](https://github.com/semantic-release/semantic-release)
+  — Automated versioning and CHANGELOG generation via Conventional Commits
+- [![Dependabot](https://img.shields.io/badge/Dependabot-025E8C?logo=dependabot&logoColor=white)](https://github.com/dependabot)
+  — Automated dependency security updates
 
 ### 🔧 Developer Experience
 
-- **💻 [T3 Env](https://env.t3.gg/)** - Type-safe environment variables management
-- **📊 [Bundle Analyzer](https://www.npmjs.com/package/@next/bundle-analyzer)** - Keep an eye on your bundle size
-- **⚕️
-  [Health Checks](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/)** -
-  Kubernetes-compatible for robust deployments
-- **🎨 [Szum-Tech Design System](https://www.npmjs.com/package/@szum-tech/design-system)** - Pre-built components and
-  design tokens
-- **📝 [Pino](https://getpino.io/)** - High-performance structured logging with development and production modes
+- [![T3 Env](https://img.shields.io/github/package-json/dependency-version/JanSzewczyk/nextjs-szumplate/@t3-oss/env-nextjs?label=T3%20Env)](https://env.t3.gg/)
+  — Type-safe environment variable management with build-time validation
+- [![Bundle Analyzer](https://img.shields.io/github/package-json/dependency-version/JanSzewczyk/nextjs-szumplate/@next/bundle-analyzer?label=Bundle%20Analyzer)](https://www.npmjs.com/package/@next/bundle-analyzer)
+  — Bundle size analysis for Client, Server, and Edge environments
+- [![Pino](https://img.shields.io/github/package-json/dependency-version/JanSzewczyk/nextjs-szumplate/pino?label=Pino)](https://getpino.io/)
+  — High-performance structured JSON logging with automatic request tracking
+- [![next-themes](https://img.shields.io/github/package-json/dependency-version/JanSzewczyk/nextjs-szumplate/next-themes?label=next-themes)](https://github.com/pacocoursey/next-themes)
+  — Dark/light/system theme switching with localStorage persistence
+- **⚕️ Health Checks** — Kubernetes-compatible endpoint at `/api/health` with aliases `/healthz`, `/health`, `/ping`
+- **🔒 Server-only Guards** — Prevents server code from leaking into client bundles
 
 ### 🏆 Performance
 
-- **💯 Perfect Lighthouse Score** - Optimized for performance, accessibility, and SEO
+- **💯 Perfect Lighthouse Score** — Optimized for performance, accessibility, and SEO
+- **⚡ React Compiler** — Automatic memoization without `useMemo`/`useCallback`/`memo` boilerplate
 
 ---
 
 ## 📖 Table of Contents
 
 - [✨ Features](#-features)
-- [📖 Table of Contents](#-table-of-contents)
 - [🎯 Getting Started](#-getting-started)
 - [🚀 Deployment](#-deployment)
 - [📃 Scripts Overview](#-scripts-overview)
 - [🧪 Testing](#-testing)
 - [🎨 Styling and Design System](#-styling-and-design-system)
-- [💻 Environment Variables Handling](#-environment-variables-handling)
+- [💻 Environment Variables](#-environment-variables)
 - [📝 Logging](#-logging)
-- [🚀 GitHub Actions](#-github-actions)
+- [🤖 GitHub Actions](#-github-actions)
 - [🔒 Keeping Server-only Code out of the Client Environment](#-keeping-server-only-code-out-of-the-client-environment)
 - [📁 Project Structure](#-project-structure)
 - [🤝 Contributing](#-contributing)
@@ -87,7 +108,7 @@ back, relax, and get ready to conquer the whole world with your new awesome app!
 
 ## 🎯 Getting Started
 
-### Prerequisites
+### 📋 Prerequisites
 
 Before you begin, ensure you have the following installed:
 
@@ -95,192 +116,180 @@ Before you begin, ensure you have the following installed:
 - **npm** package manager
 - **Git** for version control
 
-### Installation
+### 📦 Installation
 
-Follow these steps to get started:
-
-#### 1. ⭐ Star and Fork the Repository
+#### 1. Star and Fork the Repository
 
 Don't forget to star ⭐ and fork the repository first!
 
-#### 2. 📥 Clone the Repository
+#### 2. Clone the Repository
 
 ```bash
 git clone https://github.com/<your_username>/nextjs-szumplate.git
 cd nextjs-szumplate
 ```
 
-#### 3. 📦 Install Dependencies
+#### 3. Install Dependencies
 
 ```bash
 npm ci
 ```
 
-#### 4. ⚙️ Configure Environment Variables
+#### 4. Configure Environment Variables
 
-Create a `.env.local` file in the root directory and add your environment variables:
+Create a `.env.local` file in the root directory:
 
 ```env
 # Add your environment variables here
 # NEXT_PUBLIC_API_URL=your_api_url
+# LOG_LEVEL=debug
 ```
 
-#### 5. 🚀 Start Development Server
+#### 5. Start Development Server
 
 ```bash
 npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Open [http://localhost:3000](http://localhost:3000) to view the app. You can start editing by modifying `app/page.tsx` —
+the page auto-updates as you edit.
 
 ### Optional Configuration
 
 #### Semantic Release Setup
 
-To use the fully configured [Semantic Release](https://github.com/semantic-release/semantic-release) feature:
+To enable automated releases with [Semantic Release](https://github.com/semantic-release/semantic-release):
 
-1. Go to `.github/workflows/publish.yml` file
-2. Expose hidden code (lines 26 to 30)
+1. Open `.github/workflows/publish.yml`
+2. Uncomment lines 26–30
 3. Enjoy automated versioning and changelog generation
-   ([more details](https://www.npmjs.com/package/@szum-tech/semantic-release-preset))
+   ([more details](https://www.npmjs.com/package/@szum-tech/semantic-release-config))
 
 ---
 
 ## 🚀 Deployment
 
-Easily deploy your Next.js app with **Vercel** by clicking the button below:
+Deploy your Next.js app instantly with **Vercel**:
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=github&utm_campaign=next-enterprise)
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new?utm_source=github&utm_campaign=nextjs-szumplate)
 
 ### Deployment Steps
 
-1. Click the "Deploy with Vercel" button
+1. Click the "Deploy with Vercel" button above
 2. Connect your GitHub repository
-3. Configure environment variables
-4. Deploy!
-
-Your application will be live in minutes with automatic CI/CD pipeline.
+3. Configure environment variables in the Vercel dashboard
+4. Deploy — your app will be live in minutes with automatic CI/CD
 
 ---
 
 ## 📃 Scripts Overview
 
-The following scripts are available in the `package.json`:
-
 ### Development
 
-- `npm run dev` - Starts the development server
-- `npm run build` - Builds the app for production
-- `npm run start` - Starts the production server
+| Script            | Description                                 |
+| ----------------- | ------------------------------------------- |
+| `npm run dev`     | Start the development server with Turbopack |
+| `npm run build`   | Build the app for production                |
+| `npm run start`   | Start the production server                 |
+| `npm run analyze` | Analyze bundle sizes (Client, Server, Edge) |
 
 ### Code Quality
 
-- `npm run lint` - Lints the code using ESLint
-- `npm run lint:ci` - Lints the code for CI (uploads SARIF results to GitHub)
-- `npm run lint:fix` - Automatically fixes linting errors
-- `npm run prettier:check` - Checks the code for proper formatting
-- `npm run prettier:write` - Automatically fixes formatting issues
-- `npm run type-check` - Runs TypeScript type checking
+| Script                   | Description                                       |
+| ------------------------ | ------------------------------------------------- |
+| `npm run lint`           | Run ESLint                                        |
+| `npm run lint:fix`       | Auto-fix ESLint errors                            |
+| `npm run lint:ci`        | Lint with SARIF output for GitHub Security upload |
+| `npm run prettier:check` | Check code formatting                             |
+| `npm run prettier:write` | Auto-fix formatting                               |
+| `npm run type-check`     | Run TypeScript type checking                      |
 
 ### Testing
 
-- `npm run test` - Runs all Vitest tests
-- `npm run test:ci` - Runs all tests with coverage (CI mode)
-- `npm run test:coverage` - Generates full coverage report
-- `npm run test:unit` - Runs unit tests only
-- `npm run test:unit:coverage` - Runs unit tests with coverage report
-- `npm run test:watch` - Runs tests in watch mode
-- `npm run test:ui` - Runs tests with Vitest UI dashboard
-
-### E2E Testing
-
-- `npm run test:e2e` - Runs end-to-end tests
-- `npm run test:e2e:ci` - Runs E2E tests for CI
-- `npm run test:e2e:ui` - Runs E2E tests with Playwright UI
+| Script                            | Description                                   |
+| --------------------------------- | --------------------------------------------- |
+| `npm run test`                    | Run all Vitest tests                          |
+| `npm run test:ci`                 | Run all tests with coverage (CI mode)         |
+| `npm run test:coverage`           | Generate full coverage report                 |
+| `npm run test:unit`               | Run unit tests only                           |
+| `npm run test:unit:coverage`      | Unit tests with separate coverage report      |
+| `npm run test:watch`              | Run tests in watch mode                       |
+| `npm run test:ui`                 | Vitest UI dashboard                           |
+| `npm run test:storybook`          | Storybook component tests with coverage       |
+| `npm run test:storybook:coverage` | Storybook tests with separate coverage report |
+| `npm run test:e2e`                | Run Playwright E2E tests                      |
+| `npm run test:e2e:ui`             | E2E tests with Playwright UI                  |
+| `npm run test:e2e:ci`             | E2E tests in CI mode                          |
 
 ### Storybook
 
-- `npm run storybook:dev` - Starts Storybook in development mode
-- `npm run storybook:build` - Builds Storybook for production
-- `npm run storybook:serve` - Serves the built Storybook
-- `npm run test:storybook` - Runs Storybook component tests with coverage
-- `npm run test:storybook:coverage` - Runs Storybook tests with separate coverage report
-
-### Analysis
-
-- `npm run analyze` - Analyzes bundle sizes for Client, Server, and Edge environments
+| Script                    | Description                       |
+| ------------------------- | --------------------------------- |
+| `npm run storybook:dev`   | Start Storybook (port 6006)       |
+| `npm run storybook:build` | Build static Storybook            |
+| `npm run storybook:serve` | Serve the built Storybook locally |
 
 ---
 
 ## 🧪 Testing
 
-This template comes with a comprehensive testing setup to ensure your application's reliability and robustness.
+This template provides a comprehensive testing infrastructure covering unit, component, and E2E tests.
 
-### Unit & Integration Tests
-
-Run Vitest tests using:
+### 🔬 Unit & Integration Tests
 
 ```bash
 npm run test
 ```
 
-For watch mode:
+Watch mode for active development:
 
 ```bash
 npm run test:watch
 ```
 
-Generate coverage report:
+Generate a coverage report:
 
 ```bash
 npm run test:coverage
 ```
 
-### End-to-End Tests
+Vitest is configured with two project modes:
 
-Run Playwright E2E tests:
+- **unit** — Node environment for `*.test.ts` files
+- **storybook** — Browser environment (Playwright) for Storybook component tests
+
+### 🎭 End-to-End Tests
 
 ```bash
 npm run test:e2e
 ```
 
-Run with UI for debugging:
+Interactive debugging with Playwright UI:
 
 ```bash
 npm run test:e2e:ui
 ```
 
-<img width="1665" alt="image" src="https://github.com/JanSzewczyk/nextjs-szumplate/assets/29024606/9c65cdd2-4e04-4687-81d6-8e7a32f12518">
-
-### Storybook Tests
-
-Run Storybook component tests:
+### 📚 Storybook Tests
 
 ```bash
 npm run test:storybook
 ```
 
-### Acceptance Tests
-
-To write acceptance tests, we leverage Storybook's
-[play function](https://storybook.js.org/docs/writing-stories/play-function#writing-stories-with-the-play-function).
-This allows you to interact with your components and test various user flows within Storybook.
+Storybook tests use `play` functions for interaction testing with accessibility checks via `@storybook/addon-a11y`. Use
+the `test-only` tag to exclude stories from docs while keeping them in the test suite.
 
 ---
 
 ## 🎨 Styling and Design System
 
-This boilerplate uses **Tailwind CSS** for styling and the
-**[Szum-Tech Design System](https://www.npmjs.com/package/@szum-tech/design-system)**, which contains:
+This template uses [Tailwind CSS](https://tailwindcss.com/) (CSS-first configuration) alongside the
+[Szum-Tech Design System](https://szum-tech-design-system.vercel.app/), which provides:
 
-- ✅ Fully designed components
-- 🎨 Color palette and design tokens
+- ✅ Fully designed, accessible components built on Radix UI
+- 🎨 OKLCH semantic color palette and design tokens
 - 🛠️ Utility functions and helpers
-- 📖 Comprehensive documentation
-
-**[Check the Design System Documentation](https://szum-tech-design-system.vercel.app/?path=/docs/components--docs)**
+- 📖 Comprehensive Storybook documentation
 
 ### Usage Example
 
@@ -292,14 +301,24 @@ export default function MyComponent() {
 }
 ```
 
-## 💻 Environment Variables Handling
+Icons are available from the design system's re-exports:
 
-[T3 Env](https://env.t3.gg/) provides type-safe environment variable management with build-time validation. It ensures
-that your application uses correct environment variables and their values are of the expected type.
+```tsx
+import { GithubIcon, SparklesIcon } from "lucide-react";
+```
+
+**[View Design System Documentation →](https://szum-tech-design-system.vercel.app/?path=/docs/components--docs)**
+
+---
+
+## 💻 Environment Variables
+
+[T3 Env](https://env.t3.gg/) provides type-safe environment variable management with build-time validation. Missing or
+invalid variables cause a clear error at build time rather than a runtime surprise.
 
 ### Configuration
 
-The config file is located at `data/env/{client,server}.ts`:
+Variables are split into two files in `data/env/`:
 
 ```typescript
 import { createEnv } from "@t3-oss/env-nextjs";
@@ -315,23 +334,17 @@ const env = createEnv({
     API_URL: z.string().url()
   },
   runtimeEnv: {
-    // Assign runtime variables
     SECRET_KEY: process.env.SECRET_KEY,
     API_URL: process.env.NEXT_PUBLIC_API_URL
   }
 });
-
-export default env;
 ```
 
-### Benefits
+- Server variables: `data/env/server.ts`
+- Client variables: `data/env/client.ts` (must be prefixed with `NEXT_PUBLIC_`)
+- Skip validation: `SKIP_ENV_VALIDATION=true` (useful for Docker builds)
 
-- ✅ Type-safe environment variables
-- ✅ Build-time validation
-- ✅ Runtime error prevention
-- ✅ Auto-completion in your IDE
-
-If required environment variables are not set, you'll get a clear error message:
+If required variables are missing at build time:
 
 ```
 ❌ Invalid environment variables: { SECRET_KEY: [ 'Required' ] }
@@ -341,378 +354,137 @@ If required environment variables are not set, you'll get a clear error message:
 
 ## 📝 Logging
 
-This template uses **[Pino](https://getpino.io/)**, one of the fastest and most popular logging libraries for Node.js,
-to provide structured logging throughout the application.
+This template uses [Pino](https://getpino.io/), one of the fastest logging libraries for Node.js, with structured JSON
+output optimized for Next.js App Router and Turbopack.
 
 ### Features
 
-- ✅ **High Performance** - Minimal overhead with extremely fast JSON logging
-- ✅ **Structured Logging** - JSON-formatted logs for easy parsing and analysis
-- ✅ **Next.js Compatible** - Optimized to work with Next.js App Router and Turbopack
-- ✅ **Universal Support** - Works on both server-side and client-side (browser)
-- ✅ **Production Ready** - JSON logs optimized for log aggregation tools (Datadog, ELK, CloudWatch)
-- ✅ **Request Tracking** - Automatic request ID generation and logging via middleware
-- ✅ **Error Handling** - Integrated with global error boundaries for comprehensive error logging
-- ✅ **Type-safe Configuration** - LOG_LEVEL environment variable with TypeScript validation
+- ✅ **High Performance** — Minimal overhead with fast JSON serialization
+- ✅ **Structured Logging** — JSON-formatted logs ready for log aggregation tools (Datadog, ELK, CloudWatch, Grafana
+  Loki)
+- ✅ **Request Tracking** — Automatic request ID (UUID) via middleware with `X-Request-ID` response header
+- ✅ **Universal** — Server-side (Node.js JSON output) and client-side (browser console fallback)
+- ✅ **Error Boundaries** — Integrated with `app/error.tsx` and `app/global-error.tsx`
+- ✅ **Type-safe** — `LOG_LEVEL` environment variable validated with TypeScript
 
-### Configuration
+### Usage
 
-The logger is configured in `lib/logger.ts` and automatically adapts based on the environment:
+```typescript
+import logger, { createLogger } from "~/lib/logger";
 
-**Server-side (Node.js):**
+// Basic logging
+logger.info("User logged in successfully");
+logger.warn("API rate limit approaching");
+logger.error({ userId: "123", error: err }, "Failed to fetch user data");
 
-- Structured JSON output for both development and production
-- ISO timestamps for consistency
-- Includes PID and hostname in development mode
-- Direct stdout logging for optimal performance
-
-**Client-side (Browser):**
-
-- Fallback to browser console with appropriate log levels
-- Fatal/Error → `console.error()`
-- Warn → `console.warn()`
-- Info → `console.info()`
-- Debug/Trace → `console.debug()`
-
-**Technical Note:** This implementation doesn't use `pino-pretty` transport to avoid worker thread issues with
-Next.js/Turbopack. The logs remain fully structured and parseable as JSON, making them ideal for production environments
-and log aggregation services.
+// Context logger — persists context in every log line
+const apiLogger = createLogger({ module: "api", service: "user-service" });
+apiLogger.info("Processing request");
+```
 
 ### Log Levels
 
-Set the `LOG_LEVEL` environment variable to control verbosity:
-
-```bash
-# Available levels (from highest to lowest priority)
-LOG_LEVEL=fatal  # Only fatal errors
-LOG_LEVEL=error  # Errors and above
-LOG_LEVEL=warn   # Warnings and above
-LOG_LEVEL=info   # Info and above (default)
-LOG_LEVEL=debug  # Debug messages and above
-LOG_LEVEL=trace  # Everything including trace
-```
-
-Add to your `.env.local`:
+Control verbosity via the `LOG_LEVEL` environment variable (add to `.env.local`):
 
 ```env
 LOG_LEVEL=debug
 ```
 
-### Usage Examples
-
-#### Basic Logging
-
-```typescript
-import logger from "~/lib/logger";
-
-// Info level
-logger.info("User logged in successfully");
-
-// Warning
-logger.warn("API rate limit approaching");
-
-// Error with context
-logger.error({ userId: "123", error: err }, "Failed to fetch user data");
-
-// Debug information
-logger.debug({ query: params }, "Database query executed");
-```
-
-#### Creating Context Loggers
-
-Create child loggers with persistent context:
-
-```typescript
-import { createLogger } from "~/lib/logger";
-
-// Create a logger with specific context
-const apiLogger = createLogger({
-  module: "api",
-  service: "user-service"
-});
-
-apiLogger.info("Processing request"); // Will include module and service in every log
-```
-
-#### API Route Logging
-
-```typescript
-import { NextResponse } from "next/server";
-import logger from "~/lib/logger";
-
-export async function GET(request: Request) {
-  logger.info("Fetching users list");
-
-  try {
-    const users = await fetchUsers();
-    logger.debug({ count: users.length }, "Users fetched successfully");
-    return NextResponse.json(users);
-  } catch (error) {
-    logger.error({ error }, "Failed to fetch users");
-    return NextResponse.json({ error: "Internal server error" }, { status: 500 });
-  }
-}
-```
-
-#### Server Actions Logging
-
-```typescript
-"use server";
-
-import { createLogger } from "~/lib/logger";
-
-const actionLogger = createLogger({ context: "server-action" });
-
-export async function createUser(formData: FormData) {
-  actionLogger.info({ action: "createUser" }, "Creating new user");
-
-  try {
-    // Your logic here
-    actionLogger.info({ userId: newUser.id }, "User created successfully");
-    return { success: true };
-  } catch (error) {
-    actionLogger.error({ error }, "Failed to create user");
-    return { success: false, error: "Failed to create user" };
-  }
-}
-```
+Available levels (highest to lowest priority): `fatal` | `error` | `warn` | `info` (default) | `debug` | `trace`
 
 ### Built-in Logging
 
-The template includes automatic logging in several key areas:
+The template automatically logs in these areas:
 
-#### 1. Request Logging (`middleware.ts`)
-
-Every HTTP request is automatically logged with:
-
-- **Request ID**: Unique UUID for request tracing
-- **HTTP Method**: GET, POST, PUT, DELETE, etc.
-- **URL**: Full request URL
-- **User Agent**: Client information
-- **Response Status**: HTTP status code
-- **Duration**: Request processing time in milliseconds
-
-The `X-Request-ID` header is added to all responses for distributed tracing.
-
-**Example log output:**
-
-```json
-{
-  "level": 30,
-  "time": "2025-01-19T10:30:45.123Z",
-  "requestId": "550e8400-e29b-41d4-a716-446655440000",
-  "method": "GET",
-  "url": "http://localhost:3000/api/users",
-  "userAgent": "Mozilla/5.0...",
-  "msg": "Incoming request"
-}
-```
-
-#### 2. Health Check API (`app/api/health/route.ts`)
-
-The health check endpoint includes:
-
-- Info-level logging when endpoint is called
-- Debug-level logging with response details
-- Error logging if health check fails
-- Timestamp in response for monitoring
-
-#### 3. Global Error Handling
-
-**Page-level errors** (`app/error.tsx`):
-
-- Catches errors in specific pages/routes
-- Logs error details including message, stack trace, and digest
-- Provides user-friendly error UI with retry option
-
-**Application-level errors** (`app/global-error.tsx`):
-
-- Catches critical errors across the entire application
-- Logs fatal errors with full context
-- Last-resort error boundary for unhandled exceptions
+- **Request middleware** (`proxy.ts`) — every HTTP request logs method, URL, user agent, status, and duration
+- **Health check API** (`app/api/health/route.ts`) — logs each health probe
+- **Error boundaries** (`app/error.tsx`, `app/global-error.tsx`) — logs caught errors with full stack traces
 
 ### Production Best Practices
 
-1. **Use Structured Logging**: Always include context objects for better searchability
-
 ```typescript
-// Good
+// Include context objects for searchability
 logger.error({ userId, orderId, error }, "Order processing failed");
 
-// Avoid
-logger.error(`Order ${orderId} failed for user ${userId}`);
-```
+// Never log sensitive data
+logger.info({ userId: user.id }, "User login"); // ✅
+logger.info({ password: user.password }, "User login"); // ❌
 
-2. **Don't Log Sensitive Data**: Never log passwords, tokens, or PII
-
-```typescript
-// Bad
-logger.info({ password: user.password }, "User login");
-
-// Good
-logger.info({ userId: user.id }, "User login");
-```
-
-3. **Use Appropriate Log Levels**:
-   - `error` - Failures that need attention
-   - `warn` - Issues that don't stop execution
-   - `info` - Important business events
-   - `debug` - Detailed diagnostic information
-
-4. **Include Error Objects**: Always pass error objects for full stack traces
-
-```typescript
+// Always pass error objects for full stack traces
 try {
-  // code
+  // ...
 } catch (error) {
-  logger.error({ error }, "Operation failed"); // Captures full stack
+  logger.error({ error }, "Operation failed");
 }
-```
-
-### Log Output Format
-
-Logs are output in structured JSON format, making them easy to parse and search:
-
-```json
-{
-  "level": 30,
-  "time": "2025-01-19T10:30:45.123Z",
-  "pid": 12345,
-  "hostname": "my-server",
-  "msg": "User login successful",
-  "userId": "user-123",
-  "action": "login"
-}
-```
-
-**Log Levels (Pino standard):**
-
-- `10` - trace
-- `20` - debug
-- `30` - info
-- `40` - warn
-- `50` - error
-- `60` - fatal
-
-### Integration with Log Aggregation Services
-
-The structured JSON output is compatible with all major log aggregation and monitoring services:
-
-**Cloud Platforms:**
-
-- **Vercel**: Built-in log streaming and filtering
-- **AWS CloudWatch**: Works with Lambda, ECS, and EC2
-- **Google Cloud Logging**: Compatible with Cloud Run, GKE, and App Engine
-- **Azure Monitor**: Supports structured JSON logs
-
-**Log Management Services:**
-
-- **Datadog**: Direct Node.js integration available
-- **New Relic**: Standard JSON log format supported
-- **Splunk**: Can ingest and parse Pino JSON logs
-- **Sumo Logic**: JSON log parsing built-in
-
-**Open Source:**
-
-- **ELK Stack** (Elasticsearch, Logstash, Kibana): Logstash can parse Pino format
-- **Grafana Loki**: Supports JSON log ingestion
-- **Graylog**: JSON input supported
-
-### Viewing Logs
-
-**Development:**
-
-```bash
-npm run dev
-# Logs appear in terminal as structured JSON
-```
-
-**Production (Vercel):**
-
-```bash
-vercel logs [deployment-url]
-# Or view in Vercel Dashboard → Logs
-```
-
-**Docker/Self-hosted:**
-
-```bash
-# View container logs
-docker logs [container-id]
-
-# Stream logs in real-time
-docker logs -f [container-id]
-
-# Filter by log level (using jq)
-docker logs [container-id] | jq 'select(.level >= 40)'
 ```
 
 ---
 
-## 🚀 GitHub Actions
+## 🤖 GitHub Actions
 
-GitHub Actions offer multiple smooth workflows that make development easier and reduce the developer's impact on
-repetitive tasks.
+Three pre-configured workflows automate quality checks and releases:
 
-### Available Workflows
+### ✅ PR Check (`pr-check.yml`)
 
-#### 1. ✅ PR Check (`pr-check.yml`)
+[![CI](https://github.com/JanSzewczyk/nextjs-szumplate/actions/workflows/pr-check.yml/badge.svg)](https://github.com/JanSzewczyk/nextjs-szumplate/actions/workflows/pr-check.yml)
 
-Validates code on every pull request, checking:
+Runs on every pull request and validates:
 
-- 🏗️ **Build** - Ensures the project builds successfully
-- 📖 **Storybook Build** - Validates Storybook compilation
-- 🧹 **Prettier** - Code formatting validation
-- ⬣ **ESLint** - Code quality and linting (SARIF report uploaded to GitHub)
-- 🛠️ **TypeScript** - Type checking
-- 🧪 **Unit Tests** - Vitest unit tests with coverage
-- 📖 **Storybook Tests** - Component interaction tests with coverage
-- 📊 **Coverage Report** - Merged coverage comment on PR
-- 🎭 **Playwright** - E2E tests
-- 🔍 **Dependency Review** - Security audit of dependency changes
+- Build — ensures the project compiles successfully
+- Storybook build — validates Storybook compilation
+- Prettier — code formatting
+- ESLint — code quality (SARIF report uploaded to GitHub Security)
+- TypeScript — type checking
+- Vitest unit tests with coverage
+- Storybook interaction tests with coverage
+- Merged coverage comment on PR
+- Playwright E2E tests
+- Dependency review — security audit of dependency changes
 
-#### 2. 🔒 CodeQL (`codeql.yml`)
+### 🔒 CodeQL (`codeql.yml`)
 
-Automated security scanning powered by GitHub CodeQL.
+[![CodeQL](https://github.com/JanSzewczyk/nextjs-szumplate/actions/workflows/codeql.yml/badge.svg)](https://github.com/JanSzewczyk/nextjs-szumplate/actions/workflows/codeql.yml)
 
-#### 3. 🚢 Publish (`publish.yml`)
+Automated security scanning powered by GitHub CodeQL, running on push and schedule.
 
-Automatically triggered when changes are merged to the `main` branch:
+### 🚢 Publish (`publish.yml`)
 
-- 📦 Determines next version using [Semantic Release](https://github.com/semantic-release/semantic-release)
-- 📝 Updates `CHANGELOG.md`
-- 🏷️ Creates GitHub release
-- 🔢 Bumps version in `package.json`
+Triggers automatically when changes are merged to `main`:
 
-Based on [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/), this workflow uses
-[@szum-tech/semantic-release-preset](https://www.npmjs.com/package/@szum-tech/semantic-release-preset) configuration.
+- Determines the next version using [Semantic Release](https://github.com/semantic-release/semantic-release)
+- Updates `CHANGELOG.md`
+- Creates a GitHub Release with release notes
+- Bumps version in `package.json`
+
+Based on [Conventional Commits](https://www.conventionalcommits.org/) via `@szum-tech/semantic-release-config`.
 
 ---
 
 ## 🔒 Keeping Server-only Code out of the Client Environment
 
-Since JavaScript modules can be shared between both Server and Client Components, it's possible for server-only code to
-accidentally be included in the client bundle.
+JavaScript modules can be shared between Server and Client Components, making it possible for server-only code to
+accidentally end up in the client bundle.
 
 ### Solution: `server-only` Package
 
-Use the [server-only](https://www.npmjs.com/package/server-only) package to give developers a build-time error if they
-accidentally import server code into a Client Component.
+Use the [server-only](https://www.npmjs.com/package/server-only) package to get a build-time error if server code is
+ever imported in a Client Component:
 
 ```bash
 npm install server-only
 ```
 
-Then import it in any module that contains server-only code:
+Import it at the top of any module that must stay on the server:
 
 ```typescript
 import "server-only";
 
-// The rest of your server-only code
 export async function getData() {
   // This function can only be used on the server
 }
 ```
+
+Any Client Component that imports this module will fail the build — catching the mistake before it reaches production.
 
 ---
 
@@ -723,56 +495,53 @@ nextjs-szumplate/
 ├── .claude/              # Claude Code configuration (agents, skills, hooks)
 ├── .github/
 │   └── workflows/        # GitHub Actions workflows (CI/CD)
-├── .storybook/           # Storybook configuration
+├── .storybook/           # Storybook configuration and themes
 ├── app/                  # Next.js App Router (pages, layouts, API routes)
-├── components/           # Reusable React components (stories co-located)
+├── components/           # Reusable React components with co-located stories
 ├── constants/            # Static data and configuration constants
 ├── data/
-│   └── env/              # T3 Env type-safe environment variables
+│   └── env/              # T3 Env type-safe environment variable definitions
 ├── features/             # Feature-based modules (components, schemas, server)
 ├── lib/                  # Utility functions and configurations (logger)
-├── public/               # Static assets (images, fonts, icons)
-├── tests/                # Test files
+├── public/               # Static assets (images, icons, SVGs)
+├── tests/
 │   ├── e2e/              # Playwright end-to-end tests
 │   ├── integration/      # Storybook integration test setup
 │   └── unit/             # Vitest unit tests
+├── types/                # Global TypeScript type declarations
+├── utils/                # Shared utility functions
 ├── .env.example          # Example environment variables template
 ├── eslint.config.mjs     # ESLint configuration
 ├── next.config.ts        # Next.js configuration
 ├── playwright.config.ts  # Playwright E2E test configuration
-├── prettier.config.js    # Prettier configuration
+├── postcss.config.js     # PostCSS and Tailwind CSS configuration
+├── prettier.config.js    # Prettier formatting rules
 ├── proxy.ts              # Request logging middleware
 ├── release.config.js     # Semantic Release configuration
-├── tsconfig.json         # TypeScript configuration
-├── vitest.config.ts      # Vitest test configuration
-└── package.json          # Project dependencies and scripts
+├── tsconfig.json         # TypeScript compiler options and path aliases
+└── vitest.config.ts      # Vitest test configuration
 ```
 
 ### Key Directories
 
-- **`.claude/`** - Claude Code configuration (agents, skills, hooks, project context)
-- **`.github/workflows/`** - CI/CD automation (code review, PR checks, releases)
-- **`.storybook/`** - Storybook setup for component development and documentation
-- **`app/`** - Next.js 16.2 App Router with server/client components, layouts, and API routes
-- **`components/`** - Shared, reusable UI components with co-located stories
-- **`constants/`** - Static data and configuration constants
-- **`data/env/`** - T3 Env type-safe environment variable definitions
-- **`features/`** - Feature-based modules with related components and logic (modular architecture)
-- **`lib/`** - Utility functions, helpers, and third-party library configurations
-- **`public/`** - Static files served directly (images, fonts, favicon, etc.)
-- **`tests/e2e/`** - End-to-end tests using Playwright for full user flow testing
-- **`tests/unit/`** - Unit tests using Vitest
+- **`.claude/`** — Claude Code configuration (agents, skills, hooks, project context)
+- **`.github/workflows/`** — CI/CD automation (PR checks, CodeQL, releases)
+- **`.storybook/`** — Storybook setup for component development and documentation
+- **`app/`** — Next.js App Router with Server/Client Components, layouts, and API routes
+- **`components/`** — Shared, reusable UI components with co-located Storybook stories
+- **`data/env/`** — T3 Env type-safe environment variable definitions (server + client)
+- **`features/`** — Feature-based modules with related components, Zod schemas, and server actions
+- **`lib/`** — Utilities, helpers, and third-party library configurations (logger)
+- **`tests/`** — Test files organized by type: unit (Vitest), integration (Storybook), and E2E (Playwright)
 
 ### Important Configuration Files
 
-- **`eslint.config.mjs`** - ESLint linting rules and plugins
-- **`next.config.ts`** - Next.js framework configuration (build, plugins, Turbopack, etc.)
-- **`playwright.config.ts`** - Playwright E2E testing configuration
-- **`postcss.config.js`** - PostCSS plugins and Tailwind CSS processing
-- **`prettier.config.js`** - Code formatting rules and preferences
-- **`release.config.js`** - Semantic Release automation configuration
-- **`tsconfig.json`** - TypeScript compiler options and path aliases
-- **`vitest.config.ts`** - Vitest unit test configuration and setup
+- **`eslint.config.mjs`** — ESLint rules using `@szum-tech/eslint-config`
+- **`next.config.ts`** — Next.js config (React Compiler, bundle analyzer, health rewrites)
+- **`playwright.config.ts`** — Playwright E2E test configuration
+- **`postcss.config.js`** — PostCSS plugins and Tailwind CSS processing
+- **`tsconfig.json`** — TypeScript compiler options including `~/` path alias
+- **`vitest.config.ts`** — Vitest configuration with `unit` and `storybook` project modes
 
 ---
 

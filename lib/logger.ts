@@ -5,24 +5,24 @@ import pino from "pino";
  * Uses Pino for structured logging with different transports based on environment
  */
 const logger = pino({
-  level: process.env.LOG_LEVEL || "info",
-  transport:
-    process.env.NODE_ENV === "development"
-      ? {
-          target: "pino-pretty",
-          options: {
-            colorize: true,
-            translateTime: "SYS:standard",
-            ignore: "pid,hostname"
-          }
-        }
-      : undefined,
   formatters: {
     level: (label) => {
       return { level: label.toUpperCase() };
     }
   },
-  timestamp: pino.stdTimeFunctions.isoTime
+  level: process.env.LOG_LEVEL || "info",
+  timestamp: pino.stdTimeFunctions.isoTime,
+  transport:
+    process.env.NODE_ENV === "development"
+      ? {
+          options: {
+            colorize: true,
+            ignore: "pid,hostname",
+            translateTime: "SYS:standard"
+          },
+          target: "pino-pretty"
+        }
+      : undefined
 });
 
 /**

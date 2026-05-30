@@ -1,32 +1,32 @@
 import type * as React from "react";
 
 interface NextImageProps {
-  src: string | { src: string };
   alt: string;
-  width?: number | string;
-  height?: number | string;
   className?: string;
-  style?: React.CSSProperties;
   fill?: boolean;
-  priority?: boolean;
+  height?: number | string;
   loading?: "lazy" | "eager";
+  onError?: React.ReactEventHandler<HTMLImageElement>;
+  onLoad?: React.ReactEventHandler<HTMLImageElement>;
+  priority?: boolean;
   quality?: number;
   sizes?: string;
+  src: string | { src: string };
+  style?: React.CSSProperties;
   unoptimized?: boolean;
-  onLoad?: React.ReactEventHandler<HTMLImageElement>;
-  onError?: React.ReactEventHandler<HTMLImageElement>;
+  width?: number | string;
 }
 
 export default function NextImage({ src, alt, width, height, className, style }: NextImageProps) {
   const resolvedSrc = typeof src === "string" ? src : src.src;
   return (
     <img
-      src={resolvedSrc}
       alt={alt}
-      width={width as number}
-      height={height as number}
       className={className}
+      height={height as number}
+      src={resolvedSrc}
       style={style}
+      width={width as number}
     />
   );
 }

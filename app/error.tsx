@@ -10,9 +10,9 @@ export default function Error({ error, reset }: { error: Error & { digest?: stri
     logger.error(
       {
         error: {
+          digest: error.digest,
           message: error.message,
-          stack: error.stack,
-          digest: error.digest
+          stack: error.stack
         }
       },
       "Application error occurred"
@@ -24,7 +24,11 @@ export default function Error({ error, reset }: { error: Error & { digest?: stri
       <div className="text-center">
         <h2 className="mb-4 font-bold text-2xl">Something went wrong!</h2>
         <p className="mb-4 text-gray-600">An unexpected error has occurred.</p>
-        <button onClick={() => reset()} className="rounded-md bg-blue-500 px-4 py-2 text-white hover:bg-blue-600">
+        <button
+          className="rounded-md bg-blue-500 px-4 py-2 text-white hover:bg-blue-600"
+          onClick={() => reset()}
+          type="button"
+        >
           Try again
         </button>
       </div>

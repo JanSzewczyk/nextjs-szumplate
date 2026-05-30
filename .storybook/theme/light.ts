@@ -1,24 +1,23 @@
 import { create } from "storybook/theming/create";
 
 export default create({
-  base: "light",
+  appBg: "#ffffff",
+  appBorderColor: "#EBEBEB",
+  appBorderRadius: 0,
+  appContentBg: "#f7f7f7",
 
-  // Typography
-  fontBase: "'Poppins', sans-serif",
-  fontCode: "'JetBrains Mono', monospace",
+  barBg: "#ffffff",
+  barSelectedColor: "#0085FF",
+  barTextColor: "#585757",
+  base: "light",
 
   //
   colorPrimary: "#0085FF",
   colorSecondary: "#339CFF",
 
-  appBg: "#ffffff",
-  appContentBg: "#f7f7f7",
-  appBorderRadius: 0,
-  appBorderColor: "#EBEBEB",
-
-  barBg: "#ffffff",
-  barTextColor: "#585757",
-  barSelectedColor: "#0085FF",
+  // Typography
+  fontBase: "'Poppins', sans-serif",
+  fontCode: "'JetBrains Mono', monospace",
 
   textColor: "#1C1C1C"
 });

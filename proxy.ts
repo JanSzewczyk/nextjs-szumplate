@@ -7,8 +7,8 @@ export function proxy(request: NextRequest) {
 
   // Create a logger with request context
   const requestLogger = logger.child({
-    requestId,
     method: request.method,
+    requestId,
     url: request.url,
     userAgent: request.headers.get("user-agent")
   });
@@ -25,8 +25,8 @@ export function proxy(request: NextRequest) {
   const duration = Date.now() - startTime;
   requestLogger.info(
     {
-      status: response.status,
-      duration
+      duration,
+      status: response.status
     },
     "Request completed"
   );

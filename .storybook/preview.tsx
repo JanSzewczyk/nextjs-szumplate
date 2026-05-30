@@ -49,9 +49,9 @@ function ThemeDecorator({ children }: { children: React.ReactNode }) {
     <ThemeProvider
       attribute="class"
       defaultTheme={isDark ? "dark" : "light"}
-      forcedTheme={isDark ? "dark" : "light"}
-      enableSystem={false}
       disableTransitionOnChange
+      enableSystem={false}
+      forcedTheme={isDark ? "dark" : "light"}
     >
       {children}
     </ThemeProvider>
@@ -59,39 +59,7 @@ function ThemeDecorator({ children }: { children: React.ReactNode }) {
 }
 
 export default definePreview({
-  parameters: {
-    darkMode: {
-      dark,
-      light,
-      current: "dark",
-      classTarget: "html",
-      stylePreview: true
-    },
-    nextjs: {
-      appDirectory: true
-    },
-    controls: {
-      matchers: {
-        color: /(background|color)$/i,
-        date: /Date$/
-      }
-    },
-    docs: {
-      controls: {
-        sort: "requiredFirst"
-      },
-      container: DarkModeDocsContainer
-    },
-    a11y: {
-      // 'todo' - show a11y violations in the test UI only
-      // 'error' - fail CI on a11y violations
-      // 'off' - skip a11y checks entirely
-      test: "todo",
-      options: {
-        xpath: true
-      }
-    }
-  },
+  addons: [addonA11y(), addonDocs()],
   decorators: [
     (Story) => (
       <ThemeDecorator>
@@ -99,5 +67,37 @@ export default definePreview({
       </ThemeDecorator>
     )
   ],
-  addons: [addonA11y(), addonDocs()]
+  parameters: {
+    a11y: {
+      options: {
+        xpath: true
+      },
+      // 'todo' - show a11y violations in the test UI only
+      // 'error' - fail CI on a11y violations
+      // 'off' - skip a11y checks entirely
+      test: "todo"
+    },
+    controls: {
+      matchers: {
+        color: /(background|color)$/i,
+        date: /Date$/
+      }
+    },
+    darkMode: {
+      classTarget: "html",
+      current: "dark",
+      dark,
+      light,
+      stylePreview: true
+    },
+    docs: {
+      container: DarkModeDocsContainer,
+      controls: {
+        sort: "requiredFirst"
+      }
+    },
+    nextjs: {
+      appDirectory: true
+    }
+  }
 });

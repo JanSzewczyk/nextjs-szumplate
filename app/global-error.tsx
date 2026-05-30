@@ -10,9 +10,9 @@ export default function GlobalError({ error, reset }: { error: Error & { digest?
     logger.error(
       {
         error: {
+          digest: error.digest,
           message: error.message,
-          stack: error.stack,
-          digest: error.digest
+          stack: error.stack
         }
       },
       "Global error occurred"
@@ -20,7 +20,7 @@ export default function GlobalError({ error, reset }: { error: Error & { digest?
   }, [error]);
 
   return (
-    <html>
+    <html lang="en">
       <body>
         <div className="flex min-h-screen flex-col items-center justify-center">
           <div className="text-center">

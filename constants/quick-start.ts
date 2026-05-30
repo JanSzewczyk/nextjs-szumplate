@@ -1,27 +1,27 @@
 export interface QuickStartStep {
+  command: string;
+  description: string;
   step: number;
   title: string;
-  description: string;
-  command: string;
 }
 
-export const QUICK_START_STEPS: QuickStartStep[] = [
+export const QUICK_START_STEPS: Array<QuickStartStep> = [
   {
-    step: 1,
-    title: "Use Template",
+    command: "gh repo create my-app --template JanSzewczyk/nextjs-szumplate",
     description: "Create a new repository from this template",
-    command: "gh repo create my-app --template JanSzewczyk/nextjs-szumplate"
+    step: 1,
+    title: "Use Template"
   },
   {
-    step: 2,
-    title: "Install Dependencies",
+    command: "npm install",
     description: "Install all required packages",
-    command: "npm install"
+    step: 2,
+    title: "Install Dependencies"
   },
   {
-    step: 3,
-    title: "Start Development",
+    command: "npm run dev",
     description: "Launch the development server",
-    command: "npm run dev"
+    step: 3,
+    title: "Start Development"
   }
 ];

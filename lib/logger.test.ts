@@ -30,7 +30,7 @@ describe("createLogger", () => {
   });
 
   test("child logger includes bindings from context", () => {
-    const context = { module: "api", endpoint: "/users" };
+    const context = { endpoint: "/users", module: "api" };
     const childLogger = createLogger(context);
 
     const bindings = childLogger.bindings();

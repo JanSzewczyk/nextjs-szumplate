@@ -46,45 +46,16 @@ jobs:
       - name: Build Check 🏗️
         run: npm run storybook:build
 
-  prettier:
-    name: Prettier 🧹
+  biome:
+    name: Biome 🌿
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code 📚
         uses: actions/checkout@v6
-      - name: Set up Node.js 🟢
-        uses: actions/setup-node@v6
-        with:
-          node-version: ${{ env.NODE_VERSION }}
-          cache: "npm"
-      - name: Install dependencies ⚙️
-        run: npm ci
-      - name: Prettier Check 🧹
-        run: npm run prettier:check
-
-  lint:
-    name: ESlint ⬣
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code 📚
-        uses: actions/checkout@v6
-      - name: Set up Node 🟢
-        uses: actions/setup-node@v6
-        with:
-          node-version: ${{ env.NODE_VERSION }}
-          cache: "npm"
-      - name: Install dependencies ⚙️
-        run: npm ci
-      #      - name: Install utils ⚙️
-      #        run: npm install @microsoft/eslint-formatter-sarif
-      - name: ESlint Check ⬣
-        run: npm run lint:ci
-        continue-on-error: true
-  #      - name: Upload ESlint results to GitHub
-  #        uses: github/codeql-action/upload-sarif@v4
-  #        with:
-  #          sarif_file: eslint-results.sarif
-  #          wait-for-processing: true
+      - name: Setup Biome 🌿
+        uses: biomejs/setup-biome@v2
+      - name: Biome Check 🌿
+        run: npm run biome:ci
 
   type-check:
     name: TypeScript 🛠️
@@ -158,8 +129,7 @@ jobs:
         if: steps.playwright-cache.outputs.cache-hit == 'true'
         run: npx playwright install-deps chromium
       - name: Run Storybook Tests 📖🧪
-        run:
-          npx vitest run --project=storybook --reporter=blob --coverage --outputFile=.vitest-reports/blob-storybook.json
+        run: npx vitest run --project=storybook --reporter=blob --coverage --outputFile=.vitest-reports/blob-storybook.json
       - name: Upload blob report
         if: always()
         uses: actions/upload-artifact@v7

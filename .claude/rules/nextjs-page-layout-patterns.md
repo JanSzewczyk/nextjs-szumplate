@@ -16,14 +16,16 @@ Rules for creating `page.tsx` and `layout.tsx` files using the App Router with R
 
 ```ts
 export const metadata: Metadata = {
-  title: "Page Title"
+  title: "Page Title",
 };
 ```
 
 ### 2. Dynamic metadata (detail pages with `[param]`)
 
 ```ts
-export async function generateMetadata({ params }: PageProps<"/route/[id]">): Promise<Metadata> {
+export async function generateMetadata({
+  params,
+}: PageProps<"/route/[id]">): Promise<Metadata> {
   const { id } = await params;
   const [, resource] = await getResource({ id }); // silent — no error handling here
   return { title: resource?.name ?? "Fallback Title" };
@@ -49,11 +51,17 @@ async function loadData({ id }: { id: string }) {
   }
 
   // 2. Fetch data
-  const [error, resource] = await getResource({ ownerId: userId, resourceId: id });
+  const [error, resource] = await getResource({
+    ownerId: userId,
+    resourceId: id,
+  });
 
   // 3. Error handling
   if (error) {
-    logger.error({ userId, id, errorCode: error.code }, "Failed to load resource detail");
+    logger.error(
+      { userId, id, errorCode: error.code },
+      "Failed to load resource detail",
+    );
     notFound(); // or: redirect("/...") or: throw error
   }
 
@@ -65,11 +73,11 @@ async function loadData({ id }: { id: string }) {
 
 **Error response by case:**
 
-| Situation | Response |
-|-----------|----------|
-| Resource not found | `notFound()` |
-| User not authenticated | `redirect("/sign-in")` |
-| Permission denied | `notFound()` (never expose the reason) |
+| Situation               | Response                                 |
+| ----------------------- | ---------------------------------------- |
+| Resource not found      | `notFound()`                             |
+| User not authenticated  | `redirect("/sign-in")`                   |
+| Permission denied       | `notFound()` (never expose the reason)   |
 | Unexpected server error | `throw error` (caught by error boundary) |
 
 ### 4. Page component
@@ -88,6 +96,7 @@ export default async function ResourceDetailPage({ params }: PageProps<"/app/res
 ```
 
 Rules:
+
 - Always `async` — never mark a page as `"use client"`.
 - Destructure `params` / `searchParams` with `await` (Next.js 15+).
 - Keep JSX thin — delegate rendering to feature components.
@@ -99,7 +108,9 @@ Rules:
 Parse and validate before use. Never read raw search params inside components — do it in `loadData`.
 
 ```ts
-async function loadData(searchParams: PageProps<"/app/resources">["searchParams"]) {
+async function loadData(
+  searchParams: PageProps<"/app/resources">["searchParams"],
+) {
   // ...auth...
   const params = await searchParams;
   const { search, page } = parseSearchParams(params); // project utility
@@ -132,7 +143,10 @@ export default async function GroupLayout({ children }: LayoutProps<"/app">) {
 }
 
 // Dynamic segment — destructure params with await
-export default async function GroupLayout({ children, params }: LayoutProps<"/app/workspaces/[workspaceId]">) {
+export default async function GroupLayout({
+  children,
+  params,
+}: LayoutProps<"/app/workspaces/[workspaceId]">) {
   const { workspaceId } = await params;
   const { workspace } = await loadData({ workspaceId });
   return <div data-workspace={workspace.id}>{children}</div>;
@@ -153,13 +167,22 @@ async function loadData({ workspaceId }: { workspaceId: string }) {
     redirect("/sign-in");
   }
 
-  const [error, workspace] = await getWorkspace({ ownerId: userId, workspaceId });
+  const [error, workspace] = await getWorkspace({
+    ownerId: userId,
+    workspaceId,
+  });
   if (error) {
-    logger.error({ userId, workspaceId, errorCode: error.code }, "Failed to load layout chrome data");
+    logger.error(
+      { userId, workspaceId, errorCode: error.code },
+      "Failed to load layout chrome data",
+    );
     notFound();
   }
 
-  logger.info({ userId, workspaceId }, "Successfully loaded layout chrome data");
+  logger.info(
+    { userId, workspaceId },
+    "Successfully loaded layout chrome data",
+  );
   return { workspace };
 }
 ```
@@ -206,6 +229,7 @@ async function loadData() {
 ### 5. When to skip layout.tsx and put chrome inline in page.tsx
 
 Skip `layout.tsx` when:
+
 - There is only one route in the group and a shared layout adds no value.
 - The chrome is per-resource (e.g. depends on data loaded by the page's own `loadData`).
 - The page needs dynamic CSS variable overrides that depend on fetched data.
@@ -220,7 +244,11 @@ export default async function Page({ params }: PageProps<"/public/[token]">) {
   return (
     <div
       className="flex min-h-screen flex-col"
-      style={resource.brandColor ? ({ "--primary": resource.brandColor } as React.CSSProperties) : undefined}
+      style={
+        resource.brandColor
+          ? ({ "--primary": resource.brandColor } as React.CSSProperties)
+          : undefined
+      }
     >
       <Header />
       <main className="flex-1">{/* content */}</main>
@@ -234,13 +262,13 @@ export default async function Page({ params }: PageProps<"/public/[token]">) {
 
 ## Choosing a layout strategy
 
-| Situation | Strategy |
-|-----------|----------|
-| Multiple routes share the same chrome | `layout.tsx` in the route group |
-| Chrome requires data from route params | `async` layout with `loadData` |
-| Chrome requires non-critical data | `async` layout, silent fetch (no error handling) |
-| Chrome requires no data | Synchronous layout, no `loadData` |
-| Single route with per-resource chrome | Skip `layout.tsx`, render chrome inline in `page.tsx` |
+| Situation                                    | Strategy                                                               |
+| -------------------------------------------- | ---------------------------------------------------------------------- |
+| Multiple routes share the same chrome        | `layout.tsx` in the route group                                        |
+| Chrome requires data from route params       | `async` layout with `loadData`                                         |
+| Chrome requires non-critical data            | `async` layout, silent fetch (no error handling)                       |
+| Chrome requires no data                      | Synchronous layout, no `loadData`                                      |
+| Single route with per-resource chrome        | Skip `layout.tsx`, render chrome inline in `page.tsx`                  |
 | Route is public and middleware allowlists it | No auth guard in layout — guard in `loadData` only if data requires it |
 
 ---
@@ -248,6 +276,7 @@ export default async function Page({ params }: PageProps<"/public/[token]">) {
 ## Quick checklist before creating a new page or layout
 
 **Page (`page.tsx`):**
+
 - [ ] `loadData()` function declared — no data fetching in the component body
 - [ ] `createLogger({ module: "..." })` at module level
 - [ ] Auth guard at the top of `loadData` (protected routes)
@@ -259,6 +288,7 @@ export default async function Page({ params }: PageProps<"/public/[token]">) {
 - [ ] New components placed in `features/{domain}/components/`, not in the route folder
 
 **Layout (`layout.tsx`):**
+
 - [ ] `LayoutProps<"/route">` used for typing (with `await params` for dynamic segments)
 - [ ] `loadData()` fetches only chrome data — no page-specific data
 - [ ] Same logging and error handling conventions as pages

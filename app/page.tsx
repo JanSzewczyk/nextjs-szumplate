@@ -1,25 +1,6 @@
 "use client";
 
 import {
-  type LucideIcon,
-  ActivityIcon,
-  CodeIcon,
-  ExternalLinkIcon,
-  FileTextIcon,
-  GitBranchIcon,
-  LayersIcon,
-  PaletteIcon,
-  RocketIcon,
-  SearchIcon,
-  ServerIcon,
-  ShieldCheckIcon,
-  SparklesIcon,
-  TagIcon,
-  TerminalIcon,
-  TestTube2Icon
-} from "lucide-react";
-
-import {
   Badge,
   Button,
   Card,
@@ -33,16 +14,34 @@ import {
   TooltipContent,
   TooltipTrigger
 } from "@szum-tech/design-system";
+import {
+  ActivityIcon,
+  CodeIcon,
+  ExternalLinkIcon,
+  FileTextIcon,
+  GitBranchIcon,
+  LayersIcon,
+  type LucideIcon,
+  PaletteIcon,
+  RocketIcon,
+  SearchIcon,
+  ServerIcon,
+  ShieldCheckIcon,
+  SparklesIcon,
+  TagIcon,
+  TerminalIcon,
+  TestTube2Icon
+} from "lucide-react";
 import Image from "next/image";
 import { GithubIcon } from "~/components/ui/icons/github";
 import { ThemeToggle } from "~/components/ui/theme-toggle";
 import {
-  type FeatureIconName,
-  type SzumTechIconName,
   FEATURES,
+  type FeatureIconName,
   QUICK_START_STEPS,
   SCRIPTS,
   SZUM_TECH_PACKAGES,
+  type SzumTechIconName,
   TECH_STACK
 } from "~/constants";
 
@@ -71,7 +70,7 @@ export default function Home() {
       {/* Skip to main content link for keyboard users */}
       <a
         href="#main-content"
-        className="focus:bg-primary focus:text-primary-foreground sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:rounded focus:px-4 focus:py-2 focus:shadow-lg"
+        className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:rounded focus:bg-primary focus:px-4 focus:py-2 focus:text-primary-foreground focus:shadow-lg"
       >
         Skip to main content
       </a>
@@ -80,8 +79,8 @@ export default function Home() {
       <Header>
         <div className="flex w-full items-center justify-between">
           <div className="flex items-center gap-2">
-            <SparklesIcon className="text-primary size-5" />
-            <span className="text-body-sm font-semibold">Szum-Tech</span>
+            <SparklesIcon className="size-5 text-primary" />
+            <span className="font-semibold text-body-sm">Szum-Tech</span>
           </div>
           <div className="flex items-center gap-2">
             <ThemeToggle />
@@ -106,10 +105,10 @@ export default function Home() {
             <Badge variant="outline" className="mb-4">
               Next.js 16 &bull; React 19 &bull; TypeScript &bull; RSC
             </Badge>
-            <h1 className="text-display-lg mb-6">
+            <h1 className="mb-6 text-display-lg">
               <span className="text-primary">Szum-Tech</span> Next.js Template
             </h1>
-            <p className="text-lead mb-8 max-w-2xl">
+            <p className="mb-8 max-w-2xl text-lead">
               Enterprise-ready Next.js starter template with TypeScript, Tailwind CSS, comprehensive testing
               infrastructure, and the Szum-Tech Design System built-in.
             </p>
@@ -144,8 +143,8 @@ export default function Home() {
         <section id="features" className="bg-muted/50 py-16 md:py-24">
           <div className="container">
             <div className="mb-12 text-center">
-              <h2 className="text-heading-h2 mb-4">Why Choose This Template?</h2>
-              <p className="text-muted-foreground mx-auto max-w-2xl">
+              <h2 className="mb-4 text-heading-h2">Why Choose This Template?</h2>
+              <p className="mx-auto max-w-2xl text-muted-foreground">
                 Everything you need to build production-ready applications, pre-configured and ready to go.
               </p>
             </div>
@@ -155,8 +154,8 @@ export default function Home() {
                 return (
                   <Card key={feature.title} className="bg-card transition-shadow hover:shadow-lg">
                     <CardHeader>
-                      <div className="bg-primary/10 mb-4 flex size-12 items-center justify-center rounded-lg">
-                        <Icon className="text-primary size-6" />
+                      <div className="mb-4 flex size-12 items-center justify-center rounded-lg bg-primary/10">
+                        <Icon className="size-6 text-primary" />
                       </div>
                       <CardTitle className="text-heading-h3">{feature.title}</CardTitle>
                     </CardHeader>
@@ -179,8 +178,8 @@ export default function Home() {
               <Badge variant="primary" className="mb-4">
                 Open Source
               </Badge>
-              <h2 className="text-heading-h2 mb-4">Szum-Tech Ecosystem</h2>
-              <p className="text-muted-foreground mx-auto max-w-2xl">
+              <h2 className="mb-4 text-heading-h2">Szum-Tech Ecosystem</h2>
+              <p className="mx-auto max-w-2xl text-muted-foreground">
                 This template is powered by a suite of open-source packages designed to accelerate development and
                 maintain consistency across projects.
               </p>
@@ -191,11 +190,11 @@ export default function Home() {
                 const Icon = SZUM_TECH_ICONS[pkg.iconName];
                 return (
                   <Card key={pkg.packageName} className="group relative overflow-hidden transition-all hover:shadow">
-                    <div className="from-primary/5 via-primary/2 absolute inset-0 bg-linear-to-br to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
+                    <div className="absolute inset-0 bg-linear-to-br from-primary/5 via-primary/2 to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
                     <CardHeader className="relative">
                       <div className="mb-4 flex items-start justify-between">
-                        <div className="bg-primary/10 flex size-12 items-center justify-center rounded-xl">
-                          <Icon className="text-primary size-6" />
+                        <div className="flex size-12 items-center justify-center rounded-xl bg-primary/10">
+                          <Icon className="size-6 text-primary" />
                         </div>
                         <div className="flex gap-2">
                           {pkg.docsUrl && (
@@ -236,7 +235,7 @@ export default function Home() {
                       <code className="text-code text-primary/80 text-sm">{pkg.packageName}</code>
                     </CardHeader>
                     <CardContent className="relative">
-                      <CardDescription className="text-body-default mb-4">{pkg.description}</CardDescription>
+                      <CardDescription className="mb-4 text-body-default">{pkg.description}</CardDescription>
                       <div className="flex flex-wrap gap-2">
                         {pkg.features.map((feature) => (
                           <Badge key={feature} variant="secondary" className="text-xs">
@@ -251,7 +250,7 @@ export default function Home() {
             </div>
 
             <div className="mt-10 text-center">
-              <p className="text-muted-foreground text-body-sm mb-4">
+              <p className="mb-4 text-body-sm text-muted-foreground">
                 All packages are maintained by Szum-Tech and follow semantic versioning.
               </p>
               <Button asChild variant="outline" size="sm" endIcon={<GithubIcon className="size-4" />}>
@@ -274,8 +273,8 @@ export default function Home() {
         <section id="tech-stack" className="bg-muted/50 py-16 md:py-24">
           <div className="container">
             <div className="mb-12 text-center">
-              <h2 className="text-heading-h2 mb-4">Tech Stack</h2>
-              <p className="text-muted-foreground mx-auto max-w-2xl">
+              <h2 className="mb-4 text-heading-h2">Tech Stack</h2>
+              <p className="mx-auto max-w-2xl text-muted-foreground">
                 Carefully selected technologies for modern web development, all working together seamlessly.
               </p>
             </div>
@@ -296,7 +295,7 @@ export default function Home() {
                               href={tech.href}
                               target="_blank"
                               rel="noreferrer"
-                              className="bg-card hover:border-primary/50 hover:bg-accent flex h-20 w-36 items-center justify-center rounded border transition-all hover:shadow-md focus:ring focus:outline-none"
+                              className="flex h-20 w-36 items-center justify-center rounded border bg-card transition-all hover:border-primary/50 hover:bg-accent hover:shadow-md focus:outline-none focus:ring"
                               aria-label={`Learn more about ${tech.name} (opens in new tab)`}
                             >
                               <Image
@@ -327,19 +326,19 @@ export default function Home() {
         <section id="quick-start" className="py-16 md:py-24">
           <div className="container">
             <div className="mb-12 text-center">
-              <h2 className="text-heading-h2 mb-4">Quick Start</h2>
-              <p className="text-muted-foreground mx-auto max-w-2xl">
+              <h2 className="mb-4 text-heading-h2">Quick Start</h2>
+              <p className="mx-auto max-w-2xl text-muted-foreground">
                 Get up and running in minutes with these simple steps.
               </p>
             </div>
 
             <div className="mx-auto grid max-w-4xl gap-6 md:grid-cols-3">
               {QUICK_START_STEPS.map((item) => (
-                <Card key={item.step} className="bg-card relative overflow-hidden">
-                  <div className="text-primary/10 absolute -top-4 -left-2 text-8xl font-bold">{item.step}</div>
+                <Card key={item.step} className="relative overflow-hidden bg-card">
+                  <div className="absolute -top-4 -left-2 font-bold text-8xl text-primary/10">{item.step}</div>
                   <CardHeader className="relative">
-                    <CardTitle className="text-heading-h3 flex items-center gap-2">
-                      <span className="bg-primary text-primary-foreground flex size-8 items-center justify-center rounded-full text-sm font-bold">
+                    <CardTitle className="flex items-center gap-2 text-heading-h3">
+                      <span className="flex size-8 items-center justify-center rounded-full bg-primary font-bold text-primary-foreground text-sm">
                         {item.step}
                       </span>
                       {item.title}
@@ -347,8 +346,8 @@ export default function Home() {
                     <CardDescription>{item.description}</CardDescription>
                   </CardHeader>
                   <CardContent className="relative">
-                    <div className="bg-muted rounded-lg p-3">
-                      <code className="text-body-sm font-mono break-all">{item.command}</code>
+                    <div className="rounded-lg bg-muted p-3">
+                      <code className="break-all font-mono text-body-sm">{item.command}</code>
                     </div>
                   </CardContent>
                 </Card>
@@ -363,18 +362,18 @@ export default function Home() {
         <section id="scripts" className="bg-muted/50 py-16 md:py-24">
           <div className="container">
             <div className="mb-12 text-center">
-              <h2 className="text-heading-h2 mb-4">Built-in Scripts</h2>
-              <p className="text-muted-foreground mx-auto max-w-2xl">
+              <h2 className="mb-4 text-heading-h2">Built-in Scripts</h2>
+              <p className="mx-auto max-w-2xl text-muted-foreground">
                 All the npm scripts you need for development, testing, and deployment.
               </p>
             </div>
 
             <div className="mx-auto grid max-w-4xl gap-4 sm:grid-cols-2 lg:grid-cols-3">
               {SCRIPTS.map((script) => (
-                <Card key={script.command} className="bg-card group transition-shadow hover:shadow-md">
+                <Card key={script.command} className="group bg-card transition-shadow hover:shadow-md">
                   <CardContent className="p-4">
                     <div className="mb-2 flex items-center gap-2">
-                      <TerminalIcon className="text-primary size-4" />
+                      <TerminalIcon className="size-4 text-primary" />
                       <code className="text-code">{script.command}</code>
                     </div>
                     <p className="text-mute">{script.description}</p>
@@ -384,7 +383,7 @@ export default function Home() {
             </div>
 
             <div className="mt-8 text-center">
-              <p className="text-muted-foreground text-body-sm">
+              <p className="text-body-sm text-muted-foreground">
                 See all available scripts in <code className="text-code">package.json</code>
               </p>
             </div>
@@ -397,9 +396,9 @@ export default function Home() {
         <section id="cta" className="bg-primary/5 py-16 md:py-24">
           <div className="container">
             <div className="mx-auto flex max-w-3xl flex-col items-center text-center">
-              <SparklesIcon className="text-primary mb-6 size-12" />
-              <h2 className="text-heading-h2 mb-4">Ready to Build Something Amazing?</h2>
-              <p className="text-muted-foreground mb-8 max-w-xl">
+              <SparklesIcon className="mb-6 size-12 text-primary" />
+              <h2 className="mb-4 text-heading-h2">Ready to Build Something Amazing?</h2>
+              <p className="mb-8 max-w-xl text-muted-foreground">
                 Start your next project with the Szum-Tech template and focus on what matters most - building great
                 features.
               </p>
@@ -434,17 +433,17 @@ export default function Home() {
       <footer className="border-border/40 border-t py-8">
         <div className="container flex flex-col items-center gap-4">
           <div className="flex items-center gap-2">
-            <SparklesIcon className="text-primary size-5" />
-            <span className="text-body-default font-semibold">Szum-Tech Next.js Template</span>
+            <SparklesIcon className="size-5 text-primary" />
+            <span className="font-semibold text-body-default">Szum-Tech Next.js Template</span>
           </div>
-          <div className="text-body-sm flex items-center gap-3">
+          <div className="flex items-center gap-3 text-body-sm">
             <span className="text-muted-foreground">{new Date().getFullYear()}</span>
             <span className="text-muted-foreground/40">|</span>
             <a
               href="https://github.com/JanSzewczyk"
               target="_blank"
               rel="noreferrer"
-              className="text-muted-foreground hover:text-primary transition-colors"
+              className="text-muted-foreground transition-colors hover:text-primary"
               aria-label="Visit Jan Szewczyk's GitHub profile (opens in new tab)"
             >
               Jan Szewczyk
@@ -454,7 +453,7 @@ export default function Home() {
               href="https://github.com/JanSzewczyk/nextjs-szumplate"
               target="_blank"
               rel="noreferrer"
-              className="text-muted-foreground hover:text-primary flex items-center gap-1 transition-colors"
+              className="flex items-center gap-1 text-muted-foreground transition-colors hover:text-primary"
               aria-label="View source code on GitHub (opens in new tab)"
             >
               <GithubIcon className="size-3.5" />

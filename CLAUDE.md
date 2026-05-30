@@ -20,10 +20,12 @@ npm run start        # Start production server
 ### Code Quality
 
 ```bash
-npm run lint         # ESLint check
-npm run lint:fix     # ESLint with auto-fix
-npm run prettier:check   # Prettier check
-npm run prettier:write   # Prettier with auto-fix
+npm run check        # Biome check (lint + format)
+npm run check:fix    # Biome check with auto-fix
+npm run lint         # Biome lint only
+npm run lint:fix     # Biome lint with auto-fix
+npm run format:check # Biome format check
+npm run format:write # Biome format with auto-fix
 npm run type-check   # TypeScript type checking
 ```
 
@@ -157,6 +159,7 @@ Built-in health endpoint at `/api/health` with multiple URL aliases: `/healthz`,
 ### Theme Support
 
 The app uses `next-themes` for dark/light/system theme switching:
+
 - `ThemeProvider` wraps the app in `app/layout.tsx`
 - `ThemeToggle` component for user switching
 - Theme is persisted in localStorage
@@ -170,17 +173,16 @@ The app uses `next-themes` for dark/light/system theme switching:
 ## Conventions
 
 - Commits follow [Conventional Commits](https://www.conventionalcommits.org/) for semantic release
-- ESLint: Uses `@szum-tech/eslint-config`
-- Prettier: Uses `@szum-tech/prettier-config`
+- Linting & formatting: Biome (`biome.json`)
 - Semantic Release: Uses `@szum-tech/semantic-release-config`
 
 ## Common Pitfalls
 
-| Area | Don't | Do |
-|------|-------|----|
-| Components | Add `'use client'` unnecessarily | Default to Server Components |
-| Memoization | Use `useMemo`/`useCallback`/`memo` with React Compiler | Let compiler optimize automatically |
-| Imports | Use relative paths (`../../../lib/utils`) | Use path aliases (`~/lib/utils`) |
-| Logging | Use `console.log` in production code | Use structured Pino logging (`logger.info(...)`) |
-| `useFormStatus` | Use in same component as `<form>` | Use in a child component inside the form |
-| Server Actions | Return untyped objects | Use standardized response types with Zod validation |
+| Area            | Don't                                                  | Do                                                  |
+| --------------- | ------------------------------------------------------ | --------------------------------------------------- |
+| Components      | Add `'use client'` unnecessarily                       | Default to Server Components                        |
+| Memoization     | Use `useMemo`/`useCallback`/`memo` with React Compiler | Let compiler optimize automatically                 |
+| Imports         | Use relative paths (`../../../lib/utils`)              | Use path aliases (`~/lib/utils`)                    |
+| Logging         | Use `console.log` in production code                   | Use structured Pino logging (`logger.info(...)`)    |
+| `useFormStatus` | Use in same component as `<form>`                      | Use in a child component inside the form            |
+| Server Actions  | Return untyped objects                                 | Use standardized response types with Zod validation |

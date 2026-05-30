@@ -38,13 +38,19 @@ Use method signature syntax instead of arrow function property types.
 ```typescript
 // ✓
 type ProjectSidebarProps = {
-  onUpdateStatusAction(projectId: string, newStatus: ProjectStatus): ActionResponse<void>;
+  onUpdateStatusAction(
+    projectId: string,
+    newStatus: ProjectStatus,
+  ): ActionResponse<void>;
   onDeleteAction(projectId: string): RedirectAction;
 };
 
 // ✗
 type ProjectSidebarProps = {
-  onUpdateStatusAction: (projectId: string, newStatus: ProjectStatus) => ActionResponse<void>;
+  onUpdateStatusAction: (
+    projectId: string,
+    newStatus: ProjectStatus,
+  ) => ActionResponse<void>;
   onDeleteAction: (projectId: string) => RedirectAction;
 };
 ```
@@ -91,10 +97,14 @@ Always use the ternary operator for conditional rendering. Never use `&&` short-
 
 ```tsx
 // ✓
-{condition ? <Component /> : null}
+{
+  condition ? <Component /> : null;
+}
 
 // ✗
-{condition && <Component />}
+{
+  condition && <Component />;
+}
 ```
 
 **Why:** `&&` with falsy non-boolean values (e.g. `0`, `""`) renders the value itself instead of nothing. The ternary is always explicit and safe.
@@ -103,13 +113,23 @@ This applies to all conditional expressions in JSX — single elements, fragment
 
 ```tsx
 // ✓
-{items.length > 0 ? <List items={items} /> : null}
-{error ? <p className="text-error">{error}</p> : null}
-{isActive ? "Active" : null}
+{
+  items.length > 0 ? <List items={items} /> : null;
+}
+{
+  error ? <p className="text-error">{error}</p> : null;
+}
+{
+  isActive ? "Active" : null;
+}
 
 // ✗
-{items.length > 0 && <List items={items} />}
-{error && <p className="text-error">{error}</p>}
+{
+  items.length > 0 && <List items={items} />;
+}
+{
+  error && <p className="text-error">{error}</p>;
+}
 ```
 
 ## Enum const objects

@@ -327,16 +327,16 @@ import { z } from "zod";
 const env = createEnv({
   server: {
     // Server-side variables
-    SECRET_KEY: z.string()
+    SECRET_KEY: z.string(),
   },
   client: {
     // Client-side variables (must be prefixed with NEXT_PUBLIC_)
-    API_URL: z.string().url()
+    API_URL: z.string().url(),
   },
   runtimeEnv: {
     SECRET_KEY: process.env.SECRET_KEY,
-    API_URL: process.env.NEXT_PUBLIC_API_URL
-  }
+    API_URL: process.env.NEXT_PUBLIC_API_URL,
+  },
 });
 ```
 

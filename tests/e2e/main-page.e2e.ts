@@ -38,7 +38,12 @@ test("has features section", async ({ page }) => {
 
   const featuresSection = page.locator("#features");
 
-  await expect(featuresSection.getByRole("heading", { level: 2, name: /Why Choose This Template/i })).toBeVisible();
+  await expect(
+    featuresSection.getByRole("heading", {
+      level: 2,
+      name: /Why Choose This Template/i
+    })
+  ).toBeVisible();
 
   // Check all feature cards using constants
   // CardTitle renders as div, not h3, so we search by text within section
@@ -53,7 +58,12 @@ test("has szum-tech ecosystem section", async ({ page }) => {
   const ecosystemSection = page.locator("#ecosystem");
 
   // Verify section heading
-  await expect(ecosystemSection.getByRole("heading", { level: 2, name: /Szum-Tech Ecosystem/i })).toBeVisible();
+  await expect(
+    ecosystemSection.getByRole("heading", {
+      level: 2,
+      name: /Szum-Tech Ecosystem/i
+    })
+  ).toBeVisible();
 
   // Verify Open Source badge
   await expect(ecosystemSection.getByText("Open Source")).toBeVisible();
@@ -71,7 +81,9 @@ test("has szum-tech ecosystem section", async ({ page }) => {
   }
 
   // Verify the correct number of GitHub buttons (one per package)
-  const githubButtons = ecosystemSection.getByRole("link", { name: /view .* on github/i });
+  const githubButtons = ecosystemSection.getByRole("link", {
+    name: /view .* on github/i
+  });
   await expect(githubButtons).toHaveCount(SZUM_TECH_PACKAGE_COUNT);
 
   // Verify Explore All Packages button
@@ -122,7 +134,12 @@ test("has scripts section", async ({ page }) => {
 
   const scriptsSection = page.locator("#scripts");
 
-  await expect(scriptsSection.getByRole("heading", { level: 2, name: /Built-in Scripts/i })).toBeVisible();
+  await expect(
+    scriptsSection.getByRole("heading", {
+      level: 2,
+      name: /Built-in Scripts/i
+    })
+  ).toBeVisible();
 
   // Check all script commands from constants within the scripts section
   for (const script of SCRIPTS) {
@@ -165,7 +182,11 @@ test("tech stack links open in new tab", async ({ page, context }) => {
   const escapedName = firstTech.name.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 
   const pagePromise = context.waitForEvent("page");
-  await techStackSection.getByRole("link", { name: new RegExp(`Learn more about ${escapedName}`, "i") }).click();
+  await techStackSection
+    .getByRole("link", {
+      name: new RegExp(`Learn more about ${escapedName}`, "i")
+    })
+    .click();
   const newPage = await pagePromise;
   await newPage.waitForLoadState();
 

@@ -1,8 +1,6 @@
-import { expect, waitFor, screen } from "storybook/test";
-
-import { ThemeToggle } from "./theme-toggle";
-
+import { expect, screen, waitFor } from "storybook/test";
 import preview from "~/.storybook/preview";
+import { ThemeToggle } from "./theme-toggle";
 
 const meta = preview.meta({
   title: "Components/UI/Theme Toggle",

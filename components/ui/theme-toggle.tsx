@@ -8,12 +8,12 @@ import * as React from "react";
 
 type Theme = "system" | "light" | "dark";
 
-const THEME_CYCLE: Theme[] = ["system", "light", "dark"];
+const THEME_CYCLE: Array<Theme> = ["system", "light", "dark"];
 
 const THEME_LABELS: Record<Theme, string> = {
-  system: "System theme",
+  dark: "Dark theme",
   light: "Light theme",
-  dark: "Dark theme"
+  system: "System theme"
 };
 
 /**
@@ -61,7 +61,7 @@ export function ThemeToggle() {
   // Render placeholder during SSR to prevent hydration mismatch
   if (!mounted) {
     return (
-      <Button variant="ghost" size="icon" aria-label="Toggle theme" disabled>
+      <Button aria-label="Toggle theme" disabled size="icon" variant="ghost">
         <span className="size-4" />
       </Button>
     );
@@ -70,13 +70,13 @@ export function ThemeToggle() {
   const renderIcon = () => {
     // When theme is "system", show icon based on resolved theme
     if (currentTheme === "system") {
-      return <MonitorIcon className="size-4" aria-hidden="true" />;
+      return <MonitorIcon aria-hidden="true" className="size-4" />;
     }
     // For explicit light/dark, show the corresponding icon
     if (currentTheme === "light") {
-      return <SunIcon className="size-4" aria-hidden="true" />;
+      return <SunIcon aria-hidden="true" className="size-4" />;
     }
-    return <MoonIcon className="size-4" aria-hidden="true" />;
+    return <MoonIcon aria-hidden="true" className="size-4" />;
   };
 
   const getNextThemeLabel = (): string => {
@@ -90,11 +90,11 @@ export function ThemeToggle() {
     <Tooltip>
       <TooltipTrigger asChild>
         <Button
-          variant="ghost"
-          size="icon"
+          aria-label={`Current: ${THEME_LABELS[currentTheme]}. Click to switch to ${getNextThemeLabel()}`}
           onClick={cycleTheme}
           onKeyDown={handleKeyDown}
-          aria-label={`Current: ${THEME_LABELS[currentTheme]}. Click to switch to ${getNextThemeLabel()}`}
+          size="icon"
+          variant="ghost"
         >
           {renderIcon()}
         </Button>

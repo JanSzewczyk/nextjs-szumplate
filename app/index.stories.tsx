@@ -12,16 +12,16 @@ import {
 } from "~/constants";
 
 const meta = preview.meta({
-  title: "App/Home Page",
   component: Page,
   parameters: {
+    layout: "fullscreen",
     nextjs: {
       router: {
         pathname: "/"
       }
-    },
-    layout: "fullscreen"
-  }
+    }
+  },
+  title: "App/Home Page"
 });
 
 export const HomePage = meta.story();
@@ -34,8 +34,8 @@ HomePage.test("Hero section — badge, heading, description, and CTA links", asy
 
   await step("Verify main heading", async () => {
     const heading = canvas.getByRole("heading", {
-      name: /szum-tech next\.js template/i,
-      level: 1
+      level: 1,
+      name: /szum-tech next\.js template/i
     });
     await expect(heading).toBeVisible();
   });
@@ -64,8 +64,8 @@ HomePage.test("Hero section — badge, heading, description, and CTA links", asy
 HomePage.test(`Features section — heading and all ${FEATURE_TITLES.length} feature cards`, async ({ canvas, step }) => {
   await step("Verify features section heading", async () => {
     const heading = canvas.getByRole("heading", {
-      name: /why choose this template\?/i,
-      level: 2
+      level: 2,
+      name: /why choose this template\?/i
     });
     await expect(heading).toBeVisible();
   });
@@ -88,8 +88,8 @@ HomePage.test(
   async ({ canvas, step }) => {
     await step("Verify ecosystem section heading", async () => {
       const heading = canvas.getByRole("heading", {
-        name: /szum-tech ecosystem/i,
-        level: 2
+        level: 2,
+        name: /szum-tech ecosystem/i
       });
       await expect(heading).toBeVisible();
     });
@@ -153,8 +153,8 @@ HomePage.test(
   async ({ canvas, step }) => {
     await step("Verify tech stack section heading", async () => {
       const heading = canvas.getByRole("heading", {
-        name: /tech stack/i,
-        level: 2
+        level: 2,
+        name: /tech stack/i
       });
       await expect(heading).toBeVisible();
     });
@@ -222,8 +222,8 @@ HomePage.test("Tech Stack tooltip — appears on hover and closes on unhover", a
 HomePage.test(`Quick Start section — heading and all ${QUICK_START_STEPS.length} steps`, async ({ canvas, step }) => {
   await step("Verify quick start section heading", async () => {
     const heading = canvas.getByRole("heading", {
-      name: /quick start/i,
-      level: 2
+      level: 2,
+      name: /quick start/i
     });
     await expect(heading).toBeVisible();
   });
@@ -248,8 +248,8 @@ HomePage.test(`Quick Start section — heading and all ${QUICK_START_STEPS.lengt
 HomePage.test(`Scripts section — heading and all ${SCRIPTS.length} npm scripts`, async ({ canvas, step }) => {
   await step("Verify scripts section heading", async () => {
     const heading = canvas.getByRole("heading", {
-      name: /built-in scripts/i,
-      level: 2
+      level: 2,
+      name: /built-in scripts/i
     });
     await expect(heading).toBeVisible();
   });
@@ -275,8 +275,8 @@ HomePage.test(`Scripts section — heading and all ${SCRIPTS.length} npm scripts
 HomePage.test("CTA section — heading and action buttons", async ({ canvas, step }) => {
   await step("Verify CTA section heading", async () => {
     const heading = canvas.getByRole("heading", {
-      name: /ready to build something amazing\?/i,
-      level: 2
+      level: 2,
+      name: /ready to build something amazing\?/i
     });
     await expect(heading).toBeVisible();
   });

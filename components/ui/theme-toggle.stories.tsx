@@ -3,7 +3,6 @@ import preview from "~/.storybook/preview";
 import { ThemeToggle } from "./theme-toggle";
 
 const meta = preview.meta({
-  title: "Components/UI/Theme Toggle",
   component: ThemeToggle,
   decorators: [
     (Story) => (
@@ -14,7 +13,8 @@ const meta = preview.meta({
   ],
   parameters: {
     layout: "centered"
-  }
+  },
+  title: "Components/UI/Theme Toggle"
 });
 
 export const ThemeToggleStory = meta.story({ name: "Theme Toggle" });

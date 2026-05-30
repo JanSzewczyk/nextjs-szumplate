@@ -1,148 +1,148 @@
 export interface TechItem {
-  name: string;
   description: string;
-  src: string;
   href: string;
+  name: string;
+  src: string;
 }
 
 export interface TechCategory {
+  items: Array<TechItem>;
   label: string;
   variant: "primary" | "success" | "warning" | "error" | "outline" | "secondary";
-  items: TechItem[];
 }
 
 export const TECH_STACK: Record<string, TechCategory> = {
-  core: {
-    label: "Core Technologies",
-    variant: "primary",
-    items: [
-      {
-        name: "Next.js 16",
-        description: "The React Framework for Production",
-        src: "/next.svg",
-        href: "https://nextjs.org"
-      },
-      {
-        name: "TypeScript",
-        description: "JavaScript with syntax for types",
-        src: "/typescript.svg",
-        href: "https://typescriptlang.org"
-      },
-      {
-        name: "Tailwind CSS",
-        description: "A utility-first CSS framework",
-        src: "/tailwindcss.svg",
-        href: "https://tailwindcss.com"
-      }
-    ]
-  },
-  testing: {
-    label: "Testing Suite",
-    variant: "success",
-    items: [
-      {
-        name: "Vitest",
-        description: "Blazing fast unit test framework",
-        src: "/vitest.svg",
-        href: "https://vitest.dev"
-      },
-      {
-        name: "Playwright",
-        description: "Reliable end-to-end testing",
-        src: "/playwright.svg",
-        href: "https://playwright.dev"
-      },
-      {
-        name: "Testing Library",
-        description: "Simple and complete testing utilities",
-        src: "/testing-library.svg",
-        href: "https://testing-library.com"
-      },
-      {
-        name: "Storybook",
-        description: "UI component explorer for frontend devs",
-        src: "/storybook.svg",
-        href: "https://storybook.js.org/"
-      }
-    ]
-  },
-  quality: {
-    label: "Code Quality",
-    variant: "warning",
-    items: [
-      {
-        name: "ESLint",
-        description: "Find and fix problems in your code",
-        src: "/eslint.svg",
-        href: "https://eslint.org"
-      },
-      {
-        name: "Prettier",
-        description: "Opinionated code formatter",
-        src: "/prettier.svg",
-        href: "https://prettier.io"
-      },
-      {
-        name: "Semantic Release",
-        description: "Fully automated version management",
-        src: "/semantic-release.svg",
-        href: "https://semantic-release.gitbook.io/semantic-release"
-      }
-    ]
-  },
-  infrastructure: {
-    label: "Infrastructure",
-    variant: "error",
-    items: [
-      {
-        name: "Pino",
-        description: "Fast JSON logger for Node.js",
-        src: "/pino.svg",
-        href: "https://getpino.io"
-      },
-      {
-        name: "Zod",
-        description: "TypeScript-first schema validation",
-        src: "/zod.svg",
-        href: "https://zod.dev"
-      }
-    ]
-  },
-  forms: {
-    label: "Forms",
-    variant: "outline",
-    items: [
-      {
-        name: "React Hook Form",
-        description: "Performant form management",
-        src: "/react-hook-form.svg",
-        href: "https://react-hook-form.com"
-      }
-    ]
-  },
   cicd: {
-    label: "CI/CD",
-    variant: "secondary",
     items: [
       {
-        name: "GitHub Actions",
         description: "Automated workflows",
-        src: "/github-actions.svg",
-        href: "https://github.com/features/actions"
+        href: "https://github.com/features/actions",
+        name: "GitHub Actions",
+        src: "/github-actions.svg"
       }
-    ]
+    ],
+    label: "CI/CD",
+    variant: "secondary"
   },
   config: {
-    label: "Configuration",
-    variant: "secondary",
     items: [
       {
-        name: "T3 Env",
         description: "Type-safe environment variables",
-        src: "/t3.svg",
-        href: "https://env.t3.gg/"
+        href: "https://env.t3.gg/",
+        name: "T3 Env",
+        src: "/t3.svg"
       }
-    ]
+    ],
+    label: "Configuration",
+    variant: "secondary"
+  },
+  core: {
+    items: [
+      {
+        description: "The React Framework for Production",
+        href: "https://nextjs.org",
+        name: "Next.js 16",
+        src: "/next.svg"
+      },
+      {
+        description: "JavaScript with syntax for types",
+        href: "https://typescriptlang.org",
+        name: "TypeScript",
+        src: "/typescript.svg"
+      },
+      {
+        description: "A utility-first CSS framework",
+        href: "https://tailwindcss.com",
+        name: "Tailwind CSS",
+        src: "/tailwindcss.svg"
+      }
+    ],
+    label: "Core Technologies",
+    variant: "primary"
+  },
+  forms: {
+    items: [
+      {
+        description: "Performant form management",
+        href: "https://react-hook-form.com",
+        name: "React Hook Form",
+        src: "/react-hook-form.svg"
+      }
+    ],
+    label: "Forms",
+    variant: "outline"
+  },
+  infrastructure: {
+    items: [
+      {
+        description: "Fast JSON logger for Node.js",
+        href: "https://getpino.io",
+        name: "Pino",
+        src: "/pino.svg"
+      },
+      {
+        description: "TypeScript-first schema validation",
+        href: "https://zod.dev",
+        name: "Zod",
+        src: "/zod.svg"
+      }
+    ],
+    label: "Infrastructure",
+    variant: "error"
+  },
+  quality: {
+    items: [
+      {
+        description: "Find and fix problems in your code",
+        href: "https://eslint.org",
+        name: "ESLint",
+        src: "/eslint.svg"
+      },
+      {
+        description: "Opinionated code formatter",
+        href: "https://prettier.io",
+        name: "Prettier",
+        src: "/prettier.svg"
+      },
+      {
+        description: "Fully automated version management",
+        href: "https://semantic-release.gitbook.io/semantic-release",
+        name: "Semantic Release",
+        src: "/semantic-release.svg"
+      }
+    ],
+    label: "Code Quality",
+    variant: "warning"
+  },
+  testing: {
+    items: [
+      {
+        description: "Blazing fast unit test framework",
+        href: "https://vitest.dev",
+        name: "Vitest",
+        src: "/vitest.svg"
+      },
+      {
+        description: "Reliable end-to-end testing",
+        href: "https://playwright.dev",
+        name: "Playwright",
+        src: "/playwright.svg"
+      },
+      {
+        description: "Simple and complete testing utilities",
+        href: "https://testing-library.com",
+        name: "Testing Library",
+        src: "/testing-library.svg"
+      },
+      {
+        description: "UI component explorer for frontend devs",
+        href: "https://storybook.js.org/",
+        name: "Storybook",
+        src: "/storybook.svg"
+      }
+    ],
+    label: "Testing Suite",
+    variant: "success"
   }
 };
 

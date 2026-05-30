@@ -1,10 +1,21 @@
 {
   "$schema": "https://biomejs.dev/schemas/2.4.16/schema.json",
-  "root": true,
-  "vcs": {
-    "enabled": true,
-    "clientKind": "git",
-    "useIgnoreFile": true
+  "assist": {
+    "actions": {
+      "source": {
+        "noDuplicateClasses": "on",
+        "organizeImports": "on",
+        "useSortedAttributes": "on",
+        "useSortedInterfaceMembers": "on",
+        "useSortedKeys": "on"
+      }
+    },
+    "enabled": true
+  },
+  "css": {
+    "parser": {
+      "tailwindDirectives": true
+    }
   },
   "files": {
     "ignoreUnknown": true,
@@ -30,24 +41,19 @@
     "enabled": true,
     "indentStyle": "space",
     "indentWidth": 2,
-    "lineWidth": 120,
-    "lineEnding": "lf"
+    "lineEnding": "lf",
+    "lineWidth": 120
   },
   "javascript": {
     "formatter": {
-      "quoteStyle": "double",
-      "jsxQuoteStyle": "double",
-      "semicolons": "always",
-      "trailingCommas": "none",
-      "bracketSpacing": true,
+      "arrowParentheses": "always",
       "bracketSameLine": false,
+      "bracketSpacing": true,
+      "jsxQuoteStyle": "double",
       "quoteProperties": "asNeeded",
-      "arrowParentheses": "always"
-    }
-  },
-  "css": {
-    "parser": {
-      "tailwindDirectives": true
+      "quoteStyle": "double",
+      "semicolons": "always",
+      "trailingCommas": "none"
     }
   },
   "json": {
@@ -56,52 +62,99 @@
     }
   },
   "linter": {
-    "enabled": true,
     "domains": {
       "next": "all",
+      "playwright": "recommended",
       "react": "recommended",
-      "test": "all"
+      "test": "all",
+      "types": "all"
     },
+    "enabled": true,
     "rules": {
-      "recommended": false,
+      "a11y": {
+        "noAccessKey": "warn",
+        "noAriaHiddenOnFocusable": "error",
+        "useAltText": "error",
+        "useAriaPropsForRole": "error",
+        "useButtonType": "error",
+        "useHeadingContent": "error",
+        "useHtmlLang": "error",
+        "useKeyWithClickEvents": "warn",
+        "useKeyWithMouseEvents": "warn",
+        "useValidAnchor": "error",
+        "useValidAriaProps": "error",
+        "useValidAriaRole": "error",
+        "useValidAriaValues": "error"
+      },
+      "complexity": {
+        "noExtraBooleanCast": "error",
+        "noUselessCatch": "error",
+        "noUselessConstructor": "error",
+        "noUselessEmptyExport": "error",
+        "noUselessFragments": "warn",
+        "noUselessLabel": "error",
+        "noUselessRename": "error",
+        "noUselessSwitchCase": "error",
+        "noUselessTernary": "error",
+        "noUselessTypeConstraint": "error",
+        "useFlatMap": "warn",
+        "useOptionalChain": "warn"
+      },
       "correctness": {
         "noChildrenProp": "error",
         "noRenderReturnValue": "error",
+        "noUnusedImports": "error",
         "noUnusedVariables": "warn",
+        "noVoidTypeReturn": "error",
         "useExhaustiveDependencies": "warn",
         "useHookAtTopLevel": "error",
         "useJsxKeyInIterable": "warn"
       },
-      "suspicious": {
-        "noCommentText": "error",
-        "noConsole": "warn",
-        "noDuplicateJsxProps": "error",
-        "noExplicitAny": "error",
-        "noExtraNonNullAssertion": "error",
-        "noMisleadingInstantiator": "error",
-        "noUnsafeDeclarationMerging": "error",
-        "useNamespaceKeyword": "error"
+      "nursery": {
+        "noFloatingPromises": "error",
+        "noMisusedPromises": "error",
+        "useSortedClasses": {
+          "fix": "safe",
+          "level": "warn",
+          "options": {
+            "attributes": ["class", "className", "ngClass"],
+            "functions": ["classNames", "clsx", "cn"]
+          }
+        }
       },
+      "recommended": false,
       "security": {
         "noBlankTarget": "error",
         "noDangerouslySetInnerHtmlWithChildren": "error"
       },
       "style": {
         "noNamespace": "error",
+        "noParameterAssign": "error",
         "useAsConstAssertion": "error",
-        "useImportType": "warn"
-      },
-      "nursery": {
-        "noFloatingPromises": "error",
-        "noMisusedPromises": "error",
-        "useSortedClasses": {
-          "level": "warn",
-          "fix": "safe",
+        "useConsistentArrayType": {
+          "level": "error",
           "options": {
-            "attributes": ["class", "className", "ngClass"],
-            "functions": ["classNames", "clsx", "cn"]
+            "syntax": "generic"
           }
-        }
+        },
+        "useConsistentBuiltinInstantiation": "error",
+        "useConst": "error",
+        "useDefaultSwitchClause": "warn",
+        "useImportType": "warn",
+        "useTemplate": "warn"
+      },
+      "suspicious": {
+        "noArrayIndexKey": "warn",
+        "noCommentText": "error",
+        "noConsole": "warn",
+        "noDoubleEquals": "error",
+        "noDuplicateJsxProps": "error",
+        "noExplicitAny": "error",
+        "noExtraNonNullAssertion": "error",
+        "noMisleadingInstantiator": "error",
+        "noThenProperty": "error",
+        "noUnsafeDeclarationMerging": "error",
+        "useNamespaceKeyword": "error"
       }
     }
   },
@@ -136,5 +189,11 @@
         }
       }
     }
-  ]
+  ],
+  "root": true,
+  "vcs": {
+    "clientKind": "git",
+    "enabled": true,
+    "useIgnoreFile": true
+  }
 }

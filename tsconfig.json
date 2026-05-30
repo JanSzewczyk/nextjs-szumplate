@@ -1,39 +1,40 @@
 {
   "$schema": "https://json.schemastore.org/tsconfig",
-  "display": "Next.js",
   "compilerOptions": {
+    "allowJs": true,
+    /* Path Aliases */
+    "baseUrl": ".",
+    "checkJs": true,
     /* Base Options: */
     "esModuleInterop": true,
-    "skipLibCheck": true,
-    "target": "es2022",
-    "allowJs": true,
-    "resolveJsonModule": true,
-    "moduleDetection": "force",
+    "ignoreDeprecations": "6.0",
+    "incremental": true,
     "isolatedModules": true,
-    /* Strictness */
-    "strict": true,
-    "noUncheckedIndexedAccess": true,
-    "checkJs": true,
+    "jsx": "react-jsx",
     /* Bundled projects */
     "lib": ["dom", "dom.iterable", "esnext"],
-    "noEmit": true,
     "module": "ESNext",
+    "moduleDetection": "force",
     "moduleResolution": "Bundler",
-    "jsx": "react-jsx",
+    "noEmit": true,
+    "noUncheckedIndexedAccess": true,
+    "paths": {
+      "~/*": ["./*"]
+    },
     "plugins": [
       {
         "name": "next"
       }
     ],
-    "incremental": true,
-    "types": ["vitest/globals", "@vitest/browser-playwright"],
-    "ignoreDeprecations": "6.0",
-    /* Path Aliases */
-    "baseUrl": ".",
-    "paths": {
-      "~/*": ["./*"]
-    }
+    "resolveJsonModule": true,
+    "skipLibCheck": true,
+    /* Strictness */
+    "strict": true,
+    "target": "es2022",
+    "types": ["vitest/globals", "@vitest/browser-playwright"]
   },
+  "display": "Next.js",
+  "exclude": ["node_modules"],
   "include": [
     "next-env.d.ts",
     "**/*.ts",
@@ -41,6 +42,5 @@
     ".next/types/**/*.ts",
     ".storybook/**/*",
     ".next/dev/types/**/*.ts"
-  ],
-  "exclude": ["node_modules"]
+  ]
 }

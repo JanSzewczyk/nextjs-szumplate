@@ -3,7 +3,7 @@ export interface Script {
   description: string;
 }
 
-export const SCRIPTS: Script[] = [
+export const SCRIPTS: Array<Script> = [
   {
     command: "npm run dev",
     description: "Start development server with Turbopack"

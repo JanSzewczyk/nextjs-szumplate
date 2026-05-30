@@ -11,10 +11,6 @@ const tags: PresetValue<TagsOptions | undefined> = {
 };
 
 export default defineMain({
-  stories: ["../**/*.mdx", "../**/*.stories.@(js|jsx|ts|tsx)"],
-  features: {
-    experimentalTestSyntax: true
-  },
   addons: [
     "@storybook/addon-a11y",
     "@chromatic-com/storybook",
@@ -23,13 +19,17 @@ export default defineMain({
     "@storybook-community/storybook-dark-mode",
     "storybook-addon-tag-badges"
   ],
-  framework: "@storybook/nextjs-vite",
-  typescript: {
-    reactDocgen: "react-docgen-typescript",
-    check: true
+  features: {
+    experimentalTestSyntax: true
   },
-  tags,
+  framework: "@storybook/nextjs-vite",
   staticDirs: ["../public"],
+  stories: ["../**/*.mdx", "../**/*.stories.@(js|jsx|ts|tsx)"],
+  tags,
+  typescript: {
+    check: true,
+    reactDocgen: "react-docgen-typescript"
+  },
   viteFinal: async (config) => {
     const { mergeConfig } = await import("vite");
     const { fileURLToPath } = await import("url");

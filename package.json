@@ -36,9 +36,9 @@
     "@types/react": "^19.2.15",
     "@types/react-dom": "^19.2.1",
     "@vitejs/plugin-react": "^6.0.2",
-    "@vitest/browser-playwright": "^4.1.7",
-    "@vitest/coverage-v8": "^4.1.7",
-    "@vitest/ui": "^4.1.7",
+    "@vitest/browser-playwright": "^4.1.8",
+    "@vitest/coverage-v8": "^4.1.8",
+    "@vitest/ui": "^4.1.8",
     "playwright": "^1.56.0",
     "semantic-release": "^25.0.0",
     "serve": "^14.2.5",
@@ -46,7 +46,7 @@
     "storybook-addon-tag-badges": "^3.0.4",
     "tailwindcss": "^4.1.11",
     "typescript": "^6.0.3",
-    "vitest": "^4.1.7"
+    "vitest": "^4.1.8"
   },
   "name": "nextjs-szumplate",
   "private": true,

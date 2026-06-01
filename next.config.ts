@@ -5,8 +5,13 @@ import withPlugins from "next-compose-plugins";
 import { env } from "./data/env/server";
 
 const config: NextConfig = {
+  experimental: {
+    optimizePackageImports: ["@szum-tech/design-system"]
+  },
+  productionBrowserSourceMaps: true,
   reactCompiler: true,
   reactStrictMode: true,
+
   async rewrites() {
     return [
       { destination: "/api/health", source: "/healthz" },

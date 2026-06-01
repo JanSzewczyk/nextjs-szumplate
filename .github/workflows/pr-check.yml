@@ -211,3 +211,20 @@ jobs:
         uses: actions/dependency-review-action@v5
         with:
           comment-summary-in-pr: on-failure
+
+  react-doctor:
+    name: React Doctor🩺
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+    steps:
+      - name: Checkout code 📚
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0 # required for --diff
+      - name: React Doctor🩺
+        uses: millionco/react-doctor@main
+        with:
+          diff: main
+          github-token: ${{ secrets.GITHUB_TOKEN }}

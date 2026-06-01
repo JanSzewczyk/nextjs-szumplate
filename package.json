@@ -1,7 +1,7 @@
 {
   "dependencies": {
     "@next/bundle-analyzer": "^16.2.7",
-    "@szum-tech/design-system": "^3.21.5",
+    "@szum-tech/design-system": "^3.21.7",
     "@t3-oss/env-nextjs": "^0.13.8",
     "@tailwindcss/postcss": "^4.1.14",
     "babel-plugin-react-compiler": "^1.0.0",

@@ -18,8 +18,6 @@ export default create({
   barTextColor: "#736d62",
   base: "light",
 
-  brandTitle: "Szum-Tech Design System",
-
   // --primary: oklch(0.488 0.243 264.376) ≈ blue-700
   // --chart-3: oklch(0.546 0.245 262.881) ≈ blue-600
   colorPrimary: "#1d4ed8",

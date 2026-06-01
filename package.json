@@ -1,11 +1,11 @@
 {
   "dependencies": {
-    "@next/bundle-analyzer": "^16.1.4",
+    "@next/bundle-analyzer": "^16.2.7",
     "@szum-tech/design-system": "^3.21.5",
     "@t3-oss/env-nextjs": "^0.13.8",
     "@tailwindcss/postcss": "^4.1.14",
     "babel-plugin-react-compiler": "^1.0.0",
-    "next": "^16.1.4",
+    "next": "^16.2.7",
     "next-compose-plugins": "^2.2.1",
     "next-themes": "^0.4.6",
     "pino": "^10.3.0",

@@ -4,8 +4,8 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-Next.js Szumplate is an enterprise-ready Next.js 16.2.6 template with React 19.2.6, TypeScript, Tailwind CSS 4.3.0,
-React Compiler, and comprehensive testing infrastructure (Vitest 4.1, Playwright 1.60).
+Next.js Szumplate is an enterprise-ready Next.js 16.2.9 template with React 19.2.7, TypeScript 6.0, Tailwind CSS 4.3.2,
+React Compiler, and comprehensive testing infrastructure (Vitest 4.1, Playwright 1.61).
 
 ## Commands
 
@@ -20,23 +20,28 @@ npm run start        # Start production server
 ### Code Quality
 
 ```bash
-npm run check        # Biome check (lint + format)
-npm run check:fix    # Biome check with auto-fix
-npm run lint         # Biome lint only
-npm run lint:fix     # Biome lint with auto-fix
-npm run format:check # Biome format check
-npm run format:write # Biome format with auto-fix
-npm run type-check   # TypeScript type checking
+npm run biome:check      # Biome check (lint + format)
+npm run biome:ci         # Biome check with GitHub reporter (CI mode)
+npm run biome:fix        # Auto-fix all lint and format issues
+npm run biome:lint       # Biome lint only
+npm run biome:lint:fix   # Auto-fix lint issues
+npm run biome:format     # Check formatting only
+npm run biome:format:fix # Auto-fix formatting
+npm run type-check       # TypeScript type checking (next typegen + tsc)
 ```
 
 ### Testing
 
 ```bash
-npm run test                  # Run all Vitest tests
-npm run test:unit             # Unit tests only (with coverage)
-npm run test:storybook        # Storybook component tests (with coverage)
-npm run test:watch            # Watch mode
-npm run test:ui               # Vitest UI
+npm run test                    # Run all Vitest tests
+npm run test:unit               # Unit tests only
+npm run test:unit:coverage      # Unit tests with coverage report
+npm run test:storybook          # Storybook component tests with coverage
+npm run test:storybook:coverage # Storybook tests with separate coverage report
+npm run test:coverage           # Full coverage report
+npm run test:ci                 # All tests with coverage (CI mode)
+npm run test:watch              # Watch mode
+npm run test:ui                 # Vitest UI
 
 # Run a single test file
 npx vitest run path/to/file.test.ts
@@ -44,7 +49,8 @@ npx vitest run --project=unit path/to/file.test.ts
 
 # E2E tests (Playwright) - requires build first
 npm run build && npm run test:e2e
-npm run test:e2e:ui           # Playwright UI mode
+npm run test:e2e:ui             # Playwright UI mode
+npm run test:e2e:ci             # E2E tests in CI mode
 ```
 
 ### Storybook
@@ -64,16 +70,17 @@ npm run analyze               # Bundle analyzer
 
 ### Tech Stack
 
-- **Next.js**: 16.2.6 (App Router, Turbopack, React Compiler)
-- **React**: 19.2.6 with React Compiler enabled
-- **TypeScript**: 5.9.3 (strict mode)
-- **Tailwind CSS**: 4.3.0 (CSS-first config)
-- **@szum-tech/design-system**: 3.21.0
-- **Vitest**: 4.1.6 (unit & integration tests)
-- **Playwright**: 1.60.0 (E2E tests)
-- **Storybook**: 10.4.0 (component development)
-- **Zod**: 4.4.3 (validation)
-- **Pino**: 10.3.1 (logging)
+- **Next.js**: 16.2.9 (App Router, Turbopack, React Compiler)
+- **React**: 19.2.7 with React Compiler enabled
+- **TypeScript**: 6.0.3 (strict mode)
+- **Tailwind CSS**: 4.3.2 (CSS-first config)
+- **Biome**: 2.5.1 (lint + format)
+- **@szum-tech/design-system**: 3.21.9
+- **Vitest**: 4.1.8 (unit & integration tests)
+- **Playwright**: 1.61.1 (E2E tests)
+- **Storybook**: 10.4.1 (component development)
+- **Zod**: 4.3.6 (validation)
+- **Pino**: 10.3.0 (logging)
 - **next-themes**: 0.4.6 (theming)
 
 ### Path Aliases

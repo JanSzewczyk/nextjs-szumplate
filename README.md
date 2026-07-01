@@ -202,7 +202,7 @@ Deploy your Next.js app instantly with **Vercel**:
 | `npm run biome:lint:fix`    | Auto-fix lint issues                           |
 | `npm run biome:format`      | Check code formatting                          |
 | `npm run biome:format:fix`  | Auto-fix formatting                            |
-| `npm run type-check`        | Run TypeScript type checking                   |
+| `npm run type-check`        | Run TypeScript type checking (`next typegen` + `tsc`) |
 
 ### Testing
 

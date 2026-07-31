@@ -361,10 +361,9 @@ try {
   });
 } catch (error) {
   const serviceError = categorizeSupabaseError(error, "ResourceName");
-  logger.error(
-    { userId, operation: "...", errorCode: serviceError.code },
-    "Transaction failed",
-  );
+  logger
+    .withMetadata({ userId, operation: "...", errorCode: serviceError.code })
+    .error("Transaction failed");
   return [serviceError, null];
 }
 ```
@@ -434,11 +433,10 @@ import { ProjectStatus } from "~/features/projects/server/db/schema";
 
 ```ts
 const logger = createLogger({ module: "templates-service" });
-logger.info({ userId, templateId }, "Template created successfully");
-logger.error(
-  { userId, operation: "createTemplate", errorCode: err.code },
-  "DB insert failed",
-);
+logger.withMetadata({ userId, templateId }).info("Template created successfully");
+logger
+  .withMetadata({ userId, operation: "createTemplate", errorCode: err.code })
+  .error("DB insert failed");
 ```
 
 Always include `userId`, `operation`, and `errorCode` on failures. Log at the layer where the error originates — do not re-log the same error higher up.

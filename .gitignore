@@ -121,6 +121,9 @@ src/styles
 # Ignore Next files
 .next
 
+# Dev-server log files (lib/logger.ts)
+/tmp
+
 # Claude
 /.claude/*.local.json
 /bash.exe.stackdump

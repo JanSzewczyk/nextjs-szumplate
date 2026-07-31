@@ -145,21 +145,19 @@ export async function createTemplate({
       const error = SupabaseServiceError.unknown(
         "Failed to insert template — no row returned",
       );
-      logger.error(
-        { contractorId, errorCode: error.code },
-        "Insert returned no rows",
-      );
+      logger
+        .withMetadata({ contractorId, errorCode: error.code })
+        .error("Insert returned no rows");
       return [error, null];
     }
 
-    logger.info({ contractorId, templateId: row.id }, "Created template");
+    logger.withMetadata({ contractorId, templateId: row.id }).info("Created template");
     return [null, row];
   } catch (error) {
     const serviceError = categorizeSupabaseError(error, RESOURCE_NAME);
-    logger.error(
-      { contractorId, errorCode: serviceError.code },
-      "Failed to create template",
-    );
+    logger
+      .withMetadata({ contractorId, errorCode: serviceError.code })
+      .error("Failed to create template");
     return [serviceError, null];
   }
 }
@@ -206,10 +204,9 @@ export async function getTemplateById({
     return [null, template];
   } catch (error) {
     const serviceError = categorizeSupabaseError(error, "Template");
-    logger.error(
-      { templateId, errorCode: serviceError.code },
-      "Failed to get template",
-    );
+    logger
+      .withMetadata({ templateId, errorCode: serviceError.code })
+      .error("Failed to get template");
     return [serviceError, null];
   }
 }
@@ -325,10 +322,9 @@ try {
   });
 } catch (error) {
   const serviceError = categorizeSupabaseError(error, "CompanyProfile");
-  logger.error(
-    { userId, operation: "updateCompanyProfile", errorCode: serviceError.code },
-    "Transaction failed",
-  );
+  logger
+    .withMetadata({ userId, operation: "updateCompanyProfile", errorCode: serviceError.code })
+    .error("Transaction failed");
   return [serviceError, null];
 }
 ```

@@ -1,9 +1,12 @@
 {
   "dependencies": {
+    "@loglayer/transport-log-file-rotation": "^3.3.0",
+    "@loglayer/transport-pino": "^3.3.0",
     "@szum-tech/design-system": "^3.21.9",
     "@t3-oss/env-nextjs": "^0.13.8",
     "@tailwindcss/postcss": "^4.3.2",
     "babel-plugin-react-compiler": "^1.0.0",
+    "loglayer": "^9.4.0",
     "next": "^16.2.10",
     "next-themes": "^0.4.6",
     "pino": "^10.3.0",
@@ -11,6 +14,7 @@
     "react": "^19.2.7",
     "react-dom": "^19.2.7",
     "react-hook-form": "^7.81.0",
+    "serialize-error": "^13.0.1",
     "server-only": "^0.0.1",
     "zod": "^4.3.6"
   },

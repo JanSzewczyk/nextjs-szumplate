@@ -6,7 +6,7 @@ export function proxy(request: NextRequest) {
   const requestId = crypto.randomUUID();
 
   // Create a logger with request context
-  const requestLogger = logger.child({
+  const requestLogger = logger.child().withContext({
     method: request.method,
     requestId,
     url: request.url,
@@ -23,13 +23,12 @@ export function proxy(request: NextRequest) {
 
   // Log the response
   const duration = Date.now() - startTime;
-  requestLogger.info(
-    {
+  requestLogger
+    .withMetadata({
       duration,
       status: response.status
-    },
-    "Request completed"
-  );
+    })
+    .info("Request completed");
 
   return response;
 }

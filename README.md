@@ -375,7 +375,7 @@ import logger, { createLogger } from "~/lib/logger";
 // Basic logging
 logger.info("User logged in successfully");
 logger.warn("API rate limit approaching");
-logger.error({ userId: "123", error: err }, "Failed to fetch user data");
+logger.withMetadata({ userId: "123", error: err }).error("Failed to fetch user data");
 
 // Context logger — persists context in every log line
 const apiLogger = createLogger({ module: "api", service: "user-service" });
@@ -404,17 +404,17 @@ The template automatically logs in these areas:
 
 ```typescript
 // Include context objects for searchability
-logger.error({ userId, orderId, error }, "Order processing failed");
+logger.withMetadata({ userId, orderId, error }).error("Order processing failed");
 
 // Never log sensitive data
-logger.info({ userId: user.id }, "User login"); // ✅
-logger.info({ password: user.password }, "User login"); // ❌
+logger.withMetadata({ userId: user.id }).info("User login"); // ✅
+logger.withMetadata({ password: user.password }).info("User login"); // ❌
 
 // Always pass error objects for full stack traces
 try {
   // ...
 } catch (error) {
-  logger.error({ error }, "Operation failed");
+  logger.withMetadata({ error }).error("Operation failed");
 }
 ```
 

@@ -29,12 +29,11 @@ describe("createLogger", () => {
     expect(typeof childLogger.error).toBe("function");
   });
 
-  test("child logger includes bindings from context", () => {
+  test("child logger includes context passed to createLogger", () => {
     const context = { endpoint: "/users", module: "api" };
     const childLogger = createLogger(context);
 
-    const bindings = childLogger.bindings();
-    expect(bindings).toMatchObject(context);
+    expect(childLogger.getContext()).toMatchObject(context);
   });
 
   test("child logger inherits parent level methods", () => {
@@ -50,15 +49,15 @@ describe("createLogger", () => {
     const childLogger = createLogger({ module: "test" });
 
     expect(() => childLogger.info("test message")).not.toThrow();
-    expect(() => childLogger.error({ err: new Error("test") }, "error occurred")).not.toThrow();
-    expect(() => childLogger.warn({ key: "value" }, "warning")).not.toThrow();
+    expect(() => childLogger.withMetadata({ err: new Error("test") }).error("error occurred")).not.toThrow();
+    expect(() => childLogger.withMetadata({ key: "value" }).warn("warning")).not.toThrow();
   });
 
   test("creates independent child loggers", () => {
     const logger1 = createLogger({ module: "module-1" });
     const logger2 = createLogger({ module: "module-2" });
 
-    expect(logger1.bindings().module).toBe("module-1");
-    expect(logger2.bindings().module).toBe("module-2");
+    expect(logger1.getContext().module).toBe("module-1");
+    expect(logger2.getContext().module).toBe("module-2");
   });
 });

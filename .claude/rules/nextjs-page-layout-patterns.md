@@ -58,15 +58,14 @@ async function loadData({ id }: { id: string }) {
 
   // 3. Error handling
   if (error) {
-    logger.error(
-      { userId, id, errorCode: error.code },
-      "Failed to load resource detail",
-    );
+    logger
+      .withMetadata({ userId, id, errorCode: error.code })
+      .error("Failed to load resource detail");
     notFound(); // or: redirect("/...") or: throw error
   }
 
   // 4. Success log
-  logger.info({ userId, id }, "Successfully loaded resource detail");
+  logger.withMetadata({ userId, id }).info("Successfully loaded resource detail");
   return { resource };
 }
 ```
@@ -172,17 +171,15 @@ async function loadData({ workspaceId }: { workspaceId: string }) {
     workspaceId,
   });
   if (error) {
-    logger.error(
-      { userId, workspaceId, errorCode: error.code },
-      "Failed to load layout chrome data",
-    );
+    logger
+      .withMetadata({ userId, workspaceId, errorCode: error.code })
+      .error("Failed to load layout chrome data");
     notFound();
   }
 
-  logger.info(
-    { userId, workspaceId },
-    "Successfully loaded layout chrome data",
-  );
+  logger
+    .withMetadata({ userId, workspaceId })
+    .info("Successfully loaded layout chrome data");
   return { workspace };
 }
 ```
@@ -201,7 +198,7 @@ async function loadData() {
     redirect("/sign-in");
   }
 
-  logger.info({ userId }, "Layout auth guard passed");
+  logger.withMetadata({ userId }).info("Layout auth guard passed");
 }
 ```
 
@@ -221,7 +218,7 @@ async function loadData() {
 
   const [, plan] = await getUserPlan({ userId }); // silent — nav badge degrades gracefully
 
-  logger.info({ userId }, "Successfully loaded layout chrome data");
+  logger.withMetadata({ userId }).info("Successfully loaded layout chrome data");
   return { plan };
 }
 ```

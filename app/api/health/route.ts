@@ -6,10 +6,10 @@ export function GET() {
 
   try {
     const response = { status: "ok", timestamp: new Date().toISOString() };
-    logger.debug({ response }, "Health check successful");
+    logger.withMetadata({ response }).debug("Health check successful");
     return NextResponse.json(response);
   } catch (error) {
-    logger.error({ error }, "Health check failed");
+    logger.withMetadata({ error }).error("Health check failed");
     return NextResponse.json({ status: "error" }, { status: 500 });
   }
 }

@@ -4,7 +4,7 @@
     "@loglayer/transport-pino": "^3.3.0",
     "@szum-tech/design-system": "^3.21.9",
     "@t3-oss/env-nextjs": "^0.13.8",
-    "@tailwindcss/postcss": "^4.3.2",
+    "@tailwindcss/postcss": "^4.3.3",
     "babel-plugin-react-compiler": "^1.0.0",
     "loglayer": "^9.4.0",
     "next": "^16.2.10",
@@ -46,7 +46,7 @@
     "serve": "^14.2.5",
     "storybook": "^10.4.1",
     "storybook-addon-tag-badges": "^3.0.4",
-    "tailwindcss": "^4.3.2",
+    "tailwindcss": "^4.3.3",
     "typescript": "^6.0.3",
     "vitest": "^4.1.8"
   },

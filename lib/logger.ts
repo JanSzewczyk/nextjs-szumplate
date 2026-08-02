@@ -45,8 +45,8 @@ if (IS_DEV) {
 
 /**
  * Root LogLayer instance. Fans out every log entry to Pino (console) and,
- * in development only, to a rotating file under the OS temp directory so a
- * session's log history can be reviewed and analyzed afterwards.
+ * in development only, to a rotating file under a project-local `tmp`
+ * directory so a session's log history can be reviewed and analyzed afterwards.
  */
 const logger = new LogLayer({
   errorSerializer: serializeError,

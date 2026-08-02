@@ -1,12 +1,12 @@
 import { type NextRequest, NextResponse } from "next/server";
-import logger from "~/lib/logger";
+import { createLogger } from "~/lib/logger";
 
 export function proxy(request: NextRequest) {
   const startTime = Date.now();
   const requestId = crypto.randomUUID();
 
   // Create a logger with request context
-  const requestLogger = logger.child().withContext({
+  const requestLogger = createLogger({
     method: request.method,
     requestId,
     url: request.url,

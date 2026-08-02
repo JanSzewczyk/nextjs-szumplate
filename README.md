@@ -375,7 +375,7 @@ import logger, { createLogger } from "~/lib/logger";
 // Basic logging
 logger.info("User logged in successfully");
 logger.warn("API rate limit approaching");
-logger.withMetadata({ userId: "123", error: err }).error("Failed to fetch user data");
+logger.withContext({ userId: "123" }).withError(new Error("Request failed")).error("Failed to fetch user data");
 
 // Context logger — persists context in every log line
 const apiLogger = createLogger({ module: "api", service: "user-service" });

@@ -20,7 +20,7 @@
   },
   "devDependencies": {
     "@axe-core/playwright": "^4.12.1",
-    "@biomejs/biome": "^2.5.2",
+    "@biomejs/biome": "^2.5.6",
     "@chromatic-com/storybook": "^5.0.0",
     "@playwright/test": "^1.61.1",
     "@storybook-community/storybook-dark-mode": "^7.1.3",

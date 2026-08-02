@@ -9,7 +9,7 @@ export function GET() {
     logger.withMetadata({ response }).debug("Health check successful");
     return NextResponse.json(response);
   } catch (error) {
-    logger.withMetadata({ error }).error("Health check failed");
+    logger.withError(error).error("Health check failed");
     return NextResponse.json({ status: "error" }, { status: 500 });
   }
 }

@@ -49,7 +49,7 @@ describe("createLogger", () => {
     const childLogger = createLogger({ module: "test" });
 
     expect(() => childLogger.info("test message")).not.toThrow();
-    expect(() => childLogger.withMetadata({ err: new Error("test") }).error("error occurred")).not.toThrow();
+    expect(() => childLogger.withError(new Error("test")).error("error occurred")).not.toThrow();
     expect(() => childLogger.withMetadata({ key: "value" }).warn("warning")).not.toThrow();
   });
 

@@ -28,7 +28,7 @@ export default defineMain({
   tags,
   typescript: {
     check: true,
-    reactDocgen: "react-docgen-typescript"
+    reactDocgen: "react-docgen"
   },
   viteFinal: async (config) => {
     const { mergeConfig } = await import("vite");

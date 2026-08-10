@@ -11,6 +11,7 @@ export default function Error({ error, reset }: { error: Error & { digest?: stri
       message: error.message,
       stack: error.stack
     });
+    // TODO: wire this into an error-tracking provider (Sentry, Bugsnag, ...) if needed
   }, [error]);
 
   return (

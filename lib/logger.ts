@@ -19,6 +19,23 @@ const pinoLogger = pino({
     }
   },
   level: LOG_LEVEL,
+  redact: {
+    paths: [
+      "password",
+      "*.password",
+      "token",
+      "*.token",
+      "apiKey",
+      "*.apiKey",
+      "secret",
+      "*.secret",
+      "authorization",
+      "*.authorization",
+      "req.headers.authorization",
+      "req.headers.cookie"
+    ],
+    remove: true
+  },
   timestamp: pino.stdTimeFunctions.isoTime,
   transport: IS_DEV
     ? {

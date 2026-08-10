@@ -363,8 +363,10 @@ output optimized for Next.js App Router and Turbopack.
 - ✅ **Structured Logging** — JSON-formatted logs ready for log aggregation tools (Datadog, ELK, CloudWatch, Grafana
   Loki)
 - ✅ **Request Tracking** — Automatic request ID (UUID) via middleware with `X-Request-ID` response header
-- ✅ **Universal** — Server-side (Node.js JSON output) and client-side (browser console fallback)
-- ✅ **Error Boundaries** — Integrated with `app/error.tsx` and `app/global-error.tsx`
+- ✅ **Redaction** — Sensitive fields (passwords, tokens, secrets, `authorization` headers) are stripped from
+  log output automatically
+- ✅ **Server/Client Split** — Server-side code uses the structured logger (`~/lib/logger`); client-side error
+  boundaries use the browser console (see below — these are two independent mechanisms)
 - ✅ **Type-safe** — `LOG_LEVEL` environment variable validated with TypeScript
 
 ### Usage
@@ -398,7 +400,11 @@ The template automatically logs in these areas:
 
 - **Request middleware** (`proxy.ts`) — every HTTP request logs method, URL, user agent, status, and duration
 - **Health check API** (`app/api/health/route.ts`) — logs each health probe
-- **Error boundaries** (`app/error.tsx`, `app/global-error.tsx`) — logs caught errors with full stack traces
+- **Error boundaries** (`app/error.tsx`, `app/global-error.tsx`) — these are Client Components, so they don't have
+  access to the server-side logger. They log caught errors with `console.error` in the browser console instead —
+  this is the pattern Next.js itself recommends for error boundaries. There's a `TODO` comment next to each call
+  marking where to wire in an error-tracking provider (Sentry, Bugsnag, ...) if you need one; none is bundled by
+  default so the template doesn't force a vendor choice on you.
 
 ### Production Best Practices
 

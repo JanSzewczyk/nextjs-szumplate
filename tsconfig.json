@@ -2,8 +2,6 @@
   "$schema": "https://json.schemastore.org/tsconfig",
   "compilerOptions": {
     "allowJs": true,
-    /* Path Aliases */
-    "baseUrl": ".",
     "checkJs": true,
     /* Base Options: */
     "esModuleInterop": true,

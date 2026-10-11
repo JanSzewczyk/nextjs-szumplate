@@ -1,5 +1,4 @@
-/** @public */
-export interface Script {
+interface Script {
   command: string;
   description: string;
 }

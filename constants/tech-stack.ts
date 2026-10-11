@@ -1,13 +1,11 @@
-/** @public */
-export interface TechItem {
+interface TechItem {
   description: string;
   href: string;
   name: string;
   src: string;
 }
 
-/** @public */
-export interface TechCategory {
+interface TechCategory {
   items: Array<TechItem>;
   label: string;
   variant: "primary" | "success" | "warning" | "error" | "outline" | "secondary";

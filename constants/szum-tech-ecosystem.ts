@@ -1,5 +1,6 @@
 export type SzumTechIconName = "PaletteIcon" | "ShieldCheckIcon" | "SparklesIcon" | "TagIcon";
 
+/** @public */
 export interface SzumTechPackage {
   description: string;
   docsUrl?: string;
@@ -50,7 +51,10 @@ export const SZUM_TECH_PACKAGES: Array<SzumTechPackage> = [
   }
 ];
 
-/** All package names in the ecosystem */
+/**
+ * All package names in the ecosystem
+ * @public
+ */
 export const SZUM_TECH_PACKAGE_NAMES = SZUM_TECH_PACKAGES.map((pkg) => pkg.packageName);
 
 /** Total count of packages */

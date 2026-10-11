@@ -1,3 +1,4 @@
+/** @public */
 export interface TechItem {
   description: string;
   href: string;
@@ -5,6 +6,7 @@ export interface TechItem {
   src: string;
 }
 
+/** @public */
 export interface TechCategory {
   items: Array<TechItem>;
   label: string;

@@ -1,3 +1,4 @@
+/** @public */
 export interface Script {
   command: string;
   description: string;

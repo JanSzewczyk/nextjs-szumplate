@@ -23,7 +23,7 @@ export function proxy(request: NextRequest) {
 
   // Log the response
   const duration = Date.now() - startTime;
-  requestLogger
+  void requestLogger
     .withMetadata({
       duration,
       status: response.status

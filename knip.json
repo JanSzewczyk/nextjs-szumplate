@@ -1,0 +1,15 @@
+{
+  "$schema": "https://unpkg.com/knip@6/schema.json",
+  "ignore": ["data/env/client.ts"],
+  "ignoreDependencies": [
+    "@axe-core/playwright",
+    "@testing-library/react",
+    "@testing-library/user-event",
+    "pino-pretty",
+    "react-hook-form",
+    "server-only"
+  ],
+  "playwright": {
+    "entry": ["tests/e2e/**/*.e2e.ts"]
+  }
+}

@@ -1,3 +1,4 @@
+/** @public */
 export interface QuickStartStep {
   command: string;
   description: string;

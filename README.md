@@ -54,6 +54,8 @@ back, relax, and get ready to conquer the whole world with your new awesome app!
   — Component development, documentation, and interaction testing
 - [![Biome](https://img.shields.io/github/package-json/dependency-version/JanSzewczyk/nextjs-szumplate/dev/@biomejs/biome?logo=biome&logoColor=white&label=Biome)](https://biomejs.dev/)
   — All-in-one linter and formatter replacing ESLint + Prettier
+- [![Knip](https://img.shields.io/github/package-json/dependency-version/JanSzewczyk/nextjs-szumplate/dev/knip?label=Knip)](https://knip.dev/)
+  — Finds unused files, dependencies, and exports
 
 ### 🤖 Automation & DevOps
 
@@ -91,6 +93,7 @@ back, relax, and get ready to conquer the whole world with your new awesome app!
 - [🚀 Deployment](#-deployment)
 - [📃 Scripts Overview](#-scripts-overview)
 - [🧪 Testing](#-testing)
+- [🧹 Dead Code Detection](#-dead-code-detection)
 - [🎨 Styling and Design System](#-styling-and-design-system)
 - [💻 Environment Variables](#-environment-variables)
 - [📝 Logging](#-logging)
@@ -203,6 +206,8 @@ Deploy your Next.js app instantly with **Vercel**:
 | `npm run biome:format`      | Check code formatting                          |
 | `npm run biome:format:fix`  | Auto-fix formatting                            |
 | `npm run type-check`        | Run TypeScript type checking (`next typegen` + `tsc`) |
+| `npm run knip`              | Find unused files, dependencies, and exports          |
+| `npm run knip:ci`           | Run Knip with the GitHub Actions reporter (CI mode)   |
 
 ### Testing
 
@@ -278,6 +283,29 @@ npm run test:storybook
 
 Storybook tests use `play` functions for interaction testing with accessibility checks via `@storybook/addon-a11y`. Use
 the `test-only` tag to exclude stories from docs while keeping them in the test suite.
+
+---
+
+## 🧹 Dead Code Detection
+
+[Knip](https://knip.dev/) analyzes the dependency graph to find unused files, exports, and dependencies that can be
+safely removed.
+
+```bash
+npm run knip
+```
+
+Run it in CI mode with GitHub Actions annotations:
+
+```bash
+npm run knip:ci
+```
+
+Configuration lives in [`knip.json`](./knip.json). Intentionally unused-for-now items (template scaffolding such as
+`data/env/client.ts`, or dependencies like `server-only` and `react-hook-form` that ship ready for use but aren't
+wired into the example code yet) are listed in `ignore` / `ignoreDependencies`. Exports that are part of this
+template's public data contract (e.g. the types in `constants/`) are marked with a `/** @public */` JSDoc tag so Knip
+doesn't flag them as unused.
 
 ---
 
@@ -440,6 +468,7 @@ Runs on every pull request and validates:
 - Storybook build — validates Storybook compilation
 - Biome — linting and formatting check with GitHub inline annotations
 - TypeScript — type checking
+- Knip — detects unused files, dependencies, and exports
 - Vitest unit tests with coverage
 - Storybook interaction tests with coverage
 - Merged coverage comment on PR
@@ -517,6 +546,7 @@ nextjs-szumplate/
 ├── types/                # Global TypeScript type declarations
 ├── utils/                # Shared utility functions
 ├── biome.json            # Biome linter and formatter configuration
+├── knip.json             # Knip dead code / unused dependency configuration
 ├── next.config.ts        # Next.js configuration
 ├── playwright.config.ts  # Playwright E2E test configuration
 ├── postcss.config.js     # PostCSS and Tailwind CSS configuration
@@ -541,6 +571,7 @@ nextjs-szumplate/
 ### Important Configuration Files
 
 - **`biome.json`** — Biome linter and formatter rules (replaces ESLint + Prettier)
+- **`knip.json`** — Knip configuration for detecting unused files, dependencies, and exports
 - **`next.config.ts`** — Next.js config (React Compiler, bundle analyzer, health rewrites)
 - **`playwright.config.ts`** — Playwright E2E test configuration
 - **`postcss.config.js`** — PostCSS plugins and Tailwind CSS processing

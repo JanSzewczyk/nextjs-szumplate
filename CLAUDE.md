@@ -28,6 +28,8 @@ npm run biome:lint:fix   # Auto-fix lint issues
 npm run biome:format     # Check formatting only
 npm run biome:format:fix # Auto-fix formatting
 npm run type-check       # TypeScript type checking (next typegen + tsc)
+npm run knip             # Find unused files, dependencies, and exports
+npm run knip:ci          # Knip with GitHub Actions reporter (CI mode)
 ```
 
 ### Testing
@@ -75,6 +77,7 @@ npm run analyze               # Bundle analyzer
 - **TypeScript**: 6.0.3 (strict mode)
 - **Tailwind CSS**: 4.3.2 (CSS-first config)
 - **Biome**: 2.5.1 (lint + format)
+- **Knip**: 6.41.0 (dead code / unused dependency detection)
 - **@szum-tech/design-system**: 3.21.9
 - **Vitest**: 4.1.8 (unit & integration tests)
 - **Playwright**: 1.61.1 (E2E tests)
@@ -181,6 +184,7 @@ The app uses `next-themes` for dark/light/system theme switching:
 
 - Commits follow [Conventional Commits](https://www.conventionalcommits.org/) for semantic release
 - Linting & formatting: Biome (`biome.json`)
+- Dead code / unused dependency detection: Knip (`knip.json`)
 - Semantic Release: Uses `@szum-tech/semantic-release-config`
 
 ## Common Pitfalls

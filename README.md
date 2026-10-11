@@ -46,8 +46,8 @@ back, relax, and get ready to conquer the whole world with your new awesome app!
 
 - [![Vitest](https://img.shields.io/github/package-json/dependency-version/JanSzewczyk/nextjs-szumplate/dev/vitest?logo=vitest&logoColor=white&label=Vitest)](https://vitest.dev/)
   — Rock-solid, high-speed unit and integration tests with browser mode
-- [![React Testing Library](https://img.shields.io/github/package-json/dependency-version/JanSzewczyk/nextjs-szumplate/dev/@testing-library/react?label=React%20Testing%20Library)](https://testing-library.com/react)
-  — Component testing with accessibility-first queries
+- [![Testing Library](https://img.shields.io/github/package-json/dependency-version/JanSzewczyk/nextjs-szumplate/dev/@testing-library/jest-dom?label=Testing%20Library)](https://testing-library.com/)
+  — Custom Jest/Vitest matchers for asserting on DOM state
 - [![Playwright](https://img.shields.io/github/package-json/dependency-version/JanSzewczyk/nextjs-szumplate/dev/@playwright/test?logo=playwright&logoColor=white&label=Playwright)](https://playwright.dev/)
   — End-to-end tests with cross-browser support and Playwright UI
 - [![Storybook](https://img.shields.io/github/package-json/dependency-version/JanSzewczyk/nextjs-szumplate/dev/storybook?logo=storybook&logoColor=white&label=Storybook)](https://storybook.js.org/)

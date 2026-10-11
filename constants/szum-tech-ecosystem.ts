@@ -1,7 +1,6 @@
 export type SzumTechIconName = "PaletteIcon" | "ShieldCheckIcon" | "SparklesIcon" | "TagIcon";
 
-/** @public */
-export interface SzumTechPackage {
+interface SzumTechPackage {
   description: string;
   docsUrl?: string;
   features: Array<string>;

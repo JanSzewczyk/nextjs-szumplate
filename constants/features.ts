@@ -9,8 +9,7 @@ export type FeatureIconName =
   | "GitBranchIcon"
   | "LayersIcon";
 
-/** @public */
-export interface Feature {
+interface Feature {
   description: string;
   iconName: FeatureIconName;
   title: string;

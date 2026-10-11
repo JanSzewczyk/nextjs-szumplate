@@ -1,5 +1,4 @@
-/** @public */
-export interface QuickStartStep {
+interface QuickStartStep {
   command: string;
   description: string;
   step: number;

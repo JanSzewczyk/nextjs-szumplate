@@ -4,8 +4,8 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-Next.js Szumplate is an enterprise-ready Next.js 16.2.9 template with React 19.2.7, TypeScript 6.0, Tailwind CSS 4.3.2,
-React Compiler, and comprehensive testing infrastructure (Vitest 4.1, Playwright 1.61).
+Next.js Szumplate is an enterprise-ready Next.js template with React Compiler and comprehensive testing
+infrastructure. Exact versions live in `package.json` — don't duplicate them here.
 
 ## Commands
 
@@ -72,19 +72,12 @@ npm run analyze               # Bundle analyzer
 
 ### Tech Stack
 
-- **Next.js**: 16.2.9 (App Router, Turbopack, React Compiler)
-- **React**: 19.2.7 with React Compiler enabled
-- **TypeScript**: 6.0.3 (strict mode)
-- **Tailwind CSS**: 4.3.2 (CSS-first config)
-- **Biome**: 2.5.1 (lint + format)
-- **Knip**: 6.41.0 (dead code / unused dependency detection)
-- **@szum-tech/design-system**: 3.21.9
-- **Vitest**: 4.1.8 (unit & integration tests)
-- **Playwright**: 1.61.1 (E2E tests)
-- **Storybook**: 10.4.1 (component development)
-- **Zod**: 4.3.6 (validation)
-- **Pino**: 10.3.0 (logging)
-- **next-themes**: 0.4.6 (theming)
+- **Next.js** (App Router, Turbopack, React Compiler) with **React** and **TypeScript** (strict mode)
+- **Tailwind CSS** (CSS-first config)
+- **Biome** (lint + format), **Knip** (dead code / unused dependency detection)
+- **@szum-tech/design-system** (UI components)
+- **Vitest** (unit & integration tests), **Playwright** (E2E), **Storybook** (component development)
+- **Zod** (validation), **LogLayer + Pino** (logging), **next-themes** (theming)
 
 ### Path Aliases
 
@@ -101,10 +94,13 @@ import { env } from "~/data/env/server";
 - **features/**: Feature-based modules (see structure below)
 - **components/**: Shared reusable components (ui/, layout/, providers/)
 - **lib/**: Utilities and configurations (logger)
+- **utils/**, **types/**: Shared helpers and global types (`types/reset.d.ts` loads ts-reset)
+- **proxy.ts**: Request middleware (request ID + request logging)
 - **data/env/**: T3 Env type-safe environment variables (server.ts, client.ts)
 - **constants/**: Static data and configuration constants
 - **tests/e2e/**: Playwright E2E tests (\*.e2e.ts pattern)
-- **tests/unit/**: Vitest unit tests (\*.test.ts pattern)
+- **tests/unit/**: Vitest unit tests (\*.test.ts pattern); colocated tests (e.g. `lib/logger.test.ts`) also run in
+  the `unit` project
 - **tests/integration/**: Storybook integration tests
 
 ### Feature Module Structure
@@ -129,7 +125,8 @@ Environment variables are validated at build-time using T3 Env:
 
 ### Logging
 
-Uses Pino logger (`lib/logger.ts`). Create child loggers with context:
+Uses LogLayer on top of Pino (`lib/logger.ts`); logs are also written to `tmp/app.log` and `tmp/audit.json`
+(gitignored). Create child loggers with context:
 
 ```typescript
 import logger, { createLogger } from "~/lib/logger";
@@ -179,6 +176,11 @@ The app uses `next-themes` for dark/light/system theme switching:
 - React Compiler enabled (`reactCompiler: true`)
 - Pino externalized for server-side logging
 - Bundle analyzer available via `ANALYZE=true`
+
+## Rules
+
+Detailed conventions live in `.claude/rules/` (code-style, ui-szum-tech-design-system, feature-architecture,
+db-patterns, nextjs-page-layout-patterns). Read the relevant file before touching that area.
 
 ## Conventions
 

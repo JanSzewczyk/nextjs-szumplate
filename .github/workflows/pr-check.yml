@@ -244,7 +244,7 @@ jobs:
         with:
           fetch-depth: 0 # required for --diff
       - name: React Doctor🩺
-        uses: millionco/react-doctor@673ce802a375eeb4c3c5cb9a96d21eaeb7eafd93 # v2.3.1
+        uses: millionco/react-doctor@main
         with:
           diff: ${{ github.base_ref }}
           github-token: ${{ secrets.GITHUB_TOKEN }}

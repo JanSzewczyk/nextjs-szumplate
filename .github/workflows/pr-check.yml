@@ -57,6 +57,31 @@ jobs:
       - name: Biome Check 🌿
         run: npm run biome:ci
 
+  oxlint:
+    name: Oxlint ⚡ (pilot, non-blocking)
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      security-events: write
+    steps:
+      - name: Checkout code 📚
+        uses: actions/checkout@v7
+      - name: Set up Node.js 🟢
+        uses: actions/setup-node@v7
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: "npm"
+      - name: Install dependencies ⚙️
+        run: npm ci
+      - name: Oxlint Check ⚡
+        run: npm run lint:oxlint:ci
+        continue-on-error: true
+      - name: Upload Oxlint results to GitHub
+        uses: github/codeql-action/upload-sarif@v4
+        with:
+          sarif_file: oxlint-results.sarif
+          wait-for-processing: true
+
   type-check:
     name: TypeScript 🛠️
     runs-on: ubuntu-latest

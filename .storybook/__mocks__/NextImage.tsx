@@ -20,6 +20,7 @@ interface NextImageProps {
 export default function NextImage({ src, alt, width, height, className, style }: NextImageProps) {
   const resolvedSrc = typeof src === "string" ? src : src.src;
   return (
+    // oxlint-disable-next-line next/no-img-element -- intentional: this mock replaces next/image for Storybook
     <img
       alt={alt}
       className={className}

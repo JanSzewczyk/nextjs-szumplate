@@ -16,6 +16,10 @@ const THEME_LABELS: Record<Theme, string> = {
   system: "System theme"
 };
 
+function isTheme(value: string | undefined): value is Theme {
+  return THEME_CYCLE.some((theme) => theme === value);
+}
+
 /**
  * Theme toggle button component that cycles through system, light, and dark themes.
  *
@@ -40,7 +44,7 @@ export function ThemeToggle() {
     setMounted(true);
   }, []);
 
-  const currentTheme: Theme = (theme as Theme) ?? "system";
+  const currentTheme: Theme = isTheme(theme) ? theme : "system";
 
   const cycleTheme = () => {
     const currentIndex = THEME_CYCLE.indexOf(currentTheme);

@@ -123,7 +123,7 @@
           }
         }
       },
-      "recommended": false,
+      "preset": "none",
       "security": {
         "noBlankTarget": "error",
         "noDangerouslySetInnerHtmlWithChildren": "error"

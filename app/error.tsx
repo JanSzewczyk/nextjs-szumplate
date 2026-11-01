@@ -17,8 +17,8 @@ export default function Error({ error, reset }: { error: Error & { digest?: stri
   return (
     <div className="flex min-h-screen flex-col items-center justify-center">
       <div className="text-center">
-        <h2 className="mb-4 text-display-sm">Something went wrong!</h2>
-        <p className="mb-4 text-muted-foreground">An unexpected error has occurred.</p>
+        <h2 className="text-display-sm mb-4">Something went wrong!</h2>
+        <p className="text-muted-foreground mb-4">An unexpected error has occurred.</p>
         <Button onClick={reset} type="button">
           Try again
         </Button>

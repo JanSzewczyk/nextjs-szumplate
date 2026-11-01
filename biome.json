@@ -1,5 +1,5 @@
 {
-  "$schema": "https://biomejs.dev/schemas/2.5.15/schema.json",
+  "$schema": "https://biomejs.dev/schemas/2.6.4/schema.json",
   "assist": {
     "actions": {
       "source": {
@@ -34,6 +34,7 @@
       "!**/.turbo/**",
       "!**/public/**",
       "!**/*.min.{js,css}",
+      "!**/*.md",
       "!**/next-env.d.ts",
       "!**/lib/sanity/schema.json"
     ]
@@ -114,13 +115,9 @@
       "nursery": {
         "noFloatingPromises": "error",
         "noMisusedPromises": "error",
-        "useSortedClasses": {
+        "useTailwindSortedClasses": {
           "fix": "safe",
-          "level": "warn",
-          "options": {
-            "attributes": ["class", "className", "ngClass"],
-            "functions": ["classNames", "clsx", "cn"]
-          }
+          "level": "warn"
         }
       },
       "preset": "none",
@@ -202,6 +199,10 @@
     }
   ],
   "root": true,
+  "tailwind": {
+    "attributes": ["class", "className", "ngClass"],
+    "mergeFunctions": ["classNames", "clsx", "cn"]
+  },
   "vcs": {
     "clientKind": "git",
     "enabled": true,

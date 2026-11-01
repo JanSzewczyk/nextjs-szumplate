@@ -137,22 +137,13 @@ Request logging is handled automatically via `proxy.ts` with request ID tracking
 
 ### Testing Configuration
 
-Vitest 4.1 is configured with two project modes:
+Vitest is configured with two project modes:
 
 - **unit**: Node environment for unit tests (`*.test.ts` files)
 - **storybook**: Browser environment (Playwright) for Storybook component tests
 
 Storybook tests use play functions for interaction testing with accessibility checks via @storybook/addon-a11y.
 Use `test-only` tag for stories that should be excluded from docs but run in tests.
-
-**Known temporary workaround:** `.storybook/main.ts`'s `viteFinal` includes a `layout-router-parent-render-tree-compat`
-Vite plugin that patches `@storybook/nextjs-vite`'s compiled `LayoutRouterContext` mock at build time. It's needed
-because `next@16.4.0` changed `useRouter()` to read `layout.parentRenderTree.data.bfcacheId`, but
-`@storybook/nextjs-vite@10.6.2` only provides the older `parentTree` field, so `useRouter()` throws inside
-`RedirectBoundary` for every App Router story without this patch. **When next updating `next` and/or
-`@storybook/nextjs-vite` as part of a dependency update pass, check whether this is still needed**: remove the
-`layoutRouterCompat` plugin from `viteFinal`, run `npm run test:storybook`, and if it still passes, delete the
-workaround and its comment.
 
 ### Design System
 
